@@ -43,6 +43,8 @@ namespace Cliver.CisteraScreenCaptureUI
 
         public void Message(MessageType messageType, string message)
         {
+            if (!Settings.View.DisplayNotifications)
+                return;
             switch(messageType)
             {
                 case MessageType.INFORM:
