@@ -33,7 +33,7 @@ using System.ServiceModel;
 namespace Cliver.CisteraScreenCaptureService
 {
     [ServiceContract(Namespace = "", SessionMode = SessionMode.Required, CallbackContract = typeof(IClientApi))]
-    public interface IServerApi
+    public interface IServiceApi
     {
         [OperationContract(IsOneWay = true, IsInitiating = true)]
         void Subscribe();
@@ -42,7 +42,7 @@ namespace Cliver.CisteraScreenCaptureService
         void Unsubscribe();
 
         [OperationContract()]
-        string[] GetSettingsPaths();
+        Settings.GeneralSettings GetSettings();
     }
 
     public interface IClientApi
@@ -61,7 +61,7 @@ namespace Cliver.CisteraScreenCaptureService
     }
 
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerSession)]
-    public class ServerApi : IServerApi
+    public class ServiceApi : IServiceApi
     {
         delegate void statusChangedHandler(System.ServiceProcess.ServiceControllerStatus status);
         void statusChangedDelegate(System.ServiceProcess.ServiceControllerStatus status)
@@ -106,15 +106,19 @@ namespace Cliver.CisteraScreenCaptureService
             }
         }
 
-        public string[] GetSettingsPaths()
+        //public string[] GetSettingsPaths()
+        //{
+        //    lock (serviceHost)
+        //    {
+        //        return new string[] { Settings.General.__File };
+        //    }
+        //}
+        public Settings.GeneralSettings GetSettings()
         {
-            lock (serviceHost)
-            {
-                return new string[] { Settings.General.__File };
-            }
+            return Settings.General;
         }
 
-        ServerApi()
+        ServiceApi()
         {
         }
 
@@ -126,7 +130,7 @@ namespace Cliver.CisteraScreenCaptureService
                 {
                     if (serviceHost != null)
                         return;
-                    serviceHost = new ServiceHost(typeof(ServerApi));
+                    serviceHost = new ServiceHost(typeof(ServiceApi));
                     serviceHost.Open();
                 }
             }

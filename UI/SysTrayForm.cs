@@ -29,11 +29,9 @@ namespace Cliver.CisteraScreenCaptureUI
             CreateHandle();
 
             Icon = AssemblyRoutines.GetAppIcon();
-
-            //InstanceContext context = new InstanceContext(new CisteraScreenCaptureService.ServiceCallback());
-            //CisteraScreenCapture.ServerApi server = new CisteraScreenCapture.ServerApi();
-            //if (server != null)
-            //    server.Subscribe();
+            
+            if(ServiceApi.This!=null)
+                ServiceApi.This.Subscribe();
             ServiceStateChanged( ServiceApi.This.GetStatus());
         }
 

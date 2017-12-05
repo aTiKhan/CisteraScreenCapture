@@ -133,7 +133,7 @@
     <Compile Include="AboutForm.Designer.cs" />
     <Compile Include="InfoControl.xaml.cs" />
     <Compile Include="InfoWindow.xaml.cs" />
-    <Compile Include="Wcf.cs" />
+    <Compile Include="ClientApi.cs" />
     <Compile Include="Settings\View.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

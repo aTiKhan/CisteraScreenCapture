@@ -44,8 +44,8 @@ namespace Cliver.CisteraScreenCaptureService
         protected override void OnStart(string[] args)
         {
             Log.Main.Inform("Starting...");
-            ServerApi.OpenApi();
-            ServerApi.StatusChanged(ServiceControllerStatus.StartPending);
+            ServiceApi.OpenApi();
+            ServiceApi.StatusChanged(ServiceControllerStatus.StartPending);
 
             //try
             //{
@@ -67,7 +67,7 @@ namespace Cliver.CisteraScreenCaptureService
         protected override void OnStop()
         {
             Log.Main.Inform("Stopping...");
-            ServerApi.StatusChanged(ServiceControllerStatus.StopPending);
+            ServiceApi.StatusChanged(ServiceControllerStatus.StopPending);
             stopServingUser();
             //CisteraScreenCapture.ServerApi.CloseApi();
         }
@@ -126,14 +126,14 @@ namespace Cliver.CisteraScreenCaptureService
                             currentServerIp = Settings.General.TcpClientDefaultIp;
                             string m = "Service '" + service + "' could not be resolved.\r\nUsing default ip: " + currentServerIp;
                             Log.Main.Warning(m);
-                            ServerApi.Message(MessageType.WARNING, m);
+                            ServiceApi.Message(MessageType.WARNING, m);
                         }
                         else if (zhs.Where(x => x.IPAddress != null).FirstOrDefault() == null)
                         {
                             currentServerIp = Settings.General.TcpClientDefaultIp;
                             string m = "Resolution of service '" + service + "' has no IP defined.\r\nUsing default ip: " + currentServerIp;
                             Log.Main.Error(m);
-                            ServerApi.Message(MessageType.ERROR, m);
+                            ServiceApi.Message(MessageType.ERROR, m);
                         }
                         else
                         {
@@ -162,7 +162,7 @@ namespace Cliver.CisteraScreenCaptureService
                     (Exception e) =>
                     {
                         Log.Main.Error(e);
-                        ServerApi.Message(MessageType.ERROR, Log.GetExceptionMessage(e));
+                        ServiceApi.Message(MessageType.ERROR, Log.GetExceptionMessage(e));
                     },
                     () =>
                     {

@@ -94,7 +94,6 @@
   <ItemGroup>
     <Compile Include="MonitorRoutines.cs" />
     <Compile Include="MpegStream.cs" />
-    <Compile Include="ExposedEvents.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -113,7 +112,7 @@
     <Compile Include="TcpMessage.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="TcpServerConnection.cs" />
-    <Compile Include="Wcf.cs" />
+    <Compile Include="ServiceApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
