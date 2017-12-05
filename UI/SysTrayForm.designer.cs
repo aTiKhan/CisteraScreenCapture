@@ -93,7 +93,7 @@
             // 
             this.stateToolStripMenuItem.Name = "stateToolStripMenuItem";
             this.stateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.stateToolStripMenuItem.Text = "State";
+            this.stateToolStripMenuItem.Text = "Silence";
             this.stateToolStripMenuItem.Click += new System.EventHandler(this.stateToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
