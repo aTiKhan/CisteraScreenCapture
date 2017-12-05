@@ -22,7 +22,7 @@ namespace Cliver.CisteraScreenCaptureService
                 Log.Main.Error(e);
             };
 
-            Log.Initialize(Log.Mode.ONLY_LOG, Log.CliverSoftCommonDataDir);
+            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir);
 
             //Config.Initialize(new string[] { "General" });
             Cliver.Config.Reload();

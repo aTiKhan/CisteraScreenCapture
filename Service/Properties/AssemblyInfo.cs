@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CisteraScreenCapture")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("CliverSoft.com")]
+[assembly: AssemblyCompany("Cistera")]
 [assembly: AssemblyProduct("CisteraScreenCapture")]
-[assembly: AssemblyCopyright("Copyright © CliverSoft 2017")]
+[assembly: AssemblyCopyright("Copyright © Cistera 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

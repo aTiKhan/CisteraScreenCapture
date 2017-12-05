@@ -29,15 +29,15 @@ namespace Cliver.CisteraScreenCaptureUI
             CreateHandle();
 
             Icon = AssemblyRoutines.GetAppIcon();
-            
-            if(ServiceApi.This!=null)
+
+            if (ServiceApi.This != null)
                 ServiceApi.This.Subscribe();
-            ServiceStateChanged( ServiceApi.This.GetStatus());
+            ServiceStateChanged(ServiceApi.This.GetStatus());
         }
 
         public static readonly SysTray This = new SysTray();
 
-        public void ServiceStateChanged(System.ServiceProcess.ServiceControllerStatus? status)
+        public void ServiceStateChanged(ServiceControllerStatus? status)
         {
             this.Invoke(() =>
             {
