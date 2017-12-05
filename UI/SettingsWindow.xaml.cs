@@ -181,11 +181,11 @@ namespace Cliver.CisteraScreenCaptureUI
                 general.Save();
                 Config.Reload();
 
-                System.ServiceProcess.ServiceControllerStatus? status = ServiceApi.This.GetStatus();
+                System.ServiceProcess.ServiceControllerStatus? status = ServiceApi.GetStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped && Message.YesNo("The last changes have been saved. However, to engage them, the service must be restarted. All the present connections if any will be broken. Proceed with restarting?", null, Message.Icons.Exclamation))
                 {
-                    ServiceApi.This.StartStop(false);
-                    ServiceApi.This.StartStop(true);
+                    ServiceApi.StartStop(false);
+                    ServiceApi.StartStop(true);
                 }
 
                 Close();

@@ -45,7 +45,7 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             if (!Settings.View.DisplayNotifications)
                 return;
-            switch(messageType)
+            switch (messageType)
             {
                 case MessageType.INFORM:
                     InfoWindow.Create(message, null, "OK", null);
@@ -62,45 +62,44 @@ namespace Cliver.CisteraScreenCaptureUI
         }
     }
 
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    public partial class ServiceApi : System.ServiceModel.DuplexClientBase<CisteraScreenCaptureService.IServiceApi>, CisteraScreenCaptureService.IServiceApi
+    public partial class ServiceApi : System.ServiceModel.DuplexClientBase<CisteraScreenCaptureService.IServiceApi>
     {
         static ServiceApi()
         {
             try
             {
                 InstanceContext context = new InstanceContext(new ClientApi());
-                This = new ServiceApi(context);
+                ServiceApi sa = new ServiceApi(context);
+                This = sa.ChannelFactory.CreateChannel();
             }
             catch (Exception e)
             {
                 LogMessage.Error(e);
             }
         }
-        readonly public static ServiceApi This = null;
+        readonly public static IServiceApi This = null;
 
         public ServiceApi(InstanceContext context) : base(context)
         {
 
         }
 
-        public void Subscribe()
-        {
-            base.Channel.Subscribe();
-        }
+        //public void Subscribe()
+        //{
+        //    base.Channel.Subscribe();
+        //}
 
-        public void Unsubscribe()
-        {
-            base.Channel.Unsubscribe();
-        }
+        //public void Unsubscribe()
+        //{
+        //    base.Channel.Unsubscribe();
+        //}
 
-        public CisteraScreenCaptureService.Settings.GeneralSettings GetSettings()
-        {
-            return base.Channel.GetSettings();
-        }
+        //public CisteraScreenCaptureService.Settings.GeneralSettings GetSettings()
+        //{
+        //    return base.Channel.GetSettings();
+        //}
 
-        public void StartStop(bool start)
+        static public void StartStop(bool start)
         {
             try
             {
@@ -130,7 +129,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
         }
 
-        public ServiceControllerStatus? GetStatus()
+        static public ServiceControllerStatus? GetStatus()
         {
             try
             {

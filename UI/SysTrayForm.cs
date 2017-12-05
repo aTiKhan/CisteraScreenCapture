@@ -32,7 +32,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
             if (ServiceApi.This != null)
                 ServiceApi.This.Subscribe();
-            ServiceStateChanged(ServiceApi.This.GetStatus());
+            ServiceStateChanged(ServiceApi.GetStatus());
         }
 
         public static readonly SysTray This = new SysTray();
@@ -121,11 +121,11 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             if (!isAllowed())
             {
-                StartStop.Checked = ServiceApi.This.GetStatus() == ServiceControllerStatus.Running;
+                StartStop.Checked = ServiceApi.GetStatus() == ServiceControllerStatus.Running;
                 return;
             }
-            ServiceApi.This.StartStop(StartStop.Checked);
-            StartStop.Checked = ServiceApi.This.GetStatus() == ServiceControllerStatus.Running;
+            ServiceApi.StartStop(StartStop.Checked);
+            StartStop.Checked = ServiceApi.GetStatus() == ServiceControllerStatus.Running;
         }
 
         private void stateToolStripMenuItem_Click(object sender, EventArgs e)
