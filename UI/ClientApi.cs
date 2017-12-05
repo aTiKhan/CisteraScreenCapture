@@ -80,7 +80,7 @@ namespace Cliver.CisteraScreenCaptureUI
         }
         readonly public static ServiceApi This = null;
 
-        public ServiceApi(InstanceContext context):base(context)
+        public ServiceApi(InstanceContext context) : base(context)
         {
 
         }

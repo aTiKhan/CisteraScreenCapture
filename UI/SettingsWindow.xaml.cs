@@ -65,16 +65,25 @@ namespace Cliver.CisteraScreenCaptureUI
             //WindowStartupLocation = WindowStartupLocation.CenterScreen;
             //DefaultServerIp.ValueDataType = typeof(IPAddress);
 
+            general = ServiceApi.This.GetSettings();
+            if (general == null)
+            {
+                ok.IsEnabled = false;
+                reset.IsEnabled = false;
+                Message.Error("The service is unreachable.");
+                return;
+            }
             set();
         }
+        readonly CisteraScreenCaptureService.Settings.GeneralSettings general; 
 
         void set()
         {
-            //ServerDefaultPort.Text = Settings.General.TcpClientDefaultPort.ToString();
-            ServerDefaultIp.Text = CisteraScreenCaptureService.Settings.General.TcpClientDefaultIp.ToString();
-            ClientPort.Text = CisteraScreenCaptureService.Settings.General.TcpServerPort.ToString();
-            ServiceDomain.Text = CisteraScreenCaptureService.Settings.General.ServiceDomain;
-            ServiceType.Text = CisteraScreenCaptureService.Settings.General.ServiceType;
+            //ServerDefaultPort.Text = general.TcpClientDefaultPort.ToString();
+            ServerDefaultIp.Text = general.TcpClientDefaultIp.ToString();
+            ClientPort.Text = general.TcpServerPort.ToString();
+            ServiceDomain.Text = general.ServiceDomain;
+            ServiceType.Text = general.ServiceType;
 
             //using (ManagementObjectSearcher monitors = new ManagementObjectSearcher("SELECT * FROM Win32_DesktopMonitor"))
             //{
@@ -103,13 +112,13 @@ namespace Cliver.CisteraScreenCaptureUI
                 });
             }
             if (Monitors.Items.Count > 0)
-                if (!string.IsNullOrWhiteSpace(CisteraScreenCaptureService.Settings.General.CapturedMonitorDeviceName))
-                    Monitors.SelectedValue = CisteraScreenCaptureService.Settings.General.CapturedMonitorDeviceName;
+                if (!string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
+                    Monitors.SelectedValue = general.CapturedMonitorDeviceName;
                 else
                     Monitors.SelectedIndex = 0;
             
-            ShowMpegWindow.IsChecked = CisteraScreenCaptureService.Settings.General.ShowMpegWindow;
-            WriteMpegOutput2Log.IsChecked = CisteraScreenCaptureService.Settings.General.WriteMpegOutput2Log;
+            ShowMpegWindow.IsChecked = general.ShowMpegWindow;
+            WriteMpegOutput2Log.IsChecked = general.WriteMpegOutput2Log;
         }
 
         static public void Open()
@@ -140,36 +149,36 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 //if (!ushort.TryParse(ServerDefaultPort.Text, out v))
                 //    throw new Exception("Server port must be an integer between 0 and " + ushort.MaxValue);
-                //Settings.General.TcpClientDefaultPort = v;
+                //general.TcpClientDefaultPort = v;
 
                 if (string.IsNullOrWhiteSpace(ServerDefaultIp.Text))
                     throw new Exception("Default server ip is not specified.");
                 IPAddress ia;
                 if (!IPAddress.TryParse(ServerDefaultIp.Text, out ia))
                     throw new Exception("Default server ip is not a valid value.");
-                CisteraScreenCaptureService.Settings.General.TcpClientDefaultIp = ia.ToString();
+                general.TcpClientDefaultIp = ia.ToString();
 
                 if (!ushort.TryParse(ClientPort.Text, out v))
                     throw new Exception("Client port must be an between 0 and " + ushort.MaxValue);
-                CisteraScreenCaptureService.Settings.General.TcpServerPort = v;
+                general.TcpServerPort = v;
 
                 if (string.IsNullOrWhiteSpace(ServiceDomain.Text))
                     throw new Exception("Service domian is not specified.");
-                CisteraScreenCaptureService.Settings.General.ServiceDomain = ServiceDomain.Text.Trim();
+                general.ServiceDomain = ServiceDomain.Text.Trim();
 
                 if (string.IsNullOrWhiteSpace(ServiceType.Text))
                     throw new Exception("Service type is not specified.");
-                CisteraScreenCaptureService.Settings.General.ServiceType = ServiceType.Text.Trim();
+                general.ServiceType = ServiceType.Text.Trim();
 
                 if (Monitors.SelectedIndex < 0)
                     throw new Exception("Captured Video Source is not specified.");
-                CisteraScreenCaptureService.Settings.General.CapturedMonitorDeviceName = (string)Monitors.SelectedValue;
+                general.CapturedMonitorDeviceName = (string)Monitors.SelectedValue;
 
-                CisteraScreenCaptureService.Settings.General.ShowMpegWindow = ShowMpegWindow.IsChecked ?? false;
+                general.ShowMpegWindow = ShowMpegWindow.IsChecked ?? false;
 
-                CisteraScreenCaptureService.Settings.General.WriteMpegOutput2Log = WriteMpegOutput2Log.IsChecked ?? false;
+                general.WriteMpegOutput2Log = WriteMpegOutput2Log.IsChecked ?? false;
 
-                CisteraScreenCaptureService.Settings.General.Save();
+                general.Save();
                 Config.Reload();
 
                 System.ServiceProcess.ServiceControllerStatus? status = ServiceApi.This.GetStatus();
@@ -196,7 +205,7 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             if (!Message.YesNo("Do you want to reset settings to their initial state?"))
                 return;
-            CisteraScreenCaptureService.Settings.General.Reset();
+            general.Reset();
             set();
         }
     }
