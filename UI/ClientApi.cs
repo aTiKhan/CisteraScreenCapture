@@ -70,6 +70,8 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 InstanceContext context = new InstanceContext(new ClientApi());
                 ServiceApi sa = new ServiceApi(context);
+                EndpointAddress epa = new EndpointAddress("net.pipe://localhost/CisteraScreenCapture/ServerApi");
+                //epa..Identity;
                 This = sa.ChannelFactory.CreateChannel();
             }
             catch (Exception e)
