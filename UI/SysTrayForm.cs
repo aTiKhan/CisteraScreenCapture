@@ -33,6 +33,10 @@ namespace Cliver.CisteraScreenCaptureUI
             if (ServiceApi.This != null)
                 ServiceApi.This.Subscribe();
             ServiceStateChanged(ServiceApi.GetStatus());
+
+
+            silentlyToolStripMenuItem.Checked = Settings.View.DisplayNotifications;
+            silentlyToolStripMenuItem_Click(null, null);
         }
 
         public static readonly SysTray This = new SysTray();
@@ -170,6 +174,11 @@ namespace Cliver.CisteraScreenCaptureUI
             //    ls.Add("Mpeg stream: " + MpegStream.CommandLine);
 
             //Message.Inform(string.Join("\r\n", ls));
+        }
+
+        private void silentlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.View.DisplayNotifications = !silentlyToolStripMenuItem.Checked;
         }
     }
 }

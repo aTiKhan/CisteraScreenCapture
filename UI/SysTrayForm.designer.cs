@@ -35,7 +35,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StartStop = new System.Windows.Forms.ToolStripMenuItem();
             this.workDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.silentlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,7 +58,7 @@
             this.settingsToolStripMenuItem,
             this.StartStop,
             this.workDirToolStripMenuItem,
-            this.stateToolStripMenuItem,
+            this.silentlyToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
@@ -89,12 +89,13 @@
             this.workDirToolStripMenuItem.Text = "Logs";
             this.workDirToolStripMenuItem.Click += new System.EventHandler(this.workDirToolStripMenuItem_Click);
             // 
-            // stateToolStripMenuItem
+            // silentlyToolStripMenuItem
             // 
-            this.stateToolStripMenuItem.Name = "stateToolStripMenuItem";
-            this.stateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.stateToolStripMenuItem.Text = "Silence";
-            this.stateToolStripMenuItem.Click += new System.EventHandler(this.stateToolStripMenuItem_Click);
+            this.silentlyToolStripMenuItem.CheckOnClick = true;
+            this.silentlyToolStripMenuItem.Name = "silentlyToolStripMenuItem";
+            this.silentlyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.silentlyToolStripMenuItem.Text = "Silently";
+            this.silentlyToolStripMenuItem.Click += new System.EventHandler(this.silentlyToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -142,6 +143,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem StartStop;
         private System.Windows.Forms.ToolStripMenuItem workDirToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem silentlyToolStripMenuItem;
     }
 }
