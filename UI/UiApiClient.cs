@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.ServiceModel;
 using System.ServiceProcess;
 using Cliver.CisteraScreenCaptureService;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// TBD:
@@ -68,6 +69,40 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             try
             {
+                //IntPtr hSCM = WinApi.Advapi32.OpenSCManager(null, null, WinApi.Advapi32.SCM_ACCESS.SC_MANAGER_ALL_ACCESS);
+                //if (hSCM != IntPtr.Zero)
+                //{
+                //    IntPtr hService = WinApi.Advapi32.OpenService(hSCM, SERVICE_NAME, (WinApi.Advapi32.SCM_ACCESS)0xF003F);// WinApi.Advapi32.SCM_ACCESS.SC_MANAGER_ALL_ACCESS);
+                //    if (hService != IntPtr.Zero)
+                //    {
+                //        notify = new WinApi.Advapi32.SERVICE_NOTIFY();
+                //        notify.dwVersion = 2;
+                //        notify.pfnNotifyCallback = Marshal.GetFunctionPointerForDelegate(changeDelegate);
+                //        notify.pContext = IntPtr.Zero;
+                //        notify.dwNotificationStatus = 0;
+                //        WinApi.Advapi32.SERVICE_STATUS_PROCESS process;
+                //        process.dwServiceType = 0;
+                //        process.dwCurrentState = 0;
+                //        process.dwControlsAccepted = 0;
+                //        process.dwWin32ExitCode = 0;
+                //        process.dwServiceSpecificExitCode = 0;
+                //        process.dwCheckPoint = 0;
+                //        process.dwWaitHint = 0;
+                //        process.dwProcessId = 0;
+                //        process.dwServiceFlags = 0;
+                //        notify.ServiceStatus = process;
+                //        notify.dwNotificationTriggered = 0;
+                //        notify.pszServiceNames = Marshal.StringToHGlobalUni(SERVICE_NAME);
+                //        notifyHandle = GCHandle.Alloc(notify, GCHandleType.Pinned);
+                //        unmanagedNotifyStructure = notifyHandle.AddrOfPinnedObject();
+                //        if (0 != WinApi.Advapi32.NotifyServiceStatusChange(hService, WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_START_PENDING | WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_RUNNING | WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_STOPPED, unmanagedNotifyStructure))
+                //            LogMessage.Error(ErrorRoutines.GetLastError());
+                //    }
+                //}
+
+
+
+
                 InstanceContext context = new InstanceContext(new UiApiCallback());
                 This = new CisteraScreenCaptureService.UiApiClient(context);
                 This.Subscribe();
@@ -77,6 +112,20 @@ namespace Cliver.CisteraScreenCaptureUI
                 LogMessage.Error(e);
             }
         }
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void StatusChanged(IntPtr parameter);
+        public static void ReceivedStatusChangedEvent(IntPtr parameter)
+        {
+            LogMessage.Write("status");
+        }
+        readonly public static StatusChanged changeDelegate = ReceivedStatusChangedEvent;
+        public static WinApi.Advapi32.SERVICE_NOTIFY notify;
+        public static GCHandle notifyHandle;
+        public static IntPtr unmanagedNotifyStructure;
+
+
+
+
         readonly public static CisteraScreenCaptureService.UiApiClient This = null;
 
         static public void StartStop(bool start)

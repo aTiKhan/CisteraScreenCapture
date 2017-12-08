@@ -125,6 +125,7 @@ namespace Cliver.CisteraScreenCaptureService
                     if (serviceHost != null)
                         return;
                     Log.Main.Inform("Opening UI API.");
+                    uiApiCallbacks.Clear();
                     serviceHost = new ServiceHost(typeof(UiApi));
                     serviceHost.Open();
                 }
@@ -138,6 +139,7 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 if (serviceHost != null)
                 {
+                    Log.Main.Inform("Closing UI API.");
                     uiApiCallbacks.Clear();
                     serviceHost.Close();
                     serviceHost = null;
@@ -147,12 +149,18 @@ namespace Cliver.CisteraScreenCaptureService
 
         internal static void StatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
+            Log.Write("Subscibed3: " + uiApiCallbacks.Count);
             ThreadRoutines.StartTry(() =>
             {
+                Log.Write("Subscibed4: " + uiApiCallbacks.Count);
                 lock (uiApiCallbacks)
                 {
+                    Log.Write("Subscibed5: " + uiApiCallbacks.Count);
                     foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
+                    {
+                        Log.Write("Subscibed6: " + uiApiCallbacks.Count);
                         uiApiCallback.ServiceStatusChanged(status);
+                    }
                 }
             });
         }
