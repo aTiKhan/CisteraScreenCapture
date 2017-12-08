@@ -24,16 +24,10 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.ServiceModel;
 
-
-/// <summary>
-/// TBD:
-/// - add display area;
-/// </summary>
-/// 
 namespace Cliver.CisteraScreenCaptureService
 {
-    [ServiceContract(Namespace = "", SessionMode = SessionMode.Required, CallbackContract = typeof(IClientApi))]
-    public interface IServiceApi
+    [ServiceContract(Namespace = "", SessionMode = SessionMode.Required, CallbackContract = typeof(IUiApiCallback))]
+    public interface IUiApi
     {
         [OperationContract(IsOneWay = true, IsInitiating = true)]
         void Subscribe();
@@ -45,7 +39,7 @@ namespace Cliver.CisteraScreenCaptureService
         Settings.GeneralSettings GetSettings();
     }
 
-    public interface IClientApi
+    public interface IUiApiCallback
     {
         [OperationContract(IsOneWay = true)]
         void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status);
@@ -61,48 +55,48 @@ namespace Cliver.CisteraScreenCaptureService
     }
 
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerSession)]
-    public class ServiceApi : IServiceApi
+    public class UiApi : IUiApi
     {
         delegate void statusChangedHandler(System.ServiceProcess.ServiceControllerStatus status);
         void statusChangedDelegate(System.ServiceProcess.ServiceControllerStatus status)
         {
-            lock (serviceHost)
+            lock (lockObject)
             {
-                IClientApi serviceCallback = OperationContext.Current.GetCallbackChannel<IClientApi>();
-                serviceCallback.ServiceStatusChanged(status);
+                IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
+                uiApiCallback.ServiceStatusChanged(status);
             }
         }
 
         delegate void messageHandler(MessageType messageType, string message);
         void messageHandlerDelegate(MessageType messageType, string message)
         {
-            lock (serviceHost)
+            lock (lockObject)
             {
-                IClientApi serviceCallback = OperationContext.Current.GetCallbackChannel<IClientApi>();
-                serviceCallback.Message(messageType, message);
+                IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
+                uiApiCallback.Message(messageType, message);
             }
         }
 
         public void Subscribe()
         {
-            lock (serviceHost)
+            lock (lockObject)
             {
-                IClientApi serviceCallback = OperationContext.Current.GetCallbackChannel<IClientApi>();
-                if (serviceCallbacks.Contains(serviceCallback))
+                IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
+                if (serviceCallbacks.Contains(uiApiCallback))
                     return;
-                serviceCallbacks.Add(serviceCallback);
+                serviceCallbacks.Add(uiApiCallback);
             }
         }
-        static readonly HashSet<IClientApi> serviceCallbacks = new HashSet<IClientApi>();
+        static readonly HashSet<IUiApiCallback> serviceCallbacks = new HashSet<IUiApiCallback>();
 
         public void Unsubscribe()
         {
-            lock (serviceHost)
+            lock (lockObject)
             {
-                IClientApi serviceCallback = OperationContext.Current.GetCallbackChannel<IClientApi>();
-                if (!serviceCallbacks.Contains(serviceCallback))
+                IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
+                if (!serviceCallbacks.Contains(uiApiCallback))
                     return;
-                serviceCallbacks.Remove(serviceCallback);
+                serviceCallbacks.Remove(uiApiCallback);
             }
         }
 
@@ -118,7 +112,7 @@ namespace Cliver.CisteraScreenCaptureService
             return Settings.General;
         }
 
-        ServiceApi()
+        UiApi()
         {
         }
 
@@ -126,16 +120,18 @@ namespace Cliver.CisteraScreenCaptureService
         {
             if (serviceHost == null)
             {
-                lock (serviceHost)
+                lock (lockObject)
                 {
                     if (serviceHost != null)
                         return;
-                    serviceHost = new ServiceHost(typeof(ServiceApi));
+                    Log.Main.Inform("Opening UI API.");
+                    serviceHost = new ServiceHost(typeof(UiApi));
                     serviceHost.Open();
                 }
             }
         }
         static ServiceHost serviceHost = null;
+        static readonly object lockObject = new object();
 
         //static internal ServerApi This
         //{
@@ -159,10 +155,10 @@ namespace Cliver.CisteraScreenCaptureService
         {
             ThreadRoutines.StartTry(() =>
             {
-                lock (serviceHost)
+                lock (lockObject)
                 {
-                    foreach (IClientApi serviceCallback in serviceCallbacks)
-                        serviceCallback.ServiceStatusChanged(status);
+                    foreach (IUiApiCallback uiApiCallback in serviceCallbacks)
+                        uiApiCallback.ServiceStatusChanged(status);
                 }
             });
         }
@@ -171,10 +167,10 @@ namespace Cliver.CisteraScreenCaptureService
         {
             ThreadRoutines.StartTry(() =>
             {
-                lock (serviceHost)
+                lock (lockObject)
                 {
-                    foreach (IClientApi serviceCallback in serviceCallbacks)
-                        serviceCallback.Message(messageType, message);
+                    foreach (IUiApiCallback uiApiCallback in serviceCallbacks)
+                        uiApiCallback.Message(messageType, message);
                 }
             });
         }

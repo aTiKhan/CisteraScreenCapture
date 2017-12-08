@@ -112,7 +112,7 @@
     <Compile Include="TcpMessage.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="TcpServerConnection.cs" />
-    <Compile Include="ServiceApi.cs" />
+    <Compile Include="UiApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

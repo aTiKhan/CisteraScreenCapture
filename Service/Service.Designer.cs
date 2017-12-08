@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             // 
-            // Service1
+            // Cistera Screen Capture Service
             // 
-            this.ServiceName = "Service1";
+            this.ServiceName = "Cistera Screen Capture Service";
 
         }
 

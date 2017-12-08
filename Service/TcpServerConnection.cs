@@ -142,7 +142,7 @@ namespace Cliver.CisteraScreenCaptureService
                 TcpMessage m = TcpMessage.Receive(stream);
 
                 Log.Main.Inform("Tcp message received: " + m.Name + "\r\n" + m.BodyAsText);
-                ServiceApi.Message(MessageType.INFORM, "Tcp message received: " + m.Name + "\r\n" + m.BodyAsText);
+                UiApi.Message(MessageType.INFORM, "Tcp message received: " + m.Name + "\r\n" + m.BodyAsText);
 
                 string reply = TcpMessage.Success;
                 try

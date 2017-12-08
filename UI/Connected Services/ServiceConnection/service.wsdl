@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="/Imports">
+      <xsd:import />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Cliver.CisteraScreenCaptureService" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Cliver" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.ServiceProcess" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IUiApi_Subscribe_InputMessage">
+    <wsdl:part name="parameters" element="Subscribe" />
+  </wsdl:message>
+  <wsdl:message name="IUiApi_Unsubscribe_InputMessage">
+    <wsdl:part name="parameters" element="Unsubscribe" />
+  </wsdl:message>
+  <wsdl:message name="IUiApi_GetSettings_InputMessage">
+    <wsdl:part name="parameters" element="GetSettings" />
+  </wsdl:message>
+  <wsdl:message name="IUiApi_GetSettings_OutputMessage">
+    <wsdl:part name="parameters" element="GetSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUiApi_ServiceStatusChanged_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="ServiceStatusChanged" />
+  </wsdl:message>
+  <wsdl:message name="IUiApi_Message_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="Message" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="true" name="IUiApi">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Subscribe">
+      <wsdl:input wsaw:Action="urn:IUiApi/Subscribe" message="IUiApi_Subscribe_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Unsubscribe">
+      <wsdl:input wsaw:Action="urn:IUiApi/Unsubscribe" message="IUiApi_Unsubscribe_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetSettings">
+      <wsdl:input wsaw:Action="urn:IUiApi/GetSettings" message="IUiApi_GetSettings_InputMessage" />
+      <wsdl:output wsaw:Action="urn:IUiApi/GetSettingsResponse" message="IUiApi_GetSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ServiceStatusChanged">
+      <wsdl:output wsaw:Action="urn:IUiApi/ServiceStatusChanged" message="IUiApi_ServiceStatusChanged_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Message">
+      <wsdl:output wsaw:Action="urn:IUiApi/Message" message="IUiApi_Message_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

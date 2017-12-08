@@ -35,7 +35,7 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 Log.Main.Inform("Application version: " + AssemblyRoutines.GetAppVersion());
                 
-                string m = "Appication user: " + WindowsUserRoutines.GetCurrentUserName3() + " (";
+                string m = "Application user: " + WindowsUserRoutines.GetCurrentUserName3() + " (";
                 if (WindowsUserRoutines.CurrentUserIsAdministrator())
                 {
                     m += "administrator";

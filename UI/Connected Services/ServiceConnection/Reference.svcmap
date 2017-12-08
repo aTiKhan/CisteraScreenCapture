@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a46b380b-899a-4e30-b912-9a9b4479ed84" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="15be3c02-4ab2-4761-bcae-6dedf2953507" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="6808b30c-e481-4f6c-afde-89425b69d3c8" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="03f0b647-bd2d-40ed-b713-9abaa76ac45a" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="1c13d2e8-9142-40ca-828f-4cb6394a93ba" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="Cliver.CisteraScreenCaptureService.xsd" MetadataType="Schema" ID="f3343180-01a4-4aac-be42-ddfb187c1c2a" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="Cliver.xsd" MetadataType="Schema" ID="a00bdc39-b1c5-41bf-80fe-b8d62aa34677" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="System.ServiceProcess.xsd" MetadataType="Schema" ID="864dd318-5317-4733-961f-6b60ec777733" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -65,7 +65,7 @@ namespace Cliver.CisteraScreenCaptureUI
             //WindowStartupLocation = WindowStartupLocation.CenterScreen;
             //DefaultServerIp.ValueDataType = typeof(IPAddress);
 
-            general = ServiceApi.This.GetSettings();
+            general = UiApiClient.This.GetSettings();
             if (general == null)
             {
                 ok.IsEnabled = false;
@@ -181,11 +181,11 @@ namespace Cliver.CisteraScreenCaptureUI
                 general.Save();
                 Config.Reload();
 
-                System.ServiceProcess.ServiceControllerStatus? status = ServiceApi.GetStatus();
+                System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped && Message.YesNo("The last changes have been saved. However, to engage them, the service must be restarted. All the present connections if any will be broken. Proceed with restarting?", null, Message.Icons.Exclamation))
                 {
-                    ServiceApi.StartStop(false);
-                    ServiceApi.StartStop(true);
+                    UiApiClient.StartStop(false);
+                    UiApiClient.StartStop(true);
                 }
 
                 Close();

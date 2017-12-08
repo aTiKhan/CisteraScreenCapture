@@ -34,7 +34,7 @@ using Cliver.CisteraScreenCaptureService;
 namespace Cliver.CisteraScreenCaptureUI
 {
     [CallbackBehaviorAttribute(UseSynchronizationContext = false)]
-    public class ClientApi : IClientApi
+    public class UiApiCallback : ServiceConnection.IUiApiCallback
     {
         public void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
@@ -62,44 +62,22 @@ namespace Cliver.CisteraScreenCaptureUI
         }
     }
 
-    public partial class ServiceApi : System.ServiceModel.DuplexClientBase<CisteraScreenCaptureService.IServiceApi>
+    public partial class UiApiClient
     {
-        static ServiceApi()
+        static UiApiClient()
         {
             try
             {
-                InstanceContext context = new InstanceContext(new ClientApi());
-                ServiceApi sa = new ServiceApi(context);
-                EndpointAddress epa = new EndpointAddress("net.pipe://localhost/CisteraScreenCapture/ServerApi");
-                //epa..Identity;
-                This = sa.ChannelFactory.CreateChannel();
+                InstanceContext context = new InstanceContext(new UiApiCallback());
+                This = new ServiceConnection.UiApiClient(context);
+                This.Subscribe();
             }
             catch (Exception e)
             {
                 LogMessage.Error(e);
             }
         }
-        readonly public static IServiceApi This = null;
-
-        public ServiceApi(InstanceContext context) : base(context)
-        {
-
-        }
-
-        //public void Subscribe()
-        //{
-        //    base.Channel.Subscribe();
-        //}
-
-        //public void Unsubscribe()
-        //{
-        //    base.Channel.Unsubscribe();
-        //}
-
-        //public CisteraScreenCaptureService.Settings.GeneralSettings GetSettings()
-        //{
-        //    return base.Channel.GetSettings();
-        //}
+        readonly public static ServiceConnection.UiApiClient This = null;
 
         static public void StartStop(bool start)
         {
@@ -124,7 +102,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             catch (Exception ex)
             {
-                Message.Error(ex);
+                LogMessage.Error(ex);
             }
             finally
             {
@@ -140,10 +118,10 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             catch (Exception e)
             {
-                Log.Main.Error(e);
+                LogMessage.Error(e);
             }
             return null;
         }
-        public const string SERVICE_NAME = "CisteraScreenCapture";
+        public const string SERVICE_NAME = "Cistera Screen Capture Service";
     }
 }

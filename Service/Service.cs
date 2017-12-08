@@ -43,33 +43,49 @@ namespace Cliver.CisteraScreenCaptureService
 
         protected override void OnStart(string[] args)
         {
-            Log.Main.Inform("Starting...");
-            ServiceApi.OpenApi();
-            ServiceApi.StatusChanged(ServiceControllerStatus.StartPending);
+            try
+            {
+                Log.Main.Inform("Starting...");
+                UiApi.OpenApi();
+                UiApi.StatusChanged(ServiceControllerStatus.StartPending);
 
-            //try
-            //{
-            //    uint dwSessionId = WinApi.Wts.WTSGetActiveConsoleSessionId();
-            //    MpegStream.Start(dwSessionId, "-f gdigrab -framerate 10 -f rtp_mpegts -srtp_out_suite AES_CM_128_HMAC_SHA1_80 -srtp_out_params aMg7BqN047lFN72szkezmPyN1qSMilYCXbqP/sCt srtp://127.0.0.1:5920");
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //}
+                //try
+                //{
+                //    uint dwSessionId = WinApi.Wts.WTSGetActiveConsoleSessionId();
+                //    MpegStream.Start(dwSessionId, "-f gdigrab -framerate 10 -f rtp_mpegts -srtp_out_suite AES_CM_128_HMAC_SHA1_80 -srtp_out_params aMg7BqN047lFN72szkezmPyN1qSMilYCXbqP/sCt srtp://127.0.0.1:5920");
+                //}
+                //catch (Exception e)
+                //{
+                //    Console.WriteLine(e);
+                //}
 
-            uint sessionId = WinApi.Wts.WTSGetActiveConsoleSessionId();
-            if (sessionId == 0 || sessionId == 0xFFFFFFFF)
-                Log.Main.Inform("No console user active.");
-            else
-                sessionChanged(sessionId, true);
+                uint sessionId = WinApi.Wts.WTSGetActiveConsoleSessionId();
+                if (sessionId == 0 || sessionId == 0xFFFFFFFF)
+                    Log.Main.Inform("No console user active.");
+                else
+                    sessionChanged(sessionId, true);
+            }
+            catch(Exception e)
+            {
+                Log.Main.Error(e);
+                throw e;
+            }
         }
 
         protected override void OnStop()
         {
-            Log.Main.Inform("Stopping...");
-            ServiceApi.StatusChanged(ServiceControllerStatus.StopPending);
-            stopServingUser();
-            //CisteraScreenCapture.ServerApi.CloseApi();
+            try
+            {
+                Log.Main.Inform("Stopping...");
+                UiApi.StatusChanged(ServiceControllerStatus.StopPending);
+                stopServingUser();
+                //CisteraScreenCapture.ServerApi.CloseApi();
+            }
+            catch (Exception e)
+            {
+                Log.Main.Error(e);
+                throw e;
+            }
         }
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
@@ -126,14 +142,14 @@ namespace Cliver.CisteraScreenCaptureService
                             currentServerIp = Settings.General.TcpClientDefaultIp;
                             string m = "Service '" + service + "' could not be resolved.\r\nUsing default ip: " + currentServerIp;
                             Log.Main.Warning(m);
-                            ServiceApi.Message(MessageType.WARNING, m);
+                            UiApi.Message(MessageType.WARNING, m);
                         }
                         else if (zhs.Where(x => x.IPAddress != null).FirstOrDefault() == null)
                         {
                             currentServerIp = Settings.General.TcpClientDefaultIp;
                             string m = "Resolution of service '" + service + "' has no IP defined.\r\nUsing default ip: " + currentServerIp;
                             Log.Main.Error(m);
-                            ServiceApi.Message(MessageType.ERROR, m);
+                            UiApi.Message(MessageType.ERROR, m);
                         }
                         else
                         {
@@ -162,7 +178,7 @@ namespace Cliver.CisteraScreenCaptureService
                     (Exception e) =>
                     {
                         Log.Main.Error(e);
-                        ServiceApi.Message(MessageType.ERROR, Log.GetExceptionMessage(e));
+                        UiApi.Message(MessageType.ERROR, Log.GetExceptionMessage(e));
                     },
                     () =>
                     {

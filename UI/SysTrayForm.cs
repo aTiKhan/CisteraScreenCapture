@@ -30,13 +30,11 @@ namespace Cliver.CisteraScreenCaptureUI
 
             Icon = AssemblyRoutines.GetAppIcon();
 
-            if (ServiceApi.This != null)
-                ServiceApi.This.Subscribe();
-            ServiceStateChanged(ServiceApi.GetStatus());
+            if (UiApiClient.This != null)
+                UiApiClient.This.Subscribe();
+            ServiceStateChanged(UiApiClient.GetStatus());
 
-
-            silentlyToolStripMenuItem.Checked = Settings.View.DisplayNotifications;
-            silentlyToolStripMenuItem_Click(null, null);
+            silentlyToolStripMenuItem.Checked = !Settings.View.DisplayNotifications;
         }
 
         public static readonly SysTray This = new SysTray();
@@ -125,11 +123,11 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             if (!isAllowed())
             {
-                StartStop.Checked = ServiceApi.GetStatus() == ServiceControllerStatus.Running;
+                StartStop.Checked = UiApiClient.GetStatus() == ServiceControllerStatus.Running;
                 return;
             }
-            ServiceApi.StartStop(StartStop.Checked);
-            StartStop.Checked = ServiceApi.GetStatus() == ServiceControllerStatus.Running;
+            UiApiClient.StartStop(StartStop.Checked);
+            StartStop.Checked = UiApiClient.GetStatus() == ServiceControllerStatus.Running;
         }
 
         private void stateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -179,6 +177,7 @@ namespace Cliver.CisteraScreenCaptureUI
         private void silentlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.View.DisplayNotifications = !silentlyToolStripMenuItem.Checked;
+            Settings.View.Save();
         }
     }
 }
