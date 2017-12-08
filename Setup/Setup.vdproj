@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:CisteraScreenCaptureServiceSetup"
+"ProjectName" = "8:CisteraScreenCaptureSetup"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -231,7 +231,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CisteraScreenCaptureServiceSetup.msi"
+        "OutputFilename" = "8:Debug\\CisteraScreenCaptureSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -263,7 +263,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\CisteraScreenCaptureServiceSetup.msi"
+        "OutputFilename" = "8:Release\\CisteraScreenCaptureSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -454,7 +454,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_313C235340A845198E9BCD2B87EF858A"
             {
-            "SourcePath" = "8:..\\externals\\ffmpeg.exe"
+            "SourcePath" = "8:..\\Service\\externals\\ffmpeg.exe"
             "TargetName" = "8:ffmpeg.exe"
             "Tag" = "8:"
             "Folder" = "8:_357CEF0E32EA49488DD230ABF3203DBD"
@@ -719,8 +719,8 @@
         }
         "Product"
         {
-        "Name" = "8:Cistera Screen Capture Service"
-        "ProductName" = "8:CisteraScreenCaptureService"
+        "Name" = "8:Cistera Screen Capture"
+        "ProductName" = "8:CisteraScreenCapture"
         "ProductCode" = "8:{02FA1AF6-F4EC-438E-86FC-DB0F619DAF88}"
         "PackageCode" = "8:{09574217-8559-470C-95AB-01B34F6CD940}"
         "UpgradeCode" = "8:{9BA72789-EC59-406C-862D-F24F8D0544FA}"
@@ -733,7 +733,7 @@
         "Manufacturer" = "8:Cistera"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:Cistera Screen Capture Service"
+        "Title" = "8:Cistera Screen Capture"
         "Subject" = "8:"
         "ARPCONTACT" = "8:CliverSoft"
         "Keywords" = "8:"
@@ -1257,7 +1257,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4F080796FE424CEF944A54495286E7AA"
             {
-            "SourcePath" = "8:..\\..\\UI\\obj\\Debug\\CisteraScreenCaptureUI.exe"
+            "SourcePath" = "8:..\\UI\\obj\\Debug\\CisteraScreenCaptureUI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_357CEF0E32EA49488DD230ABF3203DBD"
@@ -1285,7 +1285,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9B6F19E696964080995E71EA7989172C"
             {
-            "SourcePath" = "8:..\\obj\\Debug\\CisteraScreenCaptureService.exe"
+            "SourcePath" = "8:..\\Service\\obj\\Debug\\CisteraScreenCaptureService.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_357CEF0E32EA49488DD230ABF3203DBD"

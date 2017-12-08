@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CisteraScreenCaptureService", "Service\CisteraScreenCaptureService.csproj", "{EF4268D2-4794-4440-BC0C-43C6C9647974}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CisteraScreenCaptureServiceSetup", "Service\CisteraScreenCaptureServiceSetup\CisteraScreenCaptureServiceSetup.vdproj", "{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverRoutines", "..\..\CLIVER\CliverBot\CliverRoutines\CliverRoutines.csproj", "{ACA94788-BED1-4B8E-94EF-E54293E8D139}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CisteraScreenCaptureUI", "UI\CisteraScreenCaptureUI.csproj", "{99BD0A06-0D5E-4EC0-BFE2-B88BEEBB9568}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CisteraScreenCaptureSetup", "Setup\Setup.vdproj", "{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,13 +27,6 @@ Global
 		{EF4268D2-4794-4440-BC0C-43C6C9647974}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF4268D2-4794-4440-BC0C-43C6C9647974}.Release|x86.ActiveCfg = Release|Any CPU
 		{EF4268D2-4794-4440-BC0C-43C6C9647974}.Release|x86.Build.0 = Release|Any CPU
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Debug|Any CPU.ActiveCfg = Debug
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Debug|x86.ActiveCfg = Debug
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Debug|x86.Build.0 = Debug
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Release|Any CPU.ActiveCfg = Release
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Release|Any CPU.Build.0 = Release
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Release|x86.ActiveCfg = Release
-		{2B115CB2-4BC2-4AAB-93A9-D69DC3127614}.Release|x86.Build.0 = Release
 		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -50,6 +43,14 @@ Global
 		{99BD0A06-0D5E-4EC0-BFE2-B88BEEBB9568}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99BD0A06-0D5E-4EC0-BFE2-B88BEEBB9568}.Release|x86.ActiveCfg = Release|x86
 		{99BD0A06-0D5E-4EC0-BFE2-B88BEEBB9568}.Release|x86.Build.0 = Release|x86
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Debug|Any CPU.ActiveCfg = Debug
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Debug|Any CPU.Build.0 = Debug
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Debug|x86.ActiveCfg = Debug
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Debug|x86.Build.0 = Debug
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|Any CPU.ActiveCfg = Release
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|Any CPU.Build.0 = Release
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|x86.ActiveCfg = Release
+		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
