@@ -48,9 +48,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
             Message.TopMost = true;
 
-            Log.Initialize(Log.Mode.ONLY_LOG);
-            //Log.Initialize(Log.Mode.ONLY_LOG, Log.CliverSoftCommonDataDir);
-            //Config.Initialize(new string[] { "General" });
+            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir);
             Cliver.Config.Reload();
         }
 
