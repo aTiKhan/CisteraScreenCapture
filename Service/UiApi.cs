@@ -138,11 +138,22 @@ namespace Cliver.CisteraScreenCaptureService
                 lock (uiApiCallbacks)
                 {
                     Log.Write("Subscibed5: " + uiApiCallbacks.Count);
+                    List<IUiApiCallback> dead_uacs = new List<IUiApiCallback>();
                     foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
                     {
-                        Log.Write("Subscibed6: " + uiApiCallbacks.Count);
-                        uiApiCallback.ServiceStatusChanged(status);
+                        try
+                        {
+                            Log.Write("Subscibed6: " + uiApiCallbacks.Count);
+                            uiApiCallback.ServiceStatusChanged(status);
+                        }
+                        catch(Exception e)
+                        {
+                            Log.Main.Warning(e);
+                            dead_uacs.Add(uiApiCallback);
+                        }
                     }
+                    foreach (IUiApiCallback dead_uac in dead_uacs)
+                        uiApiCallbacks.Remove(dead_uac);
                 }
             });
         }
@@ -153,8 +164,21 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 lock (uiApiCallbacks)
                 {
+                    List<IUiApiCallback> dead_uacs = new List<IUiApiCallback>();
                     foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
-                        uiApiCallback.Message(messageType, message);
+                    { 
+                        try
+                        {
+                            uiApiCallback.Message(messageType, message);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Main.Warning(e);
+                            dead_uacs.Add(uiApiCallback);
+                        }
+                    }
+                    foreach (IUiApiCallback dead_uac in dead_uacs)
+                        uiApiCallbacks.Remove(dead_uac);
                 }
             });
         }
