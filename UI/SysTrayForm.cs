@@ -30,8 +30,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
             Icon = AssemblyRoutines.GetAppIcon();
 
-            if (UiApiClient.This != null)
-                UiApiClient.This.Subscribe();
+            UiApiClient.Subscribe();
             ServiceStateChanged(UiApiClient.GetStatus());
 
             silentlyToolStripMenuItem.Checked = !Settings.View.DisplayNotifications;

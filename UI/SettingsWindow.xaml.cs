@@ -64,8 +64,8 @@ namespace Cliver.CisteraScreenCaptureUI
 
             //WindowStartupLocation = WindowStartupLocation.CenterScreen;
             //DefaultServerIp.ValueDataType = typeof(IPAddress);
-
-            general = UiApiClient.This.GetSettings();
+            
+            general = UiApiClient.GetSettings(out __file);
             if (general == null)
             {
                 ok.IsEnabled = false;
@@ -74,8 +74,17 @@ namespace Cliver.CisteraScreenCaptureUI
                 return;
             }
             set();
+
+            if (!ProcessRoutines.ProcessHasElevatedPrivileges())
+            {
+                ok.IsEnabled = false;
+                reset.IsEnabled = false;
+                if (Message.YesNo("Settings modification requires elevated privileges. Would you like to restart this application 'As Administrator'?"))
+                    ProcessRoutines.Restart(true);
+            }
         }
         readonly Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general; 
+        readonly string __file;
 
         void set()
         {
@@ -178,11 +187,11 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 general.WriteMpegOutput2Log = WriteMpegOutput2Log.IsChecked ?? false;
 
-                general.Save();
+                general.Save(__file);
                 Config.Reload();
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetStatus();
-                if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped && Message.YesNo("The last changes have been saved. However, to engage them, the service must be restarted. All the present connections if any will be broken. Proceed with restarting?", null, Message.Icons.Exclamation))
+                if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped && Message.YesNo("The last changes have been saved and will be engaged when the service restarts. Would you like to restart the service (all the present connections if any, will be terminated)?", null, Message.Icons.Exclamation))
                 {
                     UiApiClient.StartStop(false);
                     UiApiClient.StartStop(true);

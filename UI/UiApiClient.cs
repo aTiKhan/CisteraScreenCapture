@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 /// 
 namespace Cliver.CisteraScreenCaptureUI
 {
-    [CallbackBehaviorAttribute(UseSynchronizationContext = false)]
+    [CallbackBehaviorAttribute(UseSynchronizationContext = true)]
     public class UiApiCallback : CisteraScreenCaptureService.IUiApiCallback
     {
         public void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status)
@@ -98,40 +98,113 @@ namespace Cliver.CisteraScreenCaptureUI
                 //        if (0 != WinApi.Advapi32.NotifyServiceStatusChange(hService, WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_START_PENDING | WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_RUNNING | WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_STOPPED, unmanagedNotifyStructure))
                 //            LogMessage.Error(ErrorRoutines.GetLastError());
                 //    }
-                //}
+                //}  
 
-
-
-
-                InstanceContext context = new InstanceContext(new UiApiCallback());
-                This = new CisteraScreenCaptureService.UiApiClient(context);
-                This.Subscribe();
+                instanceContext = new InstanceContext(new UiApiCallback());
+                _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
             }
             catch (Exception e)
             {
                 LogMessage.Error(e);
             }
         }
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void StatusChanged(IntPtr parameter);
-        public static void ReceivedStatusChangedEvent(IntPtr parameter)
+        //[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        //public delegate void StatusChanged(IntPtr parameter);
+        //public static void ReceivedStatusChangedEvent(IntPtr parameter)
+        //{
+        //    LogMessage.Write("status");
+        //}
+        //readonly public static StatusChanged changeDelegate = ReceivedStatusChangedEvent;
+        //public static WinApi.Advapi32.SERVICE_NOTIFY notify;
+        //public static GCHandle notifyHandle;
+        //public static IntPtr unmanagedNotifyStructure;
+        readonly static InstanceContext instanceContext;
+        static CisteraScreenCaptureService.UiApiClient _this;
+
+        static void poll_service_state(Exception e)
         {
-            LogMessage.Write("status");
+            Log.Main.Warning(e);
+
+            if (service_state_polling_t != null && service_state_polling_t.IsAlive)
+                return;
+            service_state_polling_t = ThreadRoutines.StartTry(
+                () =>
+                {
+                    while (_this.State != CommunicationState.Opened)
+                    {
+                        try
+                        {
+                            _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+                            _this?.IsAlive();
+                        }
+                        catch(Exception ex)
+                        {
+                            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                            Thread.Sleep(2000);
+                        }
+                    }
+                    SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                },
+                null,
+                null
+                );
         }
-        readonly public static StatusChanged changeDelegate = ReceivedStatusChangedEvent;
-        public static WinApi.Advapi32.SERVICE_NOTIFY notify;
-        public static GCHandle notifyHandle;
-        public static IntPtr unmanagedNotifyStructure;
+        static Thread service_state_polling_t = null;
 
+        static public void Subscribe()
+        {
+            try
+            {
+                _this?.Subscribe();
+            }
+            catch(Exception e)
+            {
+                poll_service_state(e);
+            }
+        }
 
+        static public void Unsubscribe()
+        {
+            try
+            {
+                _this?.Unsubscribe();
+            }
+            catch (Exception e)
+            {
+                poll_service_state(e);
+            }
+        }
 
-
-        readonly public static CisteraScreenCaptureService.UiApiClient This = null;
+        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings(out string __file)
+        {
+            __file = null;
+            try
+            {
+               return _this?.GetSettings(out __file);
+            }
+            catch (Exception e)
+            {
+                poll_service_state(e);
+            }
+            return null;
+        }
 
         static public void StartStop(bool start)
         {
             try
             {
+                //if(!WindowsUserRoutines.CurrentUserHasElevatedPrivileges())
+                //{
+                //    Message.Exclaim("This action requires elevated privileges. To proceed, restart this application 'As Administrator'");
+                //    return;
+                //}
+                if (!ProcessRoutines.ProcessHasElevatedPrivileges())
+                {
+                    if (Message.YesNo("This action requires elevated privileges. Would you like to restart this application 'As Administrator'?"))
+                        ProcessRoutines.Restart(true);
+                    return;
+                }
+
                 double timeoutSecs = 20;
                 ServiceController serviceController = new ServiceController(SERVICE_NAME);
                 if (start)
@@ -140,6 +213,8 @@ namespace Cliver.CisteraScreenCaptureUI
                     serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(timeoutSecs));
                     if (serviceController.Status != ServiceControllerStatus.Running)
                         Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                    else
+                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
                 }
                 else
                 {
@@ -147,6 +222,8 @@ namespace Cliver.CisteraScreenCaptureUI
                     serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
                     if (serviceController.Status != ServiceControllerStatus.Stopped)
                         Message.Error("Could not stop service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                    else
+                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
                 }
             }
             catch (Exception ex)

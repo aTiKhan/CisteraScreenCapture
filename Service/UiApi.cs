@@ -36,7 +36,10 @@ namespace Cliver.CisteraScreenCaptureService
         void Unsubscribe();
 
         [OperationContract()]
-        Settings.GeneralSettings GetSettings();
+        Settings.GeneralSettings GetSettings(out string __file);
+
+        [OperationContract()]
+        bool IsAlive();
     }
 
     public interface IUiApiCallback
@@ -57,26 +60,6 @@ namespace Cliver.CisteraScreenCaptureService
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerSession)]
     public class UiApi : IUiApi
     {
-        delegate void statusChangedHandler(System.ServiceProcess.ServiceControllerStatus status);
-        void statusChangedDelegate(System.ServiceProcess.ServiceControllerStatus status)
-        {
-            lock (uiApiCallbacks)
-            {
-                IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
-                uiApiCallback.ServiceStatusChanged(status);
-            }
-        }
-
-        delegate void messageHandler(MessageType messageType, string message);
-        void messageHandlerDelegate(MessageType messageType, string message)
-        {
-            lock (uiApiCallbacks)
-            {
-                IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
-                uiApiCallback.Message(messageType, message);
-            }
-        }
-
         public void Subscribe()
         {
             lock (uiApiCallbacks)
@@ -96,20 +79,19 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 uiApiCallbacks.Remove(uiApiCallback);
-                Log.Write("Subscibed2: " + uiApiCallbacks.Count);
+                Log.Write("Unsubscibed: " + uiApiCallbacks.Count);
             }
         }
 
-        //public string[] GetSettingsPaths()
-        //{
-        //    lock (serviceHost)
-        //    {
-        //        return new string[] { Settings.General.__File };
-        //    }
-        //}
-        public Settings.GeneralSettings GetSettings()
+        public Settings.GeneralSettings GetSettings(out string __file)
         {
+            __file = Settings.General.__File;
             return Settings.General;
+        }
+
+        public bool IsAlive()
+        {
+            return true;
         }
 
         UiApi()
@@ -149,7 +131,7 @@ namespace Cliver.CisteraScreenCaptureService
 
         internal static void StatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
-            Log.Write("Subscibed3: " + uiApiCallbacks.Count);
+            Log.Write("Subscibed3: " + uiApiCallbacks.Count + status);
             ThreadRoutines.StartTry(() =>
             {
                 Log.Write("Subscibed4: " + uiApiCallbacks.Count);

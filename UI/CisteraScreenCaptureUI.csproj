@@ -172,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cistera.ico" />
+    <None Include="Connected Services\CisteraScreenCaptureService\Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\CisteraScreenCaptureService\configuration91.svcinfo" />
     <None Include="Connected Services\CisteraScreenCaptureService\configuration.svcinfo" />
     <None Include="Connected Services\CisteraScreenCaptureService\Reference.svcmap">

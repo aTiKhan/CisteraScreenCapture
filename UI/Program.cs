@@ -42,7 +42,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 Exception e = (Exception)args.ExceptionObject;
                 Message.Error(e);
-                UiApiClient.This.Unsubscribe();
+                UiApiClient.Unsubscribe();
                 Application.Exit();
             };
 
@@ -92,7 +92,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             finally
             {
-                UiApiClient.This.Unsubscribe();
+                UiApiClient.Unsubscribe();
                 Environment.Exit(0);
             }
         }
