@@ -60,7 +60,7 @@ namespace Cliver.CisteraScreenCaptureService
         delegate void statusChangedHandler(System.ServiceProcess.ServiceControllerStatus status);
         void statusChangedDelegate(System.ServiceProcess.ServiceControllerStatus status)
         {
-            lock (lockObject)
+            lock (uiApiCallbacks)
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 uiApiCallback.ServiceStatusChanged(status);
@@ -70,7 +70,7 @@ namespace Cliver.CisteraScreenCaptureService
         delegate void messageHandler(MessageType messageType, string message);
         void messageHandlerDelegate(MessageType messageType, string message)
         {
-            lock (lockObject)
+            lock (uiApiCallbacks)
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 uiApiCallback.Message(messageType, message);
@@ -79,24 +79,24 @@ namespace Cliver.CisteraScreenCaptureService
 
         public void Subscribe()
         {
-            lock (lockObject)
+            lock (uiApiCallbacks)
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
-                if (serviceCallbacks.Contains(uiApiCallback))
+                if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
-                serviceCallbacks.Add(uiApiCallback);
+                uiApiCallbacks.Add(uiApiCallback);
             }
         }
-        static readonly HashSet<IUiApiCallback> serviceCallbacks = new HashSet<IUiApiCallback>();
+        static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
 
         public void Unsubscribe()
         {
-            lock (lockObject)
+            lock (uiApiCallbacks)
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
-                if (!serviceCallbacks.Contains(uiApiCallback))
+                if (!uiApiCallbacks.Contains(uiApiCallback))
                     return;
-                serviceCallbacks.Remove(uiApiCallback);
+                uiApiCallbacks.Remove(uiApiCallback);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Cliver.CisteraScreenCaptureService
         {
             if (serviceHost == null)
             {
-                lock (lockObject)
+                lock (uiApiCallbacks)
                 {
                     if (serviceHost != null)
                         return;
@@ -131,33 +131,27 @@ namespace Cliver.CisteraScreenCaptureService
             }
         }
         static ServiceHost serviceHost = null;
-        static readonly object lockObject = new object();
 
-        //static internal ServerApi This
-        //{
-        //    get
-        //    {
-        //        return _this;
-        //    }
-        //}
-        //static ServerApi _this = null;
-
-        //static internal void CloseApi()
-        //{
-        //    if (serviceHost != null)
-        //    {
-        //        serviceHost.Close();
-        //        serviceHost = null;
-        //    }
-        //}
+        static internal void CloseApi()
+        {
+            lock (uiApiCallbacks)
+            {
+                if (serviceHost != null)
+                {
+                    uiApiCallbacks.Clear();
+                    serviceHost.Close();
+                    serviceHost = null;
+                }
+            }
+        }
 
         internal static void StatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
             ThreadRoutines.StartTry(() =>
             {
-                lock (lockObject)
+                lock (uiApiCallbacks)
                 {
-                    foreach (IUiApiCallback uiApiCallback in serviceCallbacks)
+                    foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
                         uiApiCallback.ServiceStatusChanged(status);
                 }
             });
@@ -167,9 +161,9 @@ namespace Cliver.CisteraScreenCaptureService
         {
             ThreadRoutines.StartTry(() =>
             {
-                lock (lockObject)
+                lock (uiApiCallbacks)
                 {
-                    foreach (IUiApiCallback uiApiCallback in serviceCallbacks)
+                    foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
                         uiApiCallback.Message(messageType, message);
                 }
             });

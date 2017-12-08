@@ -77,8 +77,8 @@ namespace Cliver.CisteraScreenCaptureService
             try
             {
                 Log.Main.Inform("Stopping...");
-                UiApi.StatusChanged(ServiceControllerStatus.StopPending);
                 stopServingUser();
+                UiApi.StatusChanged(ServiceControllerStatus.StopPending);
                 //CisteraScreenCapture.ServerApi.CloseApi();
             }
             catch (Exception e)
