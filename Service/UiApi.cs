@@ -85,6 +85,7 @@ namespace Cliver.CisteraScreenCaptureService
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);
+                Log.Write("Subscibed: " + uiApiCallbacks.Count);
             }
         }
         static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
@@ -94,9 +95,8 @@ namespace Cliver.CisteraScreenCaptureService
             lock (uiApiCallbacks)
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
-                if (!uiApiCallbacks.Contains(uiApiCallback))
-                    return;
                 uiApiCallbacks.Remove(uiApiCallback);
+                Log.Write("Subscibed2: " + uiApiCallbacks.Count);
             }
         }
 

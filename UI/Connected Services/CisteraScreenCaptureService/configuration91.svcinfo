@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="7+X/U9HQqRns43aN3SGD6oGEfSE=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="9kF2DuADddciXDfP/UDUNNtt7BE=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="netNamedPipeBinding" name="ServerApi">
       <properties>
@@ -76,7 +76,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="ServerApi" contract="ServiceConnection.IUiApi" bindingType="netNamedPipeBinding" address="net.pipe://localhost/CisteraScreenCapture/UiApi/" bindingConfiguration="ServerApi">
+    <endpoint name="ServerApi" contract="CisteraScreenCaptureService.IUiApi" bindingType="netNamedPipeBinding" address="net.pipe://localhost/CisteraScreenCapture/UiApi/" bindingConfiguration="ServerApi">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>net.pipe://localhost/CisteraScreenCapture/UiApi/</serializedValue>
@@ -91,7 +91,7 @@
           <serializedValue>ServerApi</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>ServiceConnection.IUiApi</serializedValue>
+          <serializedValue>CisteraScreenCaptureService.IUiApi</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>

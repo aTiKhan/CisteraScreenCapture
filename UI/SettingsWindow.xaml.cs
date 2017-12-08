@@ -75,7 +75,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             set();
         }
-        readonly CisteraScreenCaptureService.Settings.GeneralSettings general; 
+        readonly Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general; 
 
         void set()
         {

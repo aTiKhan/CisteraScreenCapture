@@ -132,14 +132,14 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AboutForm.Designer.cs" />
-    <Compile Include="Connected Services\ServiceConnection\Reference.cs">
+    <Compile Include="Connected Services\CisteraScreenCaptureService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="InfoControl.xaml.cs" />
     <Compile Include="InfoWindow.xaml.cs" />
-    <Compile Include="ClientApi.cs" />
+    <Compile Include="UiApiClient.cs" />
     <Compile Include="Settings\View.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -172,28 +172,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cistera.ico" />
-    <None Include="Connected Services\ServiceConnection\configuration91.svcinfo" />
-    <None Include="Connected Services\ServiceConnection\configuration.svcinfo" />
-    <None Include="Connected Services\ServiceConnection\Reference.svcmap">
+    <None Include="Connected Services\CisteraScreenCaptureService\configuration91.svcinfo" />
+    <None Include="Connected Services\CisteraScreenCaptureService\configuration.svcinfo" />
+    <None Include="Connected Services\CisteraScreenCaptureService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Resources\3RINGS~1.ICO" />
-    <None Include="Connected Services\ServiceConnection\Cliver.CisteraScreenCaptureService.xsd">
+    <None Include="Connected Services\CisteraScreenCaptureService\Cliver.CisteraScreenCaptureService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceConnection\Cliver.xsd">
+    <None Include="Connected Services\CisteraScreenCaptureService\Cliver.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceConnection\service.wsdl" />
-    <None Include="Connected Services\ServiceConnection\service.xsd">
+    <None Include="Connected Services\CisteraScreenCaptureService\service.wsdl" />
+    <None Include="Connected Services\CisteraScreenCaptureService\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceConnection\service1.wsdl" />
-    <None Include="Connected Services\ServiceConnection\service1.xsd">
+    <None Include="Connected Services\CisteraScreenCaptureService\service1.wsdl" />
+    <None Include="Connected Services\CisteraScreenCaptureService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ServiceConnection\System.ServiceProcess.xsd">
+    <None Include="Connected Services\CisteraScreenCaptureService\System.ServiceProcess.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\DataSources\Cliver.CisteraScreenCaptureService.Settings.datasource" />
@@ -240,7 +240,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\ServiceConnection\" />
+    <WCFMetadataStorage Include="Connected Services\CisteraScreenCaptureService\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

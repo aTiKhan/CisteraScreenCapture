@@ -34,7 +34,7 @@ using Cliver.CisteraScreenCaptureService;
 namespace Cliver.CisteraScreenCaptureUI
 {
     [CallbackBehaviorAttribute(UseSynchronizationContext = false)]
-    public class UiApiCallback : ServiceConnection.IUiApiCallback
+    public class UiApiCallback : CisteraScreenCaptureService.IUiApiCallback
     {
         public void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
@@ -69,7 +69,7 @@ namespace Cliver.CisteraScreenCaptureUI
             try
             {
                 InstanceContext context = new InstanceContext(new UiApiCallback());
-                This = new ServiceConnection.UiApiClient(context);
+                This = new CisteraScreenCaptureService.UiApiClient(context);
                 This.Subscribe();
             }
             catch (Exception e)
@@ -77,7 +77,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 LogMessage.Error(e);
             }
         }
-        readonly public static ServiceConnection.UiApiClient This = null;
+        readonly public static CisteraScreenCaptureService.UiApiClient This = null;
 
         static public void StartStop(bool start)
         {

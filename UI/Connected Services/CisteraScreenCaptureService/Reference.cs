@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.CisteraScreenCaptureUI.ServiceConnection {
+namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="", ConfigurationName="ServiceConnection.IUiApi", CallbackContract=typeof(Cliver.CisteraScreenCaptureUI.ServiceConnection.IUiApiCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="", ConfigurationName="CisteraScreenCaptureService.IUiApi", CallbackContract=typeof(Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApiCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IUiApi {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="urn:IUiApi/Subscribe")]
@@ -45,12 +45,12 @@ namespace Cliver.CisteraScreenCaptureUI.ServiceConnection {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IUiApiChannel : Cliver.CisteraScreenCaptureUI.ServiceConnection.IUiApi, System.ServiceModel.IClientChannel {
+    public interface IUiApiChannel : Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApi, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UiApiClient : System.ServiceModel.DuplexClientBase<Cliver.CisteraScreenCaptureUI.ServiceConnection.IUiApi>, Cliver.CisteraScreenCaptureUI.ServiceConnection.IUiApi {
+    public partial class UiApiClient : System.ServiceModel.DuplexClientBase<Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApi>, Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApi {
         
         public UiApiClient(System.ServiceModel.InstanceContext callbackInstance) : 
                 base(callbackInstance) {
