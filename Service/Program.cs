@@ -48,7 +48,20 @@ namespace Cliver.CisteraScreenCaptureService
                     m += "not administrator";
                 Log.Main.Inform(m + ")");
 
+#if test
                 ServiceBase.Run(new Service());
+#else
+                UiApi.OpenApi();
+                UiApi.StatusChanged(ServiceControllerStatus.StartPending);
+                ServiceControllerStatus scs = ServiceControllerStatus.Running;
+                for (; ; )
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    UiApi.Message(MessageType.INFORM, "test");
+                    scs = scs == ServiceControllerStatus.Running ? ServiceControllerStatus.Stopped : ServiceControllerStatus.Running;
+                    UiApi.StatusChanged(scs);
+                }
+#endif
             }
             catch(Exception e)
             {
