@@ -48,7 +48,7 @@ namespace Cliver.CisteraScreenCaptureService
                     m += "not administrator";
                 Log.Main.Inform(m + ")");
 
-#if test
+#if !test
                 ServiceBase.Run(new Service());
 #else
                 UiApi.OpenApi();
@@ -56,7 +56,7 @@ namespace Cliver.CisteraScreenCaptureService
                 ServiceControllerStatus scs = ServiceControllerStatus.Running;
                 for (; ; )
                 {
-                    System.Threading.Thread.Sleep(1000);
+                    System.Threading.Thread.Sleep(10000);
                     UiApi.Message(MessageType.INFORM, "test");
                     scs = scs == ServiceControllerStatus.Running ? ServiceControllerStatus.Stopped : ServiceControllerStatus.Running;
                     UiApi.StatusChanged(scs);

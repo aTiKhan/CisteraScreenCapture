@@ -140,9 +140,10 @@ namespace Cliver.CisteraScreenCaptureUI
                         catch(Exception ex)
                         {
                             SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
-                            Thread.Sleep(2000);
+                            Thread.Sleep(5000);
                         }
                     }
+                    Subscribe();
                     SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
                 },
                 null,
@@ -206,24 +207,26 @@ namespace Cliver.CisteraScreenCaptureUI
                 }
 
                 double timeoutSecs = 20;
-                ServiceController serviceController = new ServiceController(SERVICE_NAME);
-                if (start)
+                using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
                 {
-                    serviceController.Start();
-                    serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(timeoutSecs));
-                    if (serviceController.Status != ServiceControllerStatus.Running)
-                        Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                    if (start)
+                    {
+                        serviceController.Start();
+                        serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(timeoutSecs));
+                        if (serviceController.Status != ServiceControllerStatus.Running)
+                            Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                        else
+                            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                    }
                     else
-                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
-                }
-                else
-                {
-                    serviceController.Stop();
-                    serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
-                    if (serviceController.Status != ServiceControllerStatus.Stopped)
-                        Message.Error("Could not stop service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
-                    else
-                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                    {
+                        serviceController.Stop();
+                        serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
+                        if (serviceController.Status != ServiceControllerStatus.Stopped)
+                            Message.Error("Could not stop service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                        else
+                            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                    }
                 }
             }
             catch (Exception ex)
@@ -239,8 +242,10 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             try
             {
-                ServiceController serviceController = new ServiceController(SERVICE_NAME);
-                return serviceController.Status;
+                using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                {
+                    return serviceController.Status;
+                }
             }
             catch (Exception e)
             {
