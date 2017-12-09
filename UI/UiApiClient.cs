@@ -39,26 +39,41 @@ namespace Cliver.CisteraScreenCaptureUI
     {
         public void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
-            SysTray.This.ServiceStateChanged(status);
+            try
+            {
+                SysTray.This.ServiceStateChanged(status);
+                UiApiClient.BegingTrying2Subscribe();
+            }
+            catch (Exception e)
+            {
+                Log.Main.Error(e);
+            }
         }
 
         public void Message(MessageType messageType, string message)
         {
-            if (!Settings.View.DisplayNotifications)
-                return;
-            switch (messageType)
+            try
             {
-                case MessageType.INFORM:
-                    InfoWindow.Create(message, null, "OK", null);
-                    break;
-                case MessageType.WARNING:
-                    InfoWindow.Create(message, null, "OK", null, Settings.View.ErrorSoundFile, System.Windows.Media.Brushes.WhiteSmoke, System.Windows.Media.Brushes.Yellow);
-                    break;
-                case MessageType.ERROR:
-                    InfoWindow.Create(message, null, "OK", null, Settings.View.ErrorSoundFile, System.Windows.Media.Brushes.WhiteSmoke, System.Windows.Media.Brushes.Red);
-                    break;
-                default:
-                    throw new Exception("Unknown option: " + messageType);
+                if (!Settings.View.DisplayNotifications)
+                    return;
+                switch (messageType)
+                {
+                    case MessageType.INFORM:
+                        InfoWindow.Create(message, null, "OK", null);
+                        break;
+                    case MessageType.WARNING:
+                        InfoWindow.Create(message, null, "OK", null, Settings.View.ErrorSoundFile, System.Windows.Media.Brushes.WhiteSmoke, System.Windows.Media.Brushes.Yellow);
+                        break;
+                    case MessageType.ERROR:
+                        InfoWindow.Create(message, null, "OK", null, Settings.View.ErrorSoundFile, System.Windows.Media.Brushes.WhiteSmoke, System.Windows.Media.Brushes.Red);
+                        break;
+                    default:
+                        throw new Exception("Unknown option: " + messageType);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Main.Error(e);
             }
         }
     }
@@ -121,137 +136,197 @@ namespace Cliver.CisteraScreenCaptureUI
         readonly static InstanceContext instanceContext;
         static CisteraScreenCaptureService.UiApiClient _this;
 
-        static void poll_service_state(Exception e)
+        static internal void BegingTrying2Subscribe()
         {
-            Log.Main.Warning(e);
+            lock (_this)
+            {
+                if (try2subscribe_t != null && try2subscribe_t.IsAlive)
+                    return;
 
-            if (service_state_polling_t != null && service_state_polling_t.IsAlive)
-                return;
-            service_state_polling_t = ThreadRoutines.StartTry(
-                () =>
+                try
                 {
-                    while (_this.State != CommunicationState.Opened)
+                    _this?.Unsubscribe();
+                }
+                catch { }
+
+                try2subscribe_t = ThreadRoutines.StartTry(
+                    () =>
                     {
+                        while (_this.State != CommunicationState.Opened)
+                        {
+                            try
+                            {
+                                _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+                                _this?.IsAlive();
+                            }
+                            catch (Exception ex)
+                            {
+                                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                                Thread.Sleep(5000);
+                            }
+                        }
                         try
                         {
-                            _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
-                            _this?.IsAlive();
+                            _this?.Subscribe();
                         }
-                        catch(Exception ex)
+                        catch (Exception e)
                         {
-                            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
-                            Thread.Sleep(5000);
+                            Log.Main.Warning(e);
+                            BegingTrying2Subscribe();
                         }
-                    }
-                    Subscribe();
-                    SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
-                },
-                null,
-                null
-                );
+                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                        //keepAliveConnection();//not used because of infinite timeout
+                    },
+                    null,
+                    null
+                    );
+            }
         }
-        static Thread service_state_polling_t = null;
+        static Thread try2subscribe_t = null;
 
-        static public void Subscribe()
-        {
-            try
-            {
-                _this?.Subscribe();
-            }
-            catch(Exception e)
-            {
-                poll_service_state(e);
-            }
-        }
+        //static internal void keepAliveConnection(bool keepAlive = true)
+        //{
+        //    if (!keepAlive)
+        //    {
+        //        if (keep_alive_t != null && keep_alive_t.IsAlive)
+        //        {
+        //            keep_alive = false;
+        //            keep_alive_t.Abort();
+        //        }
+        //        return;
+        //    }
+        //    try
+        //    {
+        //        _this?.IsAlive();
+        //        return;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+        //    }
+        //    keep_alive_t = ThreadRoutines.StartTry(
+        //        () =>
+        //        {
+        //            keep_alive = true;
+        //            while (keep_alive)
+        //            {
+        //                try
+        //                {
+        //                    _this?.IsAlive();
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+        //                    SubscribeWhenServiceStarted();
+        //                    return;
+        //                }
+        //                Thread.Sleep(100000);
+        //            }
+        //        },
+        //        null,
+        //        null
+        //        );
+        //}
+        //static Thread keep_alive_t = null;
+        //static bool keep_alive = false;
 
         static public void Unsubscribe()
         {
-            try
+            lock (_this)
             {
-                _this?.Unsubscribe();
-            }
-            catch (Exception e)
-            {
-                poll_service_state(e);
+                try
+                {
+                    _this?.Unsubscribe();
+                }
+                catch (Exception e)
+                {
+                    Log.Main.Warning(e);
+                }
             }
         }
 
         static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings(out string __file)
         {
-            __file = null;
-            try
+            lock (_this)
             {
-               return _this?.GetSettings(out __file);
-            }
-            catch (Exception e)
-            {
-                poll_service_state(e);
-            }
-            return null;
-        }
-
-        static public void StartStop(bool start)
-        {
-            try
-            {
-                //if(!WindowsUserRoutines.CurrentUserHasElevatedPrivileges())
-                //{
-                //    Message.Exclaim("This action requires elevated privileges. To proceed, restart this application 'As Administrator'");
-                //    return;
-                //}
-                if (!ProcessRoutines.ProcessHasElevatedPrivileges())
+                __file = null;
+                try
                 {
-                    if (Message.YesNo("This action requires elevated privileges. Would you like to restart this application 'As Administrator'?"))
-                        ProcessRoutines.Restart(true);
-                    return;
+                    return _this?.GetSettings(out __file);
                 }
-
-                double timeoutSecs = 20;
-                using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                catch (Exception e)
                 {
-                    if (start)
-                    {
-                        serviceController.Start();
-                        serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(timeoutSecs));
-                        if (serviceController.Status != ServiceControllerStatus.Running)
-                            Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
-                        else
-                            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
-                    }
-                    else
-                    {
-                        serviceController.Stop();
-                        serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
-                        if (serviceController.Status != ServiceControllerStatus.Stopped)
-                            Message.Error("Could not stop service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
-                        else
-                            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
-                    }
+                    Log.Main.Warning(e);
+                    BegingTrying2Subscribe();
                 }
-            }
-            catch (Exception ex)
-            {
-                LogMessage.Error(ex);
-            }
-            finally
-            {
+                return null;
             }
         }
 
-        static public ServiceControllerStatus? GetStatus()
+        static public void StartStopService(bool start)
         {
-            try
+            lock (_this)
             {
-                using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                try
                 {
-                    return serviceController.Status;
+                    //if(!WindowsUserRoutines.CurrentUserHasElevatedPrivileges())
+                    if (!ProcessRoutines.ProcessHasElevatedPrivileges())
+                    {
+                        if (Message.YesNo("This action requires elevated privileges. Would you like to restart this application 'As Administrator'?"))
+                            ProcessRoutines.Restart(true);
+                        return;
+                    }
+
+                    double timeoutSecs = 20;
+                    using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                    {
+                        if (start)
+                        {
+                            serviceController.Start();
+                            serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(timeoutSecs));
+                            if (serviceController.Status != ServiceControllerStatus.Running)
+                                Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                            else
+                                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                        }
+                        else
+                        {
+                            serviceController.Stop();
+                            serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
+                            if (serviceController.Status != ServiceControllerStatus.Stopped)
+                                Message.Error("Could not stop service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                            else
+                                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogMessage.Error(ex);
+                }
+                finally
+                {
                 }
             }
-            catch (Exception e)
+        }
+
+        static public ServiceControllerStatus? GetServiceStatus()
+        {
+            lock (_this)
             {
-                LogMessage.Error(e);
+                try
+                {
+                    using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                    {
+                        return serviceController.Status;
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogMessage.Error(e);
+                }
+                return null;
             }
-            return null;
         }
         public const string SERVICE_NAME = "Cistera Screen Capture Service";
     }

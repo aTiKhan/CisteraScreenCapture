@@ -57,7 +57,7 @@ namespace Cliver.CisteraScreenCaptureService
         ERROR,
     }
 
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerSession)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.Single)]
     public class UiApi : IUiApi
     {
         public void Subscribe()
@@ -68,7 +68,7 @@ namespace Cliver.CisteraScreenCaptureService
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);
-                Log.Write("Subscribed1: " + uiApiCallbacks.Count);
+                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
             }
         }
         static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
@@ -79,7 +79,7 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 uiApiCallbacks.Remove(uiApiCallback);
-                Log.Write("Subscribed2: " + uiApiCallbacks.Count);
+                Log.Main.Write("Subscribed2: " + uiApiCallbacks.Count);
             }
         }
 
@@ -108,6 +108,8 @@ namespace Cliver.CisteraScreenCaptureService
                         return;
                     Log.Main.Inform("Opening UI API.");
                     uiApiCallbacks.Clear();
+
+                    //NetNamedPipeBinding binding = new NetNamedPipeBinding(); binding.SendTimeout = TimeSpan.MaxValue; binding.ReceiveTimeout = TimeSpan.MaxValue;
                     serviceHost = new ServiceHost(typeof(UiApi));
                     serviceHost.Open();
                 }
