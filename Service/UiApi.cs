@@ -35,11 +35,8 @@ namespace Cliver.CisteraScreenCaptureService
         [OperationContract(IsOneWay = true)]
         void Unsubscribe();
 
-        [OperationContract()]
+        [OperationContract(IsInitiating = true)]
         Settings.GeneralSettings GetSettings(out string __file);
-
-        [OperationContract()]
-        bool IsAlive();
     }
 
     public interface IUiApiCallback
@@ -62,16 +59,21 @@ namespace Cliver.CisteraScreenCaptureService
     {
         public void Subscribe()
         {
+            subscribe();
+            Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
+        }
+        static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
+
+        static void subscribe()
+        {
             lock (uiApiCallbacks)
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);
-                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
             }
         }
-        static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
 
         public void Unsubscribe()
         {
@@ -85,13 +87,9 @@ namespace Cliver.CisteraScreenCaptureService
 
         public Settings.GeneralSettings GetSettings(out string __file)
         {
+            subscribe();
             __file = Settings.General.__File;
             return Settings.General.GetReloadedInstance<Settings.GeneralSettings>();
-        }
-
-        public bool IsAlive()
-        {
-            return true;
         }
 
         UiApi()
@@ -144,7 +142,7 @@ namespace Cliver.CisteraScreenCaptureService
                         {
                             uiApiCallback.ServiceStatusChanged(status);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             Log.Main.Warning(e);
                             dead_uacs.Add(uiApiCallback);
@@ -164,7 +162,7 @@ namespace Cliver.CisteraScreenCaptureService
                 {
                     List<IUiApiCallback> dead_uacs = new List<IUiApiCallback>();
                     foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
-                    { 
+                    {
                         try
                         {
                             uiApiCallback.Message(messageType, message);

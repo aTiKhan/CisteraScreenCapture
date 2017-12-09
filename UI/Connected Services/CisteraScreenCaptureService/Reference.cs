@@ -33,12 +33,6 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/GetSettings", ReplyAction="urn:IUiApi/GetSettingsResponse")]
         System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsResponse> GetSettingsAsync(Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/IsAlive", ReplyAction="urn:IUiApi/IsAliveResponse")]
-        bool IsAlive();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/IsAlive", ReplyAction="urn:IUiApi/IsAliveResponse")]
-        System.Threading.Tasks.Task<bool> IsAliveAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -138,14 +132,6 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
         
         public System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsResponse> GetSettingsAsync(Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsRequest request) {
             return base.Channel.GetSettingsAsync(request);
-        }
-        
-        public bool IsAlive() {
-            return base.Channel.IsAlive();
-        }
-        
-        public System.Threading.Tasks.Task<bool> IsAliveAsync() {
-            return base.Channel.IsAliveAsync();
         }
     }
 }

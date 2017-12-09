@@ -48,7 +48,7 @@ namespace Cliver.CisteraScreenCaptureService
                     m += "not administrator";
                 Log.Main.Inform(m + ")");
 
-#if test
+#if !test
                 ServiceBase.Run(new Service());
 #else
                 UiApi.OpenApi();
