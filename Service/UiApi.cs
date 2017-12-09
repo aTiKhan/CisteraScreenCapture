@@ -57,7 +57,7 @@ namespace Cliver.CisteraScreenCaptureService
         ERROR,
     }
 
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class UiApi : IUiApi
     {
         public void Subscribe()
@@ -86,7 +86,7 @@ namespace Cliver.CisteraScreenCaptureService
         public Settings.GeneralSettings GetSettings(out string __file)
         {
             __file = Settings.General.__File;
-            return Settings.General;
+            return Settings.General.GetReloadedInstance<Settings.GeneralSettings>();
         }
 
         public bool IsAlive()

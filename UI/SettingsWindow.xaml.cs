@@ -188,7 +188,6 @@ namespace Cliver.CisteraScreenCaptureUI
                 general.WriteMpegOutput2Log = WriteMpegOutput2Log.IsChecked ?? false;
 
                 general.Save(__file);
-                Config.Reload();
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped 

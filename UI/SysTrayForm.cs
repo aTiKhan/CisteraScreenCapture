@@ -34,7 +34,6 @@ namespace Cliver.CisteraScreenCaptureUI
 
                   ServiceStateChanged(UiApiClient.GetServiceStatus());
                   silentlyToolStripMenuItem.Checked = !Settings.View.DisplayNotifications;
-                  UiApiClient.BegingTrying2Subscribe();
               };
         }
 

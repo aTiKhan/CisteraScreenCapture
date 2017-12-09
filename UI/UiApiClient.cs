@@ -42,7 +42,7 @@ namespace Cliver.CisteraScreenCaptureUI
             try
             {
                 SysTray.This.ServiceStateChanged(status);
-                UiApiClient.BegingTrying2Subscribe();
+                UiApiClient.BeginWatchingService();
             }
             catch (Exception e)
             {
@@ -117,6 +117,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 instanceContext = new InstanceContext(new UiApiCallback());
                 _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+                BeginWatchingService();
             }
             catch (Exception e)
             {
@@ -136,53 +137,67 @@ namespace Cliver.CisteraScreenCaptureUI
         readonly static InstanceContext instanceContext;
         static CisteraScreenCaptureService.UiApiClient _this;
 
-        static internal void BegingTrying2Subscribe()
+        static internal void BeginWatchingService()
         {
             lock (_this)
             {
-                if (try2subscribe_t != null && try2subscribe_t.IsAlive)
+                if (watch_service_t != null && watch_service_t.IsAlive)
                     return;
-
-                try
-                {
-                    _this?.Unsubscribe();
-                }
-                catch { }
-
-                try2subscribe_t = ThreadRoutines.StartTry(
+                watch_service_t = ThreadRoutines.StartTry(
                     () =>
                     {
-                        while (_this.State != CommunicationState.Opened)
+                        for (; ; )
                         {
-                            try
-                            {
-                                _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
-                                _this?.IsAlive();
-                            }
-                            catch (Exception ex)
-                            {
-                                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
-                                Thread.Sleep(5000);
-                            }
+                            subscribe();
+                            keep_alive_connection();//it seems to be redundant because of infinite timeout, but sometimes the channel gets closed due to errors
                         }
-                        try
-                        {
-                            _this?.Subscribe();
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Main.Warning(e);
-                            BegingTrying2Subscribe();
-                        }
-                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
-                        //keepAliveConnection();//not used because of infinite timeout
                     },
-                    null,
+                    (Exception e) => 
+                    {
+                        LogMessage.Error(e);
+                    },
                     null
                     );
             }
         }
-        static Thread try2subscribe_t = null;
+        static Thread watch_service_t = null;
+        static void subscribe()
+        {
+            try
+            {
+                _this?.Unsubscribe();
+            }
+            catch { }
+            while (_this.State != CommunicationState.Opened)
+            {
+                try
+                {
+                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+                    _this?.Subscribe();
+                }
+                catch (Exception ex)
+                {
+                    SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                    Thread.Sleep(5000);
+                }
+            }
+            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+        }
+        static void keep_alive_connection()
+        {
+            while (_this.State == CommunicationState.Opened)
+            {
+                try
+                {
+                    _this.IsAlive();
+                    Thread.Sleep(100000);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+            SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+        }
 
         //static internal void keepAliveConnection(bool keepAlive = true)
         //{
@@ -257,7 +272,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 catch (Exception e)
                 {
                     Log.Main.Warning(e);
-                    BegingTrying2Subscribe();
+                    BeginWatchingService();
                 }
                 return null;
             }
