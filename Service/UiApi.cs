@@ -60,7 +60,6 @@ namespace Cliver.CisteraScreenCaptureService
         public void Subscribe()
         {
             subscribe();
-            Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
         }
         static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
 
@@ -72,6 +71,7 @@ namespace Cliver.CisteraScreenCaptureService
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);
+                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
             }
         }
 
