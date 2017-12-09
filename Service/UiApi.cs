@@ -68,7 +68,7 @@ namespace Cliver.CisteraScreenCaptureService
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);
-                Log.Write("Subscibed: " + uiApiCallbacks.Count);
+                Log.Write("Subscribed1: " + uiApiCallbacks.Count);
             }
         }
         static readonly HashSet<IUiApiCallback> uiApiCallbacks = new HashSet<IUiApiCallback>();
@@ -79,7 +79,7 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 uiApiCallbacks.Remove(uiApiCallback);
-                Log.Write("Unsubscibed: " + uiApiCallbacks.Count);
+                Log.Write("Subscribed2: " + uiApiCallbacks.Count);
             }
         }
 
@@ -131,19 +131,15 @@ namespace Cliver.CisteraScreenCaptureService
 
         internal static void StatusChanged(System.ServiceProcess.ServiceControllerStatus status)
         {
-            Log.Write("Subscibed3: " + uiApiCallbacks.Count + status);
             ThreadRoutines.StartTry(() =>
             {
-                Log.Write("Subscibed4: " + uiApiCallbacks.Count);
                 lock (uiApiCallbacks)
                 {
-                    Log.Write("Subscibed5: " + uiApiCallbacks.Count);
                     List<IUiApiCallback> dead_uacs = new List<IUiApiCallback>();
                     foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
                     {
                         try
                         {
-                            Log.Write("Subscibed6: " + uiApiCallbacks.Count);
                             uiApiCallback.ServiceStatusChanged(status);
                         }
                         catch(Exception e)
