@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CisteraScreenCapture")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Cistera Screen Capture Service")]
+[assembly: AssemblyDescription("CisteraScreenCaptureService, by Sergey Stoyan, CliverSoft.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cistera")]
-[assembly: AssemblyProduct("CisteraScreenCapture")]
+[assembly: AssemblyProduct("Cistera Screen Capture Service")]
 [assembly: AssemblyCopyright("Copyright © Cistera 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

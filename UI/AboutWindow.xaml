@@ -6,8 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cliver.CisteraScreenCaptureUI"
              mc:Ignorable="d" 
-        Title="Cistera Screen Capture" 
-        WindowStyle="SingleBorderWindow" 
+                WindowStyle="SingleBorderWindow" 
         ResizeMode="CanResize"  
         Background="#dee1ff" Topmost="False" ShowInTaskbar="True" SizeToContent="WidthAndHeight" 
         FontFamily="Microsoft Sans Serif"
@@ -15,7 +14,7 @@
             >
     <Window.Resources>
         <Style TargetType="{x:Type GroupBox}">
-            <Setter Property="Margin" Value="0,10,0,10"/>
+            <Setter Property="Margin" Value="0,20,0,10"/>
             <Setter Property="Padding" Value="10"/>
             <!--Setter Property="HeaderTemplate">
                 <Setter.Value>
@@ -24,17 +23,6 @@
                     </DataTemplate>
                 </Setter.Value>
             </-->
-        </Style>
-        <Style TargetType="{x:Type ComboBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="MinWidth" Value="30"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-        <Style TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="Padding" Value="5"/>
         </Style>
         <Style TargetType="{x:Type Label}">
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -45,27 +33,11 @@
             <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
             <Setter Property="VerticalAlignment" Value="{Binding VerticalAlignment, ElementName=Monitors}"/>
             <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
+            <Setter Property="Margin" Value="40,0,0,0"/>
             <Setter Property="MinWidth" Value="{Binding MinWidth, ElementName=Monitors}"/>
             <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="AcceptsReturn" Value="True"/>
-        </Style>
-        <Style TargetType="{x:Type CheckBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="0,10,0,-10"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
-        </Style>
-        <Style TargetType="{x:Type xctk:MaskedTextBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="{Binding VerticalAlignment, ElementName=Monitors}"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="MinWidth" Value="{Binding MinWidth, ElementName=Monitors}"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="10,0,0,0"/>
@@ -89,15 +61,14 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-        <GroupBox Header="About">
-                <StackPanel Orientation="Vertical">
-                    <Label>Product Description:</Label>
-                    <TextBox Name="ProductDescription" MinWidth="100" IsReadOnly="True"></TextBox>
-                    <Label>Developed:</Label>
-                    <TextBox Name="Developed" MinWidth="100" IsReadOnly="True"></TextBox>
-                    <Label>Copyright:</Label>
-                    <TextBox Name="Copyright" MinWidth="100" IsReadOnly="True"></TextBox>
-                </StackPanel>
+            <GroupBox Name="box" Header="About">
+                <RichTextBox Name="text" MinWidth="200" MaxWidth="300" Margin="10,10,10,10" IsReadOnly="True">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
             </GroupBox>
         </StackPanel>
         <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Rows="1" Margin="0, 20, 0, 0">
