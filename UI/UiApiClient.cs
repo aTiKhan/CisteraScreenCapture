@@ -182,7 +182,7 @@ namespace Cliver.CisteraScreenCaptureUI
                     else
                     {
                         SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
-                        Thread.Sleep(5000);
+                        Thread.Sleep(Settings.View.ServiceStartPollTimeInMss);
                     }
                     _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);                    
                 }
@@ -205,7 +205,7 @@ namespace Cliver.CisteraScreenCaptureUI
                         _this.Subscribe();
                         SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
                     }
-                    Thread.Sleep(100000);
+                    Thread.Sleep(Settings.View.ServiceConnectionKeepAlivePulseTimeInMss);
                 }
                 catch (Exception ex)
                 {

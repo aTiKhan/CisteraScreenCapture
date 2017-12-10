@@ -25,6 +25,8 @@ namespace Cliver.CisteraScreenCaptureUI
             public int InfoToastRight = 0;
             public int InfoToastMaxTextLength = 200;
             public bool DisplayNotifications = false;
+            public int ServiceStartPollTimeInMss = 5000;
+            public int ServiceConnectionKeepAlivePulseTimeInMss = 100000;
 
             //[Newtonsoft.Json.JsonIgnore]
             //public System.Text.Encoding Encoding = System.Text.Encoding.Unicode;
