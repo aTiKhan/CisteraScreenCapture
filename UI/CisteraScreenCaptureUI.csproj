@@ -140,8 +140,8 @@
     </Compile>
     <Compile Include="InfoControl.xaml.cs" />
     <Compile Include="InfoWindow.xaml.cs" />
-    <Compile Include="UiApiClient2.cs" />
     <Compile Include="UiApiClient.cs" />
+    <Compile Include="UiApiClient1.cs" />
     <Compile Include="Settings\View.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

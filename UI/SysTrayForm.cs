@@ -91,7 +91,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Message.YesNo("Exiting the UI while the service iteslf remains. Would you like to proceed?", null, Message.Icons.Exclamation))
+            if (!Message.YesNo("Exiting the UI while the service iteslf will remain. Proceed?", null, Message.Icons.Exclamation))
                 return;
             if (!isAllowed())
                 return;
