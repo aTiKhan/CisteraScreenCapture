@@ -118,7 +118,7 @@ namespace Cliver.CisteraScreenCaptureUI
             string d = UiApiClient.GetServiceLogDir();
             if (d == null)
             {
-                Message.Error("The service is unreachable.");
+                Message.Error("The service is unavailable.");
                 return;
             }
             Process.Start(d);

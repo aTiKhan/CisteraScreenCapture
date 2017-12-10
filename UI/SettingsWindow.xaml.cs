@@ -70,7 +70,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 ok.IsEnabled = false;
                 reset.IsEnabled = false;
-                Message.Error("The service is unreachable.");
+                Message.Error("The service is unavailable.");
                 return;
             }
             set();
