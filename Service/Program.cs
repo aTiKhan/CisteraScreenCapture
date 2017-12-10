@@ -12,8 +12,10 @@ using System.ServiceModel;
 
 namespace Cliver.CisteraScreenCaptureService
 {
-    static class Program
+    public static class Program
     {
+        public const string SERVICE_NAME = "Cistera Screen Capture Service";
+
         static Program()
         {
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)

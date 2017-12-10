@@ -89,7 +89,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 IntPtr hSCM = WinApi.Advapi32.OpenSCManager(null, null, WinApi.Advapi32.SCM_ACCESS.SC_MANAGER_CONNECT);//(WinApi.Advapi32.SCM_ACCESS)0xF003F);// 
                 if (hSCM == IntPtr.Zero)
                     throw new Exception("OpenSCManager: " + ErrorRoutines.GetLastError());
-                IntPtr hService = WinApi.Advapi32.OpenService(hSCM, SERVICE_NAME, WinApi.Advapi32.OpenServiceDesiredAccess.SERVICE_QUERY_STATUS);
+                IntPtr hService = WinApi.Advapi32.OpenService(hSCM, Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME, WinApi.Advapi32.OpenServiceDesiredAccess.SERVICE_QUERY_STATUS);
                 if (hService == IntPtr.Zero)
                     throw new Exception("OpenService: " + ErrorRoutines.GetLastError());
                 ThreadRoutines.StartTry(() =>
@@ -113,7 +113,7 @@ namespace Cliver.CisteraScreenCaptureUI
                         process.dwServiceFlags = 0;
                         notify.ServiceStatus = process;
                         notify.dwNotificationTriggered = 0;
-                        notify.pszServiceNames = Marshal.StringToHGlobalUni(SERVICE_NAME);
+                        notify.pszServiceNames = Marshal.StringToHGlobalUni(Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME);
                         notifyHandle = GCHandle.Alloc(notify, GCHandleType.Pinned);
                         unmanagedNotifyStructure = notifyHandle.AddrOfPinnedObject();
                         if (0 != WinApi.Advapi32.NotifyServiceStatusChange(hService, WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_RUNNING | WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_STOPPED, unmanagedNotifyStructure))
@@ -213,7 +213,7 @@ namespace Cliver.CisteraScreenCaptureUI
                                 return;
                             }
                         }
-                        while (_this.State == CommunicationState.Opened && Thread.CurrentThread == keepAliveServiceConnection_t);
+                        while (_this != null && _this.State == CommunicationState.Opened && Thread.CurrentThread == keepAliveServiceConnection_t);
                     },
                     (Exception e) =>
                     {
@@ -288,21 +288,21 @@ namespace Cliver.CisteraScreenCaptureUI
                     }
 
                     double timeoutSecs = 20;
-                    using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                    using (ServiceController serviceController = new ServiceController(Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME))
                     {
                         if (start)
                         {
                             serviceController.Start();
                             serviceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(timeoutSecs));
                             if (serviceController.Status != ServiceControllerStatus.Running)
-                                Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                                Message.Error("Could not start service '" + Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME + "' within " + timeoutSecs + " secs.");
                         }
                         else
                         {
                             serviceController.Stop();
                             serviceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
                             if (serviceController.Status != ServiceControllerStatus.Stopped)
-                                Message.Error("Could not stop service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
+                                Message.Error("Could not stop service '" + Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME + "' within " + timeoutSecs + " secs.");
                         }
                     }
                 }
@@ -322,7 +322,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 try
                 {
-                    using (ServiceController serviceController = new ServiceController(SERVICE_NAME))
+                    using (ServiceController serviceController = new ServiceController(Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME))
                     {
                         return serviceController.Status;
                     }
@@ -334,6 +334,5 @@ namespace Cliver.CisteraScreenCaptureUI
                 return null;
             }
         }
-        public const string SERVICE_NAME = "Cistera Screen Capture Service";
     }
 }
