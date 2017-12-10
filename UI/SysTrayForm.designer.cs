@@ -57,8 +57,8 @@
             this.RightClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
             this.StartStop,
-            this.workDirToolStripMenuItem,
             this.silentlyToolStripMenuItem,
+            this.workDirToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});

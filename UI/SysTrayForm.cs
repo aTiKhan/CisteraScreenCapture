@@ -43,7 +43,10 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             this.Invoke(() =>
             {
-                StartStop.Checked = status == ServiceControllerStatus.Running;
+                bool startStopChecked2 = status == ServiceControllerStatus.Running;
+                if (StartStop.Checked == startStopChecked2)
+                    return;
+                StartStop.Checked = startStopChecked2;
                 string title = "Cistera Screen Capture";
                 if (status == ServiceControllerStatus.Running)
                 {
@@ -111,7 +114,14 @@ namespace Cliver.CisteraScreenCaptureUI
 
         private void workDirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(Log.WorkDir);
+            //Process.Start(Log.WorkDir);
+            string d = UiApiClient.GetServiceLogDir();
+            if (d == null)
+            {
+                Message.Error("The service is unreachable.");
+                return;
+            }
+            Process.Start(d);
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)

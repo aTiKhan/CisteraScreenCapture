@@ -145,6 +145,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 watch_service_t = ThreadRoutines.StartTry(
                     () =>
                     {
+                        _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
                         for (; ; )
                         {
                             subscribe();
@@ -162,17 +163,26 @@ namespace Cliver.CisteraScreenCaptureUI
         static Thread watch_service_t = null;
         static void subscribe()
         {
+            bool contextUpdated = false;
             do
             {
                 try
                 {
-                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
-                    _this?.Subscribe();
+                    lock (instanceContext)
+                    {
+                        _this?.Subscribe();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
-                    Thread.Sleep(5000);
+                    if (!contextUpdated)
+                        contextUpdated = true;
+                    else
+                    {
+                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+                        Thread.Sleep(5000);
+                    }
+                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
                 }
             }
             while (_this.State != CommunicationState.Opened);
@@ -180,17 +190,22 @@ namespace Cliver.CisteraScreenCaptureUI
         }
         static void keep_alive_connection()
         {
-            while (_this.State == CommunicationState.Opened)
+            do
             {
                 try
                 {
-                    _this.Subscribe();
+                    lock (instanceContext)
+                    {
+                        _this.Subscribe();
+                        SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                    }
                     Thread.Sleep(100000);
                 }
                 catch (Exception ex)
                 {
                 }
             }
+            while (_this.State == CommunicationState.Opened);
             SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
         }
 
@@ -204,27 +219,46 @@ namespace Cliver.CisteraScreenCaptureUI
                 }
                 catch (Exception e)
                 {
-                    Log.Main.Warning(e);
+                    Log.Main.Warning2(e);
                 }
             }
         }
 
-        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings(out string __file)
+        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetServiceSettings(out string __file)
         {
-            lock (instanceContext)
+            __file = null;
+            try
             {
-                __file = null;
-                try
+                lock (instanceContext)
                 {
+                    subscribe();
                     return _this?.GetSettings(out __file);
                 }
-                catch (Exception e)
-                {
-                    Log.Main.Warning(e);
-                    BeginWatchingService();
-                }
-                return null;
             }
+            catch (Exception e)
+            {
+                Log.Main.Warning2(e);
+                BeginWatchingService();
+            }
+            return null;
+        }
+
+        static public string GetServiceLogDir()
+        {
+            try
+            {
+                lock (instanceContext)
+                {
+                    subscribe();
+                    return _this?.GetLogDir();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Main.Warning2(e);
+                BeginWatchingService();
+            }
+            return null;
         }
 
         static public void StartStopService(bool start)
@@ -251,7 +285,8 @@ namespace Cliver.CisteraScreenCaptureUI
                             if (serviceController.Status != ServiceControllerStatus.Running)
                                 Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
                             else
-                                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                                //SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+                                subscribe();
                         }
                         else
                         {

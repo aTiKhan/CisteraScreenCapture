@@ -21,6 +21,12 @@
   <wsdl:message name="IUiApi_GetSettings_OutputMessage">
     <wsdl:part name="parameters" element="GetSettingsResponse" />
   </wsdl:message>
+  <wsdl:message name="IUiApi_GetLogDir_InputMessage">
+    <wsdl:part name="parameters" element="GetLogDir" />
+  </wsdl:message>
+  <wsdl:message name="IUiApi_GetLogDir_OutputMessage">
+    <wsdl:part name="parameters" element="GetLogDirResponse" />
+  </wsdl:message>
   <wsdl:message name="IUiApi_ServiceStatusChanged_OutputCallbackMessage">
     <wsdl:part name="parameters" element="ServiceStatusChanged" />
   </wsdl:message>
@@ -37,6 +43,10 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetSettings">
       <wsdl:input wsaw:Action="urn:IUiApi/GetSettings" message="IUiApi_GetSettings_InputMessage" />
       <wsdl:output wsaw:Action="urn:IUiApi/GetSettingsResponse" message="IUiApi_GetSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetLogDir">
+      <wsdl:input wsaw:Action="urn:IUiApi/GetLogDir" message="IUiApi_GetLogDir_InputMessage" />
+      <wsdl:output wsaw:Action="urn:IUiApi/GetLogDirResponse" message="IUiApi_GetLogDir_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ServiceStatusChanged">
       <wsdl:output wsaw:Action="urn:IUiApi/ServiceStatusChanged" message="IUiApi_ServiceStatusChanged_OutputCallbackMessage" />

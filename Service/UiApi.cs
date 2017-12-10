@@ -37,6 +37,9 @@ namespace Cliver.CisteraScreenCaptureService
 
         [OperationContract(IsInitiating = true)]
         Settings.GeneralSettings GetSettings(out string __file);
+
+        [OperationContract(IsInitiating = true)]
+        string GetLogDir();
     }
 
     public interface IUiApiCallback
@@ -92,6 +95,11 @@ namespace Cliver.CisteraScreenCaptureService
             return Settings.General.GetReloadedInstance<Settings.GeneralSettings>();
         }
 
+        public string GetLogDir()
+        {
+            return Log.WorkDir;
+        }        
+
         UiApi()
         {
         }
@@ -144,7 +152,7 @@ namespace Cliver.CisteraScreenCaptureService
                         }
                         catch (Exception e)
                         {
-                            Log.Main.Warning(e);
+                            Log.Main.Warning2(e);
                             dead_uacs.Add(uiApiCallback);
                         }
                     }
@@ -169,7 +177,7 @@ namespace Cliver.CisteraScreenCaptureService
                         }
                         catch (Exception e)
                         {
-                            Log.Main.Warning(e);
+                            Log.Main.Warning2(e);
                             dead_uacs.Add(uiApiCallback);
                         }
                     }

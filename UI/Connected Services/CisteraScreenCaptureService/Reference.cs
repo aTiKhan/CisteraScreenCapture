@@ -33,6 +33,12 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/GetSettings", ReplyAction="urn:IUiApi/GetSettingsResponse")]
         System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsResponse> GetSettingsAsync(Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/GetLogDir", ReplyAction="urn:IUiApi/GetLogDirResponse")]
+        string GetLogDir();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/GetLogDir", ReplyAction="urn:IUiApi/GetLogDirResponse")]
+        System.Threading.Tasks.Task<string> GetLogDirAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -132,6 +138,14 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
         
         public System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsResponse> GetSettingsAsync(Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsRequest request) {
             return base.Channel.GetSettingsAsync(request);
+        }
+        
+        public string GetLogDir() {
+            return base.Channel.GetLogDir();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetLogDirAsync() {
+            return base.Channel.GetLogDirAsync();
         }
     }
 }
