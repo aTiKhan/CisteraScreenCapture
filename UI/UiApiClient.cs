@@ -86,10 +86,10 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             try
             {
-                IntPtr hSCM = WinApi.Advapi32.OpenSCManager(null, null, WinApi.Advapi32.SCM_ACCESS.SC_MANAGER_ALL_ACCESS);
+                IntPtr hSCM = WinApi.Advapi32.OpenSCManager(null, null, WinApi.Advapi32.SCM_ACCESS.SC_MANAGER_CONNECT);//(WinApi.Advapi32.SCM_ACCESS)0xF003F);// 
                 if (hSCM == IntPtr.Zero)
                     throw new Exception("OpenSCManager: " + ErrorRoutines.GetLastError());
-                IntPtr hService = WinApi.Advapi32.OpenService(hSCM, SERVICE_NAME, (WinApi.Advapi32.SCM_ACCESS)0xF003F);// WinApi.Advapi32.SCM_ACCESS.SC_MANAGER_ALL_ACCESS);
+                IntPtr hService = WinApi.Advapi32.OpenService(hSCM, SERVICE_NAME, WinApi.Advapi32.OpenServiceDesiredAccess.SERVICE_QUERY_STATUS);
                 if (hService == IntPtr.Zero)
                     throw new Exception("OpenService: " + ErrorRoutines.GetLastError());
                 ThreadRoutines.StartTry(() =>
@@ -163,6 +163,7 @@ namespace Cliver.CisteraScreenCaptureUI
                             }
                             _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
                             _this.Subscribe();
+                            beginKeepAliveServiceConnection();//it seems to be redundant because of infinite timeout, but sometimes the channel gets closed due to errors
                         }
                         break;
                     default:
