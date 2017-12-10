@@ -132,6 +132,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AboutForm.Designer.cs" />
+    <Compile Include="AboutWindow.xaml.cs" />
     <Compile Include="Connected Services\CisteraScreenCaptureService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -221,6 +222,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="InfoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

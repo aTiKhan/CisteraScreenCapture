@@ -140,8 +140,10 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             lock (instanceContext)
             {
+                //if (watch_service_t != null && watch_service_t.IsAlive)
+                //    return;
                 if (watch_service_t != null && watch_service_t.IsAlive)
-                    return;
+                    watch_service_t.Abort();
                 watch_service_t = ThreadRoutines.StartTry(
                     () =>
                     {
@@ -182,14 +184,18 @@ namespace Cliver.CisteraScreenCaptureUI
                         SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
                         Thread.Sleep(5000);
                     }
-                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);                    
                 }
+                if (Thread.CurrentThread != watch_service_t)
+                    return;
             }
             while (_this.State != CommunicationState.Opened);
             SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
         }
         static void keep_alive_connection()
         {
+            if (Thread.CurrentThread != watch_service_t)
+                return;
             do
             {
                 try
@@ -204,6 +210,8 @@ namespace Cliver.CisteraScreenCaptureUI
                 catch (Exception ex)
                 {
                 }
+                if (Thread.CurrentThread != watch_service_t)
+                    return;
             }
             while (_this.State == CommunicationState.Opened);
             SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
@@ -231,7 +239,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 lock (instanceContext)
                 {
-                    subscribe();
+                    _this?.Subscribe();
                     return _this?.GetSettings(out __file);
                 }
             }
@@ -249,7 +257,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 lock (instanceContext)
                 {
-                    subscribe();
+                    _this?.Subscribe();
                     return _this?.GetLogDir();
                 }
             }
