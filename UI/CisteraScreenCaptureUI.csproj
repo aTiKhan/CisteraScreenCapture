@@ -128,10 +128,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutForm.Designer.cs" />
     <Compile Include="AboutWindow.xaml.cs" />
     <Compile Include="Connected Services\CisteraScreenCaptureService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -214,9 +210,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AboutForm.resx">
-      <DependentUpon>AboutForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SysTrayForm.resx">
       <DependentUpon>SysTrayForm.cs</DependentUpon>
       <SubType>Designer</SubType>

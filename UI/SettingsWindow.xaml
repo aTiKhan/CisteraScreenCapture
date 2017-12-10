@@ -9,7 +9,7 @@
         Title="Cistera Screen Capture Settings" 
         WindowStyle="SingleBorderWindow" 
         ResizeMode="CanResize"  
-        Background="#dee1ff" Topmost="False" ShowInTaskbar="True" SizeToContent="WidthAndHeight" 
+        Background="#e6e0e0" Topmost="False" ShowInTaskbar="True" SizeToContent="WidthAndHeight" 
         FontFamily="Microsoft Sans Serif"
         FontSize="10pt" 
             >
