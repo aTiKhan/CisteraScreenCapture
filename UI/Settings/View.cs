@@ -24,7 +24,7 @@ namespace Cliver.CisteraScreenCaptureUI
             public int InfoToastBottom = 100;
             public int InfoToastRight = 0;
             public int InfoToastMaxTextLength = 200;
-            public bool DisplayNotifications = true;
+            public bool DisplayNotifications = false;
 
             //[Newtonsoft.Json.JsonIgnore]
             //public System.Text.Encoding Encoding = System.Text.Encoding.Unicode;

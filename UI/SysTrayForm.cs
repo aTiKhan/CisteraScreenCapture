@@ -32,23 +32,20 @@ namespace Cliver.CisteraScreenCaptureUI
               {
                   Icon = AssemblyRoutines.GetAppIcon();
                   
-                  ServiceStateChanged(UiApiClient.GetServiceStatus(), true);
+                  ServiceStateChanged(UiApiClient.GetServiceStatus());
                   silentlyToolStripMenuItem.Checked = !Settings.View.DisplayNotifications;
               };
         }
 
         public static readonly SysTray This = new SysTray();
 
-        public void ServiceStateChanged(ServiceControllerStatus? status, bool force = false)
+        public void ServiceStateChanged(ServiceControllerStatus? status)
         {
             this.Invoke(() =>
             {
-                bool startStopChecked2 = status == ServiceControllerStatus.Running;
-                if (!force && StartStop.Checked == startStopChecked2)
-                    return;
-                StartStop.Checked = startStopChecked2;
+                StartStop.Checked = status == ServiceControllerStatus.Running;
                 string title = "Cistera Screen Capture";
-                if (status == ServiceControllerStatus.Running)
+                if (StartStop.Checked)
                 {
                     notifyIcon.Icon = Icon;
                     title += " started";
@@ -94,6 +91,8 @@ namespace Cliver.CisteraScreenCaptureUI
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!Message.YesNo("Exiting the UI while the service iteslf remains. Would you like to proceed?", null, Message.Icons.Exclamation))
+                return;
             if (!isAllowed())
                 return;
             //Program.Exit();

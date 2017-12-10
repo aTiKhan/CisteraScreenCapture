@@ -217,6 +217,23 @@ namespace Cliver.CisteraScreenCaptureUI
             SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
         }
 
+        static void trySubscribeNewInstance()
+        {
+            try
+            {
+                lock (instanceContext)
+                {
+                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+                    _this?.Subscribe();
+                }
+                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
+            }
+            catch (Exception ex)
+            {
+                SysTray.This.ServiceStateChanged(ServiceControllerStatus.Stopped);
+            }
+        }
+
         static public void Unsubscribe()
         {
             lock (instanceContext)
@@ -239,7 +256,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 lock (instanceContext)
                 {
-                    _this?.Subscribe();
+                    trySubscribeNewInstance();
                     return _this?.GetSettings(out __file);
                 }
             }
@@ -257,7 +274,7 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 lock (instanceContext)
                 {
-                    _this?.Subscribe();
+                    trySubscribeNewInstance();
                     return _this?.GetLogDir();
                 }
             }
@@ -294,7 +311,7 @@ namespace Cliver.CisteraScreenCaptureUI
                                 Message.Error("Could not start service '" + SERVICE_NAME + "' within " + timeoutSecs + " secs.");
                             else
                                 //SysTray.This.ServiceStateChanged(ServiceControllerStatus.Running);
-                                subscribe();
+                                trySubscribeNewInstance();
                         }
                         else
                         {
