@@ -27,6 +27,9 @@ using System.ServiceProcess;
 /// <summary>
 /// TBD:
 /// - add display area;
+/// - logs1,2
+/// - run from installer
+/// - stop service when uninstalling
 /// </summary>
 /// 
 namespace Cliver.CisteraScreenCaptureUI
