@@ -30,6 +30,20 @@ namespace Cliver.CisteraScreenCaptureUI
                     Message.Error(ex);
                 }
             };
+
+            this.BeforeUninstall += delegate
+            {
+                try
+                {
+                    foreach (Process p in Process.GetProcessesByName(PathRoutines.GetFileNameFromPath(Assembly.GetExecutingAssembly().Location)))
+                        p.Kill();                    
+                }
+                catch (Exception e)
+                {
+                    Message.Error(e);
+                    //throw e;//to stop uninstalling(?)
+                }
+            };
         }
     }
 }
