@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Cliver.CisteraScreenCaptureUI
 {
@@ -21,8 +22,8 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 try
                 {
-                    //Process.Start(PathRoutines.GetDirFromPath(Assembly.GetExecutingAssembly().Location) + "\\InstallSample.exe");
-                    Process.Start(Assembly.GetExecutingAssembly().Location);
+                    //Process.Start(Assembly.GetExecutingAssembly().Location);
+                    ProcessRoutines.LaunchProcessAsCurrentUser(Assembly.GetExecutingAssembly().Location);//starts the process as the current user while the installer runs as SYSTEM
                 }
                 catch (Exception ex)
                 {

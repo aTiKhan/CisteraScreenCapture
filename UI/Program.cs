@@ -69,11 +69,11 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
                 string user = ProcessRoutines.GetProcessUserName();
-                string m = "User: " + user + " (";
+                string m = "User: " + user;
                 if (ProcessRoutines.ProcessHasElevatedPrivileges())
-                    m += "as administrator";
-                Log.Main.Inform(m + ")");
-
+                    m += " (as administrator)";
+                Log.Main.Inform(m);
+                
                 ProcessRoutines.RunSingleProcessOnly();
                 
                 Application.Run(SysTray.This);

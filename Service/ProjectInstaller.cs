@@ -34,12 +34,19 @@ namespace Cliver.CisteraScreenCaptureService
                 try
                 {
                     ServiceController sc = new ServiceController(Program.SERVICE_NAME);
-                    if(sc.Status != ServiceControllerStatus.Stopped)
+                    if (sc.Status != ServiceControllerStatus.Stopped)
+                    {
                         sc.Stop();
+                        double timeoutSecs = 20;
+                        sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(timeoutSecs));
+                        if (sc.Status != ServiceControllerStatus.Stopped)
+                            throw new Exception("Could not stop service '" + Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME + "'. To unistall it, stop it manually.");
+                    }
                 }
                 catch (Exception e)
                 {
                     Message.Error(e);
+                    throw e;//to stop uninstalling(?)
                 }
             };
         }
