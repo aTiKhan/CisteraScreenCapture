@@ -177,7 +177,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="5" Grid.Column="0">Video Source:</Label>
                 <ComboBox Grid.Row="5" Grid.Column="1" Name="Monitors"></ComboBox>
-                <Label Grid.Row="6" Grid.Column="0"  >Show proceess window:</Label>
+                <Label Grid.Row="6" Grid.Column="0"  >Show process window:</Label>
                 <CheckBox Grid.Row="6" Grid.Column="1" Name="ShowMpegWindow" />
                 <Label Grid.Row="7" Grid.Column="0"  >Write output to log:</Label>
                 <CheckBox Grid.Row="7" Grid.Column="1" Name="WriteMpegOutput2Log" />

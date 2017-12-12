@@ -35,8 +35,8 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 try
                 {
-                    foreach (Process p in Process.GetProcessesByName(PathRoutines.GetFileNameFromPath(Assembly.GetExecutingAssembly().Location)))
-                        p.Kill();                    
+                    foreach (Process p in Process.GetProcessesByName(PathRoutines.GetFileNameWithoutExtentionFromPath(Assembly.GetExecutingAssembly().Location)))
+                        ProcessRoutines.KillProcessTree(p.Id);
                 }
                 catch (Exception e)
                 {
