@@ -1,3 +1,9 @@
+//********************************************************************************************
+//Author: Sergey Stoyan, CliverSoft.com
+//        http://cliversoft.com
+//        stoyan@cliversoft.com
+//        sergey.stoyan@gmail.com
+//********************************************************************************************
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
