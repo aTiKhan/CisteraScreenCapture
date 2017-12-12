@@ -17,6 +17,7 @@
         <Style TargetType="{x:Type GroupBox}">
             <Setter Property="Margin" Value="0,10,0,10"/>
             <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#268"/>
             <!--Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -102,7 +103,7 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-        <GroupBox Header="TCP Communication">
+            <GroupBox Header="TCP Communication">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Cistera Screen Capture Service")]
-[assembly: AssemblyDescription("CisteraScreenCaptureService, by Sergey Stoyan, CliverSoft.com")]
+[assembly: AssemblyDescription("Streams desktop to Cistera server. By Sergey Stoyan, CliverSoft.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Cistera")]
 [assembly: AssemblyProduct("Cistera Screen Capture Service")]

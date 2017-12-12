@@ -27,9 +27,7 @@ using System.ServiceProcess;
 /// <summary>
 /// TBD:
 /// - add display area;
-/// - logs1,2
 /// - run from installer
-/// - stop service when uninstalling
 /// </summary>
 /// 
 namespace Cliver.CisteraScreenCaptureUI
@@ -70,17 +68,10 @@ namespace Cliver.CisteraScreenCaptureUI
             try
             {
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
-                string m = "User: " + WindowsUserRoutines.GetCurrentUserName3() + "(";
-                if (WindowsUserRoutines.CurrentUserIsAdministrator())
-                {
-                    m += "administrator";
-                    if(WindowsUserRoutines.CurrentUserHasElevatedPrivileges())
-                        m +=", elevated privileges";
-                    else
-                        m +=", not elevated privileges";
-                }
-                else
-                    m += "not administrator";
+                string user = ProcessRoutines.GetProcessUserName();
+                string m = "User: " + user + " (";
+                if (ProcessRoutines.ProcessHasElevatedPrivileges())
+                    m += "as administrator";
                 Log.Main.Inform(m + ")");
 
                 ProcessRoutines.RunSingleProcessOnly();

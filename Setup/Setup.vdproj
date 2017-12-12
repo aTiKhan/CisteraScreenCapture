@@ -493,6 +493,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_29642708A2DF4DCF9D3361A3C19328BE"
+            {
+            "Name" = "8:Primary output from CisteraScreenCaptureUI (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_4F080796FE424CEF944A54495286E7AA"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_5EC28F66_B60E_42F2_8569_92635AFD8E1E"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_41EAB55951434AEF95C56FA2B7B07036"
             {
             "Name" = "8:Primary output from CisteraScreenCaptureService (Active)"
@@ -521,6 +535,20 @@
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_6F96FE8EF63E493995296B5FD6B99732"
+            {
+            "Name" = "8:Primary output from CisteraScreenCaptureUI (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_4F080796FE424CEF944A54495286E7AA"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_EDF44AC2_F25F_430C_9DD0_52B53ADF24F3"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_815946E1F05E4B4693D132A7F47E23F3"
             {
             "Name" = "8:Primary output from CisteraScreenCaptureService (Active)"
@@ -535,6 +563,20 @@
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_A0CA1B15044648449FC1DD41DF6FE24B"
+            {
+            "Name" = "8:Primary output from CisteraScreenCaptureUI (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_4F080796FE424CEF944A54495286E7AA"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_2935B8D0_065C_416D_8635_3CDCE2BEED0F"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_D18747FB41DD4743B5B0BBE84CAB08B4"
             {
             "Name" = "8:Primary output from CisteraScreenCaptureService (Active)"
@@ -546,6 +588,20 @@
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
             "Identifier" = "8:_6FF93220_B874_4F49_B8E7_3AE1DEA66101"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E45C59C510A447F7B26F60BFF4EEA9D0"
+            {
+            "Name" = "8:Primary output from CisteraScreenCaptureUI (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_4F080796FE424CEF944A54495286E7AA"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_2B0430C6_2D43_4F57_B88B_9D29C3EC3C4A"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -1258,7 +1314,7 @@
         "Name" = "8:Cistera Screen Capture"
         "ProductName" = "8:CisteraScreenCapture"
         "ProductCode" = "8:{02FA1AF6-F4EC-438E-86FC-DB0F619DAF88}"
-        "PackageCode" = "8:{74997A84-CBED-4EA0-940F-D3A10D7264D7}"
+        "PackageCode" = "8:{EDAC8D7C-CEC6-4051-B969-CDE1B4A4970D}"
         "UpgradeCode" = "8:{9BA72789-EC59-406C-862D-F24F8D0544FA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

@@ -34,11 +34,13 @@
             this.RightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StartStop = new System.Windows.Forms.ToolStripMenuItem();
-            this.workDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.silentlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RightClickMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,13 +84,6 @@
             this.StartStop.CheckedChanged += new System.EventHandler(this.StartStop_CheckedChanged);
             this.StartStop.Click += new System.EventHandler(this.StartStop_Click);
             // 
-            // workDirToolStripMenuItem
-            // 
-            this.workDirToolStripMenuItem.Name = "workDirToolStripMenuItem";
-            this.workDirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.workDirToolStripMenuItem.Text = "Logs";
-            this.workDirToolStripMenuItem.Click += new System.EventHandler(this.workDirToolStripMenuItem_Click);
-            // 
             // silentlyToolStripMenuItem
             // 
             this.silentlyToolStripMenuItem.CheckOnClick = true;
@@ -96,6 +91,15 @@
             this.silentlyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.silentlyToolStripMenuItem.Text = "Silently";
             this.silentlyToolStripMenuItem.Click += new System.EventHandler(this.silentlyToolStripMenuItem_Click);
+            // 
+            // workDirToolStripMenuItem
+            // 
+            this.workDirToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.serviceToolStripMenuItem,
+            this.uIToolStripMenuItem});
+            this.workDirToolStripMenuItem.Name = "workDirToolStripMenuItem";
+            this.workDirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.workDirToolStripMenuItem.Text = "Logs";
             // 
             // aboutToolStripMenuItem
             // 
@@ -115,6 +119,20 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // serviceToolStripMenuItem
+            // 
+            this.serviceToolStripMenuItem.Name = "serviceToolStripMenuItem";
+            this.serviceToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.serviceToolStripMenuItem.Text = "Service";
+            this.serviceToolStripMenuItem.Click += new System.EventHandler(this.serviceToolStripMenuItem_Click);
+            // 
+            // uIToolStripMenuItem
+            // 
+            this.uIToolStripMenuItem.Name = "uIToolStripMenuItem";
+            this.uIToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.uIToolStripMenuItem.Text = "UI";
+            this.uIToolStripMenuItem.Click += new System.EventHandler(this.uIToolStripMenuItem_Click);
             // 
             // SysTray
             // 
@@ -144,5 +162,7 @@
         private System.Windows.Forms.ToolStripMenuItem StartStop;
         private System.Windows.Forms.ToolStripMenuItem workDirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem silentlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem serviceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uIToolStripMenuItem;
     }
 }

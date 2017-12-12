@@ -87,6 +87,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
@@ -136,6 +137,12 @@
     </Compile>
     <Compile Include="InfoControl.xaml.cs" />
     <Compile Include="InfoWindow.xaml.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="UiApiClient.cs" />
     <Compile Include="UiApiClient1.cs" />
     <Compile Include="Settings\View.cs" />

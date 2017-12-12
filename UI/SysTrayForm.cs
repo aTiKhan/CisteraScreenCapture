@@ -65,9 +65,19 @@ namespace Cliver.CisteraScreenCaptureUI
 
         bool isAllowed()
         {
-            if (WindowsUserRoutines.CurrentUserIsAdministrator())
-                return true;
-            Message.Exclaim("This action is permitted for Administrators only.");
+            try
+            {
+                if (WindowsUserRoutines.CurrentUserIsAdministrator())
+                    return true;
+                throw new System.Security.SecurityException();
+            }
+            catch (Exception e)
+            {
+                if (e is System.Security.SecurityException)
+                    Message.Exclaim("This action is permitted for Administrators only.");
+                else
+                    LogMessage.Error(e);
+            }
             return false;
         }
 
@@ -110,18 +120,6 @@ namespace Cliver.CisteraScreenCaptureUI
 
         private void StartStop_CheckedChanged(object sender, EventArgs e)
         {
-        }
-
-        private void workDirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Process.Start(Log.WorkDir);
-            string d = UiApiClient.GetServiceLogDir();
-            if (d == null)
-            {
-                Message.Error("The service is unavailable.");
-                return;
-            }
-            Process.Start(d);
         }
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -188,6 +186,34 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             Settings.View.DisplayNotifications = !silentlyToolStripMenuItem.Checked;
             Settings.View.Save();
+        }
+
+        private void serviceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string d = UiApiClient.GetServiceLogDir();
+                if (d == null)
+                    Message.Error("The service is unavailable.");
+                else
+                    Process.Start(d);
+            }
+            catch (Exception ex)
+            {
+                LogMessage.Error(ex);
+            }
+        }
+
+        private void uIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(Log.WorkDir);
+            }
+            catch(Exception ex)
+            {
+                LogMessage.Error(ex);
+            }
         }
     }
 }

@@ -15,24 +15,33 @@ namespace Cliver.CisteraScreenCaptureService
         public ProjectInstaller()
         {
             InitializeComponent();
-        }
 
-        private void serviceInstaller1_AfterInstall(object sender, InstallEventArgs e)
-        {
-
-        }
-
-        protected override void OnCommitted(System.Collections.IDictionary savedState)
-        {
-            try
+            this.Committed += delegate
             {
-                ServiceController sc = new ServiceController(Program.SERVICE_NAME);
-                sc.Start();
-            }
-            catch(Exception e)
+                try
+                {
+                    ServiceController sc = new ServiceController(Program.SERVICE_NAME);
+                    sc.Start();
+                }
+                catch (Exception e)
+                {
+                    Message.Error(e);
+                }
+            };
+
+            this.BeforeUninstall += delegate
             {
-                Message.Error(e);
-            }
+                try
+                {
+                    ServiceController sc = new ServiceController(Program.SERVICE_NAME);
+                    if(sc.Status != ServiceControllerStatus.Stopped)
+                        sc.Stop();
+                }
+                catch (Exception e)
+                {
+                    Message.Error(e);
+                }
+            };
         }
     }
 }

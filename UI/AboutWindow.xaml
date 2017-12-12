@@ -16,6 +16,7 @@
         <Style TargetType="{x:Type GroupBox}">
             <Setter Property="Margin" Value="0,20,0,10"/>
             <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#268"/>
             <!--Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>

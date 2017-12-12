@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 
 //installing service:
-//"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe" "d:\_d\_PROJECTS\CisteraScreenCapture\bin\Debug\CisteraScreenCapture.exe"
-//"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe" /u "d:\_d\_PROJECTS\CisteraScreenCapture\bin\Debug\CisteraScreenCapture.exe"
-
+//"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe" "d:\_d\_PROJECTS\CisteraScreenCapture\Service\bin\Debug\CisteraScreenCaptureService.exe"
+//"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe" /u "d:\_d\_PROJECTS\CisteraScreenCapture\Service\bin\Debug\CisteraScreenCaptureService.exe"
+//sc delete "Cistera Screen Capture Service"
 namespace Cliver.CisteraScreenCaptureService
 {
     public static class Program
@@ -34,20 +34,12 @@ namespace Cliver.CisteraScreenCaptureService
         static void Main()
         {
             try
-            {
-                Log.Main.Inform("Application version: " + AssemblyRoutines.GetAppVersion());
-                
-                string m = "Application user: " + WindowsUserRoutines.GetCurrentUserName3() + " (";
-                if (WindowsUserRoutines.CurrentUserIsAdministrator())
-                {
-                    m += "administrator";
-                    if (WindowsUserRoutines.CurrentUserHasElevatedPrivileges())
-                        m += ", elevated privileges";
-                    else
-                        m += ", not elevated privileges";
-                }
-                else
-                    m += "not administrator";
+            {                
+                Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
+                string user = ProcessRoutines.GetProcessUserName();
+                string m = "User: " + user + " (";
+                if (ProcessRoutines.ProcessHasElevatedPrivileges())
+                    m += "as administrator";
                 Log.Main.Inform(m + ")");
 
 #if !test
