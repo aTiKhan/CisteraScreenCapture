@@ -47,6 +47,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
             Message.TopMost = true;
 
+            LogMessage.DisableStumblingDialogs = false;
             Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir);
             Cliver.Config.Reload();
         }
