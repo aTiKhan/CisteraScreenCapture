@@ -91,7 +91,7 @@ namespace Cliver.CisteraScreenCaptureService
                 commandLine = Environment.SystemDirectory + "\\cmd.exe /c \"" + commandLine + " 1>>\"" + file + "\",2>&1\"";
             }
 
-            uint processId = createProcessInSession(sessionId, commandLine, dwCreationFlags, startupInfo);
+            uint processId = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, commandLine, dwCreationFlags, startupInfo);
             mpeg_stream_process = Process.GetProcessById((int)processId);
             if (mpeg_stream_process == null)
                 throw new Exception("Could not find process #" + processId);
@@ -106,62 +106,7 @@ namespace Cliver.CisteraScreenCaptureService
         static string commandLine = null;
         static FileStream fileStream = null;
         static ProcessRoutines.AntiZombieTracker antiZombieTracker = null;
-        static uint createProcessInSession(uint dwSessionId, String commandLine, WinApi.Advapi32.CreationFlags dwCreationFlags = 0, WinApi.Advapi32.STARTUPINFO? startupInfo = null, bool bElevate = false)
-        {
-            Log.Main.Inform("Launching (in session " + dwSessionId + "):\r\n" + commandLine);
-            
-            IntPtr hNewProcessToken = IntPtr.Zero;
-            IntPtr hProcessToken = IntPtr.Zero;
-            try
-            {                
-                WinApi.Advapi32.STARTUPINFO si;
-                if (startupInfo != null)
-                    si = (WinApi.Advapi32.STARTUPINFO)startupInfo;
-                else
-                    si = new WinApi.Advapi32.STARTUPINFO();
-                si.cb = Marshal.SizeOf(si);
-                si.lpDesktop = "winsta0\\default";
-
-                if (!WinApi.Advapi32.OpenProcessToken(Process.GetCurrentProcess().Handle, WinApi.Advapi32.DesiredAccess.MAXIMUM_ALLOWED, out hProcessToken))
-                    throw new Exception("!OpenProcessToken. " + ErrorRoutines.GetLastError());
-                
-                var sa = new WinApi.Advapi32.SECURITY_ATTRIBUTES();
-                sa.Length = Marshal.SizeOf(sa);
-                if (!WinApi.Advapi32.DuplicateTokenEx(hProcessToken, WinApi.Advapi32.DesiredAccess.MAXIMUM_ALLOWED, ref sa, WinApi.Advapi32.SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, WinApi.Advapi32.TOKEN_TYPE.TokenPrimary, ref hNewProcessToken))
-                    throw new Exception("!DuplicateTokenEx. " + ErrorRoutines.GetLastError());
-
-                if (!WinApi.Advapi32.SetTokenInformation(hNewProcessToken, WinApi.Advapi32.TOKEN_INFORMATION_CLASS.TokenSessionId, ref dwSessionId, (uint)IntPtr.Size))
-                    throw new Exception("!SetTokenInformation. " + ErrorRoutines.GetLastError());
-             
-                WinApi.Advapi32.PROCESS_INFORMATION pi;
-                if (!WinApi.Advapi32.CreateProcessAsUser(hNewProcessToken, // client's access token
-                    null, // file to execute
-                    commandLine, // command line
-                    ref sa, // pointer to process SECURITY_ATTRIBUTES
-                    ref sa, // pointer to thread SECURITY_ATTRIBUTES
-                    false, // handles are not inheritable
-                    dwCreationFlags, // creation flags
-                    IntPtr.Zero,//pEnv, // pointer to new environment block 
-                    null, // name of current directory 
-                    ref si, // pointer to STARTUPINFO structure
-                    out pi // receives information about new process
-                    ))
-                    throw new Exception("!CreateProcessAsUser. " + ErrorRoutines.GetLastError());
-                return pi.dwProcessId;
-            }
-            //catch(Exception e)
-            //{
-
-            //}
-            finally
-            {
-                if (hProcessToken != IntPtr.Zero)
-                    WinApi.Kernel32.CloseHandle(hProcessToken);
-                if (hNewProcessToken != IntPtr.Zero)
-                    WinApi.Kernel32.CloseHandle(hNewProcessToken);
-            }
-        }
-
+       
         public static void Stop()
         {
             if (mpeg_stream_process != null)
