@@ -49,8 +49,9 @@ namespace Cliver.CisteraScreenCaptureService
             WinApi.User32.RECT? an = MonitorRoutines.GetMonitorAreaByMonitorName(Settings.General.CapturedMonitorDeviceName);
             if (an == null)
             {
-                Settings.General.CapturedMonitorDeviceName = MonitorRoutines.GetDefaultMonitorName();
-                Log.Main.Warning("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found. Using default one '" + Settings.General.CapturedMonitorDeviceName + "'");
+                string defaultMonitorName = MonitorRoutines.GetDefaultMonitorName();
+                Log.Main.Warning("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found. Using default one '" + defaultMonitorName + "'");
+                Settings.General.CapturedMonitorDeviceName = defaultMonitorName;
                 an = MonitorRoutines.GetMonitorAreaByMonitorName(Settings.General.CapturedMonitorDeviceName);
                 if (an == null)
                     throw new Exception("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found.");

@@ -133,7 +133,7 @@
             </-->
                 <!--xctk:MaskedTextBox Grid.Row="1" Grid.Column="1" Name="DefaultServerIp" Mask="000\.000\.000\.000" HorizontalAlignment="Left"></-->
                 <TextBox Grid.Row="1" Grid.Column="1" Name="ServerDefaultIp" MinWidth="100" HorizontalAlignment="Left"></TextBox>
-                <Label Grid.Row="2" Grid.Column="0"   >Client port:</Label>
+                <Label Grid.Row="2" Grid.Column="0"   >Local port:</Label>
                     <TextBox Grid.Row="2" Grid.Column="1" Name="ClientPort" MinWidth="60" HorizontalAlignment="Left"/>
                 </Grid>
             </GroupBox>
