@@ -40,23 +40,35 @@ namespace Cliver.CisteraScreenCaptureService
                 Log.Main.Warning("The previous MpegStream was not stopped!");
             Stop();
 
-            if (string.IsNullOrWhiteSpace(Settings.General.CapturedMonitorDeviceName))
+            //if (string.IsNullOrWhiteSpace(Settings.General.CapturedMonitorDeviceName))
+            //{
+            //    Settings.General.CapturedMonitorDeviceName = MonitorRoutines.GetDefaultMonitorName();
+            //    if (string.IsNullOrWhiteSpace(Settings.General.CapturedMonitorDeviceName))
+            //        throw new Exception("No monitor was found.");
+            //}
+            //WinApi.User32.RECT? an = MonitorRoutines.GetMonitorAreaByMonitorName(Settings.General.CapturedMonitorDeviceName);
+            //if (an == null)
+            //{
+            //    string defaultMonitorName = MonitorRoutines.GetDefaultMonitorName();
+            //    Log.Main.Warning("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found. Using default one '" + defaultMonitorName + "'");
+            //    Settings.General.CapturedMonitorDeviceName = defaultMonitorName;
+            //    an = MonitorRoutines.GetMonitorAreaByMonitorName(Settings.General.CapturedMonitorDeviceName);
+            //    if (an == null)
+            //        throw new Exception("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found.");
+            //}
+            if (Settings.General.CapturedMonitorRectangle == null)
             {
-                Settings.General.CapturedMonitorDeviceName = MonitorRoutines.GetDefaultMonitorName();
-                if (string.IsNullOrWhiteSpace(Settings.General.CapturedMonitorDeviceName))
-                    throw new Exception("No monitor was found.");
+                //WinApi.Advapi32.CreationFlags creationFlags = 0;
+                //creationFlags |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
+                //uint pid = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, "", creationFlags);
+                //Process.GetProcessById((int)pid).WaitForExit();
+                //if (Settings.General.CapturedMonitorRectangle == null)
+                //    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'");
+                Settings.General.Reload();
+                if (Settings.General.CapturedMonitorRectangle == null)
+                    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'. Properly edit and save monitor setting in the systray menu.");
             }
-            WinApi.User32.RECT? an = MonitorRoutines.GetMonitorAreaByMonitorName(Settings.General.CapturedMonitorDeviceName);
-            if (an == null)
-            {
-                string defaultMonitorName = MonitorRoutines.GetDefaultMonitorName();
-                Log.Main.Warning("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found. Using default one '" + defaultMonitorName + "'");
-                Settings.General.CapturedMonitorDeviceName = defaultMonitorName;
-                an = MonitorRoutines.GetMonitorAreaByMonitorName(Settings.General.CapturedMonitorDeviceName);
-                if (an == null)
-                    throw new Exception("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found.");
-            }
-            WinApi.User32.RECT a = (WinApi.User32.RECT)an;
+            WinApi.User32.RECT a = (WinApi.User32.RECT)Settings.General.CapturedMonitorRectangle;
             string source = " -offset_x " + a.Left + " -offset_y " + a.Top + " -video_size " + (a.Right - a.Left) + "x" + (a.Bottom - a.Top) + " -show_region 1 -i desktop ";
 
             arguments = Regex.Replace(arguments, @"-framerate\s+\d+", "$0" + source);
@@ -69,8 +81,7 @@ namespace Cliver.CisteraScreenCaptureService
                 //startupInfo.dwFlags |= Win32Process.STARTF_USESTDHANDLES;
                 //startupInfo.wShowWindow = Win32Process.SW_HIDE;
             }
-
-            WinApi.Advapi32.STARTUPINFO startupInfo = new WinApi.Advapi32.STARTUPINFO();
+            
             if (Settings.General.WriteMpegOutput2Log)
             {
                 string file0 = Log.WorkDir + "\\ffmpeg_" + DateTime.Now.ToString("yyMMddHHmmss");
@@ -91,7 +102,7 @@ namespace Cliver.CisteraScreenCaptureService
                 commandLine = Environment.SystemDirectory + "\\cmd.exe /c \"" + commandLine + " 1>>\"" + file + "\",2>&1\"";
             }
 
-            uint processId = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, commandLine, dwCreationFlags, startupInfo);
+            uint processId = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, commandLine, dwCreationFlags);
             mpeg_stream_process = Process.GetProcessById((int)processId);
             if (mpeg_stream_process == null)
                 throw new Exception("Could not find process #" + processId);

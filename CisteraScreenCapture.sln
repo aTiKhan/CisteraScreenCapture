@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CisteraScreenCaptureUI", "U
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CisteraScreenCaptureSetup", "Setup\Setup.vdproj", "{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserSessionProbe", "UserSessionProbe\UserSessionProbe.csproj", "{3899FEEB-35A3-4011-8025-0C02FC141987}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,14 @@ Global
 		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|Any CPU.Build.0 = Release
 		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|x86.ActiveCfg = Release
 		{61384BE9-FF4E-486F-8CA7-F8A8474A05DA}.Release|x86.Build.0 = Release
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Debug|x86.Build.0 = Debug|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Release|x86.ActiveCfg = Release|Any CPU
+		{3899FEEB-35A3-4011-8025-0C02FC141987}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

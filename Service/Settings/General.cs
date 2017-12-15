@@ -31,6 +31,7 @@ namespace Cliver.CisteraScreenCaptureService
             public string ServiceDomain = "cistera";
             public string ServiceType = "_cisterascreencapturecontroller._tcp";
             public string CapturedMonitorDeviceName = "";
+            public WinApi.User32.RECT? CapturedMonitorRectangle = null;
             public bool ShowMpegWindow = true;
             public bool WriteMpegOutput2Log = false;
 

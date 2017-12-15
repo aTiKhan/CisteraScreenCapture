@@ -78,8 +78,8 @@ namespace Cliver.CisteraScreenCaptureService
                 Log.Main.Inform("Stopping...");
                 UiApi.StatusChanged(ServiceControllerStatus.StopPending);
                 stopServingUser();
-                //CisteraScreenCapture.ServerApi.CloseApi();
                 UiApi.StatusChanged(ServiceControllerStatus.Stopped);
+                UiApi.CloseApi();
             }
             catch (Exception e)
             {

@@ -55,7 +55,7 @@ namespace Cliver.CisteraScreenCaptureService
         ERROR,
     }
 
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.Single)]
     public class UiApi : IUiApi
     {
         public void Subscribe()

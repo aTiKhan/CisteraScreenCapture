@@ -32,6 +32,31 @@ namespace Cliver.CisteraScreenCaptureUI
                   
                   ServiceStateChanged(UiApiClient.GetServiceStatus());
                   silentlyToolStripMenuItem.Checked = !Settings.View.DisplayNotifications;
+
+                  string __file;
+                  Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general = UiApiClient.GetServiceSettings(out __file);
+                  if(general.CapturedMonitorRectangle == null)
+                  {
+                      if(string.IsNullOrWhiteSpace( general.CapturedMonitorDeviceName))
+                          general.CapturedMonitorDeviceName = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetDefaultMonitorName();
+                      if (string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
+                          LogMessage.Error("Could not detect default monitor.");
+                      else
+                      {
+                          WinApi.User32.RECT? a = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetMonitorAreaByMonitorName(general.CapturedMonitorDeviceName);
+                          if (a == null)
+                          {
+                              string defaultMonitorName = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetDefaultMonitorName();
+                              LogMessage.Warning("Monitor '" + general.CapturedMonitorDeviceName + "' was not found. Using default one '" + defaultMonitorName + "'");
+                              general.CapturedMonitorDeviceName = defaultMonitorName;
+                              a = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetMonitorAreaByMonitorName(general.CapturedMonitorDeviceName);
+                              if (a == null)
+                                  LogMessage.Error("Monitor '" + general.CapturedMonitorDeviceName + "' was not found.");
+                          }
+                          general.CapturedMonitorRectangle = a;
+                      }
+                      general.Save(__file);
+                  }
               };
         }
 

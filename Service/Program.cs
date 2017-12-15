@@ -42,6 +42,7 @@ namespace Cliver.CisteraScreenCaptureService
         {
             try
             {
+
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
                 string user = ProcessRoutines.GetProcessUserName();
                 string m = "User: " + user;
@@ -52,6 +53,7 @@ namespace Cliver.CisteraScreenCaptureService
 #if !test
                 ServiceBase.Run(new Service());
 #else
+                MpegStream.Start(1, "");
                 UiApi.OpenApi();
                 UiApi.StatusChanged(ServiceControllerStatus.StartPending);
                 ServiceControllerStatus scs = ServiceControllerStatus.Running;

@@ -126,12 +126,15 @@ namespace Cliver.CisteraScreenCaptureUI
                     Value = mi.DeviceName
                 });
             }
-            if (Monitors.Items.Count > 0)
-                if (!string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
-                    Monitors.SelectedValue = general.CapturedMonitorDeviceName;
-                else
-                    Monitors.SelectedIndex = 0;
-            
+            if (Monitors.Items.Count < 1)
+                throw new Exception("No monitor was found!");
+            if (!string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
+                Monitors.SelectedValue = general.CapturedMonitorDeviceName;
+            else
+                Monitors.SelectedValue = MonitorRoutines.GetDefaultMonitorName();
+            if (Monitors.SelectedIndex < 0)
+                Monitors.SelectedIndex = 0;
+
             ShowMpegWindow.IsChecked = general.ShowMpegWindow;
             WriteMpegOutput2Log.IsChecked = general.WriteMpegOutput2Log;
         }
@@ -192,6 +195,10 @@ namespace Cliver.CisteraScreenCaptureUI
                 general.ShowMpegWindow = ShowMpegWindow.IsChecked ?? false;
 
                 general.WriteMpegOutput2Log = WriteMpegOutput2Log.IsChecked ?? false;
+
+                general.CapturedMonitorRectangle = MonitorRoutines.GetMonitorAreaByMonitorName(general.CapturedMonitorDeviceName);
+                if (general.CapturedMonitorRectangle == null)
+                    throw new Exception("Could not get rectangle for monitor '" + general.CapturedMonitorDeviceName + "'");
 
                 general.Save(__file);
 
