@@ -195,9 +195,10 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 general.WriteMpegOutput2Log = WriteMpegOutput2Log.IsChecked ?? false;
 
-                general.CapturedMonitorRectangle = MonitorRoutines.GetMonitorAreaByMonitorName(general.CapturedMonitorDeviceName);
-                if (general.CapturedMonitorRectangle == null)
-                    throw new Exception("Could not get rectangle for monitor '" + general.CapturedMonitorDeviceName + "'");
+                //general.CapturedMonitorRectangle = MonitorRoutines.GetMonitorAreaByMonitorName(general.CapturedMonitorDeviceName);
+                //if (general.CapturedMonitorRectangle == null)
+                //    throw new Exception("Could not get rectangle for monitor '" + general.CapturedMonitorDeviceName + "'");
+                general.CapturedMonitorRectangle = null;
 
                 UiApiClient.SaveServiceSettings(general);
 

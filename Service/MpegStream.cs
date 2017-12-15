@@ -58,15 +58,21 @@ namespace Cliver.CisteraScreenCaptureService
             //}
             if (Settings.General.CapturedMonitorRectangle == null)
             {
-                //WinApi.Advapi32.CreationFlags creationFlags = 0;
-                //creationFlags |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
-                //uint pid = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, "", creationFlags);
-                //Process.GetProcessById((int)pid).WaitForExit();
-                //if (Settings.General.CapturedMonitorRectangle == null)
-                //    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'");
+                Log.Main.Inform("CapturedMonitorRectangle is empty. Running " + userSessionProbe);
+                UserSessionApi.OpenApi();
+                WinApi.Advapi32.CreationFlags cfs = 0;
+                cfs |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
+                string cl = "\"" + Log.AppDir + "\\" + userSessionProbe + "\"";
+                uint pid = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, cl, cfs);
+                Process p = Process.GetProcessById((int)pid);
+                if (p != null && !p.HasExited)
+                    p.WaitForExit();
+                UserSessionApi.CloseApi();
                 Settings.General.Reload();
                 if (Settings.General.CapturedMonitorRectangle == null)
-                    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'. Properly edit and save monitor setting in the systray menu.");
+                    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'");
+                //if (Settings.General.CapturedMonitorRectangle == null)
+                //    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'. Properly edit and save monitor setting in the systray menu.");
             }
             WinApi.User32.RECT a = (WinApi.User32.RECT)Settings.General.CapturedMonitorRectangle;
             string source = " -offset_x " + a.Left + " -offset_y " + a.Top + " -video_size " + (a.Right - a.Left) + "x" + (a.Bottom - a.Top) + " -show_region 1 -i desktop ";
@@ -117,7 +123,8 @@ namespace Cliver.CisteraScreenCaptureService
         static string commandLine = null;
         static FileStream fileStream = null;
         static ProcessRoutines.AntiZombieTracker antiZombieTracker = null;
-       
+        static string userSessionProbe = "UserSessionProbe.exe";
+
         public static void Stop()
         {
             if (mpeg_stream_process != null)

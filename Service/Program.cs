@@ -49,7 +49,7 @@ namespace Cliver.CisteraScreenCaptureService
                     m += " (as administrator)";
                 Log.Main.Inform(m);
 
-#if test
+#if !test
                 ServiceBase.Run(new Service());
 #else
                 //MpegStream.Start(1, "");

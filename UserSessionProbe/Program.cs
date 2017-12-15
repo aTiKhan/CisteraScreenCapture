@@ -17,11 +17,12 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionProbe
             {
                 LogMessage.DisableStumblingDialogs = true;
                 Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir);
-
+                
                 //string generalSettingsFile = args[1];
                 //Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general = Cliver.Settings.Create<Cliver.CisteraScreenCaptureService.Settings.GeneralSettings>(generalSettingsFile);
 
                 Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general = UserSessionApiClient.GetServiceSettings();
+                Log.Main.Inform("Initial CapturedMonitorDeviceName: " + general.CapturedMonitorDeviceName);
                 if (string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
                     general.CapturedMonitorDeviceName = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetDefaultMonitorName();
                 if (string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
@@ -39,6 +40,7 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionProbe
                 }
                 general.CapturedMonitorRectangle = a;
                 UserSessionApiClient.SaveServiceSettings(general);
+                Log.Main.Inform("Finish CapturedMonitorDeviceName: " + general.CapturedMonitorDeviceName + "\r\nCapturedMonitorRectangle: " + general.CapturedMonitorRectangle.Value.Left + "," + general.CapturedMonitorRectangle.Value.Top + "," + general.CapturedMonitorRectangle.Value.Right + "," + general.CapturedMonitorRectangle.Value.Bottom);
             }
             catch (Exception e)
             {
