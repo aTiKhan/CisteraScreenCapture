@@ -238,14 +238,13 @@ namespace Cliver.CisteraScreenCaptureUI
             }
         }
 
-        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetServiceSettings(out string __file)
+        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetServiceSettings()
         {
-            __file = null;
             try
             {
                 lock (instanceContext)
                 {
-                    return _this?.GetSettings(out __file);
+                    return _this?.GetSettings();
                 }
             }
             catch (Exception e)
@@ -253,6 +252,21 @@ namespace Cliver.CisteraScreenCaptureUI
                 Log.Main.Warning2(e);
             }
             return null;
+        }
+
+        static public void SaveServiceSettings(Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general)
+        {
+            try
+            {
+                lock (instanceContext)
+                {
+                    _this?.SaveSettings(general);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Main.Warning2(e);
+            }
         }
 
         static public string GetServiceLogDir()

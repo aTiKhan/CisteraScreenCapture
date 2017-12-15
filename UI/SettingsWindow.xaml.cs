@@ -71,7 +71,7 @@ namespace Cliver.CisteraScreenCaptureUI
             //WindowStartupLocation = WindowStartupLocation.CenterScreen;
             //DefaultServerIp.ValueDataType = typeof(IPAddress);
             
-            general = UiApiClient.GetServiceSettings(out __file);
+            general = UiApiClient.GetServiceSettings();
             if (general == null)
             {
                 ok.IsEnabled = false;
@@ -90,7 +90,6 @@ namespace Cliver.CisteraScreenCaptureUI
             }
         }
         readonly Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general; 
-        readonly string __file;
 
         void set()
         {
@@ -200,7 +199,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 if (general.CapturedMonitorRectangle == null)
                     throw new Exception("Could not get rectangle for monitor '" + general.CapturedMonitorDeviceName + "'");
 
-                general.Save(__file);
+                UiApiClient.SaveServiceSettings(general);
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped 

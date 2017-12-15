@@ -33,9 +33,15 @@ namespace Cliver.CisteraScreenCaptureService
         [OperationContract(IsOneWay = true)]
         void Unsubscribe();
 
-        [OperationContract(IsInitiating = true)]
-        Settings.GeneralSettings GetSettings(out string __file);
+        [OperationContract()]
+        Settings.GeneralSettings GetSettings();
 
+        [OperationContract()]
+        void SaveSettings(Settings.GeneralSettings general);
+
+        //[OperationContract()]
+        //string GetSettingsFile();
+        
         [OperationContract(IsInitiating = true)]
         string GetLogDir();
     }
@@ -86,12 +92,22 @@ namespace Cliver.CisteraScreenCaptureService
             }
         }
 
-        public Settings.GeneralSettings GetSettings(out string __file)
+        public Settings.GeneralSettings GetSettings()
         {
             subscribe();
-            __file = Settings.General.__File;
             return Settings.General.GetReloadedInstance<Settings.GeneralSettings>();
         }
+
+        public void SaveSettings(Settings.GeneralSettings general)
+        {
+            subscribe();
+            general.Save(Settings.General.__File);
+        }
+
+        //public string GetSettingsFile()
+        //{
+        //    return Settings.General.__File;
+        //}
 
         public string GetLogDir()
         {

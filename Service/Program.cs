@@ -35,14 +35,13 @@ namespace Cliver.CisteraScreenCaptureService
 
             //Config.Initialize(new string[] { "General" });
             Cliver.Config.Reload();
-            Cliver.Config.Save();//to have a settings file
+            //Cliver.Config.Save();//to have a settings file
         }
 
         static void Main()
         {
             try
             {
-
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
                 string user = ProcessRoutines.GetProcessUserName();
                 string m = "User: " + user;
@@ -50,10 +49,11 @@ namespace Cliver.CisteraScreenCaptureService
                     m += " (as administrator)";
                 Log.Main.Inform(m);
 
-#if !test
+#if test
                 ServiceBase.Run(new Service());
 #else
-                MpegStream.Start(1, "");
+                //MpegStream.Start(1, "");
+                UserSessionApi.OpenApi();
                 UiApi.OpenApi();
                 UiApi.StatusChanged(ServiceControllerStatus.StartPending);
                 ServiceControllerStatus scs = ServiceControllerStatus.Running;

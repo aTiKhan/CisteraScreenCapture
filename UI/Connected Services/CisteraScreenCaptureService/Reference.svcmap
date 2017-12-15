@@ -28,6 +28,7 @@
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="e4eb50a1-5906-45e5-adad-667226044e0f" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
     <MetadataFile FileName="Cliver.CisteraScreenCaptureService.xsd" MetadataType="Schema" ID="4bd1aeee-6391-45c5-8f0a-690f1f1cb3ed" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
     <MetadataFile FileName="Cliver.xsd" MetadataType="Schema" ID="e3ea445c-0f6b-4a7f-87eb-0ac8a62c6c0d" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
+    <MetadataFile FileName="Cliver.WinApi.xsd" MetadataType="Schema" ID="9a614795-7d06-4df1-9dd9-4d4255fe2fe1" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
     <MetadataFile FileName="System.ServiceProcess.xsd" MetadataType="Schema" ID="4cb7c784-2a5e-49d5-a9c9-b3a6923eec1d" SourceId="1" SourceUrl="net.pipe://localhost/CisteraScreenCapture/UiApi/mex" />
   </Metadata>
   <Extensions>

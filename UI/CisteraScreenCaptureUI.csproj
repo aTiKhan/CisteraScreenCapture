@@ -177,8 +177,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="cistera.ico" />
-    <None Include="Connected Services\CisteraScreenCaptureService\Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.GetSettingsResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
+    <None Include="Connected Services\CisteraScreenCaptureService\Cliver.WinApi.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\CisteraScreenCaptureService\configuration91.svcinfo" />
     <None Include="Connected Services\CisteraScreenCaptureService\configuration.svcinfo" />
@@ -241,7 +241,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>

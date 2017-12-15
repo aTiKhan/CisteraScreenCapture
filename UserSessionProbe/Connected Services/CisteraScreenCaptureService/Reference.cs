@@ -8,11 +8,38 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
+namespace UserSessionProbe.CisteraScreenCaptureService {
+    using System.Runtime.Serialization;
     
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceControllerStatus", Namespace="http://schemas.datacontract.org/2004/07/System.ServiceProcess")]
+    public enum ServiceControllerStatus : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        ContinuePending = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Paused = 7,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        PausePending = 6,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Running = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        StartPending = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        Stopped = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        StopPending = 3,
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="", ConfigurationName="CisteraScreenCaptureService.IUiApi", CallbackContract=typeof(Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApiCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="", ConfigurationName="CisteraScreenCaptureService.IUiApi", CallbackContract=typeof(UserSessionProbe.CisteraScreenCaptureService.IUiApiCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IUiApi {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="urn:IUiApi/Subscribe")]
@@ -50,19 +77,19 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
     public interface IUiApiCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="urn:IUiApi/ServiceStatusChanged")]
-        void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status);
+        void ServiceStatusChanged(UserSessionProbe.CisteraScreenCaptureService.ServiceControllerStatus status);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="urn:IUiApi/Message")]
         void Message(Cliver.CisteraScreenCaptureService.MessageType messageType, [System.ServiceModel.MessageParameterAttribute(Name="message")] string message1);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IUiApiChannel : Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApi, System.ServiceModel.IClientChannel {
+    public interface IUiApiChannel : UserSessionProbe.CisteraScreenCaptureService.IUiApi, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UiApiClient : System.ServiceModel.DuplexClientBase<Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApi>, Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService.IUiApi {
+    public partial class UiApiClient : System.ServiceModel.DuplexClientBase<UserSessionProbe.CisteraScreenCaptureService.IUiApi>, UserSessionProbe.CisteraScreenCaptureService.IUiApi {
         
         public UiApiClient(System.ServiceModel.InstanceContext callbackInstance) : 
                 base(callbackInstance) {

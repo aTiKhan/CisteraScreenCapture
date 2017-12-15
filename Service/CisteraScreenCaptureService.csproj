@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserSessionApi.cs" />
     <Compile Include="MonitorRoutines.cs" />
     <Compile Include="MpegStream.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -115,7 +116,9 @@
     <Compile Include="UiApi.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>

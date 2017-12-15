@@ -20,12 +20,4 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="Settings.GeneralSettings" nillable="true" type="tns:Settings.GeneralSettings" />
-  <xs:simpleType name="MessageType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="INFORM" />
-      <xs:enumeration value="WARNING" />
-      <xs:enumeration value="ERROR" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="MessageType" nillable="true" type="tns:MessageType" />
 </xs:schema>
