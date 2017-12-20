@@ -55,14 +55,14 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionProbe
         {
             try
             {
-                _this = new CisteraScreenCaptureService2.UserSessionApiClient();
+                _this = new CisteraScreenCaptureService.UserSessionApiClient();
             }
             catch (Exception e)
             {
                 LogMessage.Error(e);
             }
         }
-        static CisteraScreenCaptureService2.UserSessionApiClient _this;
+        static CisteraScreenCaptureService.UserSessionApiClient _this;
 
         static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetServiceSettings()
         {

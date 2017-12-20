@@ -126,7 +126,7 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             if (!isAllowed())
                 return;
-            if (!Message.YesNo("Exiting the UI while the service iteslf will remain. Proceed?", null, Message.Icons.Exclamation))
+            if (!Message.YesNo("Exiting the UI while the service iteslf will remain as is. Proceed?", null, Message.Icons.Exclamation))
                 return;
             //Program.Exit();
             Environment.Exit(0);

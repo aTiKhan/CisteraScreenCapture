@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService2 {
+namespace Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CisteraScreenCaptureService2.IUserSessionApi")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CisteraScreenCaptureService.IUserSessionApi")]
     public interface IUserSessionApi {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserSessionApi/GetSettings", ReplyAction="http://tempuri.org/IUserSessionApi/GetSettingsResponse")]
@@ -29,12 +29,12 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptu
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IUserSessionApiChannel : Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService2.IUserSessionApi, System.ServiceModel.IClientChannel {
+    public interface IUserSessionApiChannel : Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService.IUserSessionApi, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UserSessionApiClient : System.ServiceModel.ClientBase<Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService2.IUserSessionApi>, Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService2.IUserSessionApi {
+    public partial class UserSessionApiClient : System.ServiceModel.ClientBase<Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService.IUserSessionApi>, Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService.IUserSessionApi {
         
         public UserSessionApiClient() {
         }

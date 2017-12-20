@@ -106,7 +106,7 @@ namespace Cliver.CisteraScreenCaptureService
             base.OnSessionChange(changeDescription);
         }
 
-        static void sessionChanged(uint sessionId, bool active)
+     internal   static void sessionChanged(uint sessionId, bool active)
         {
             try
             {
@@ -172,8 +172,8 @@ namespace Cliver.CisteraScreenCaptureService
                         if (rm.Content == null)
                             throw new Exception("Response is empty");
                         string responseContent = rm.Content.ReadAsStringAsync().Result;
-                        if (responseContent.Trim() != "OK")
-                            throw new Exception("Response: " + responseContent);
+                        if (responseContent.Trim().ToUpper() != "OK")
+                            throw new Exception("Response body: " + responseContent);
                     },
                     (Exception e) =>
                     {

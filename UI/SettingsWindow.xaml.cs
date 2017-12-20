@@ -225,8 +225,8 @@ namespace Cliver.CisteraScreenCaptureUI
                
         void reset_settings(object sender, RoutedEventArgs e)
         {
-            if (!Message.YesNo("Do you want to reset settings to their initial state?"))
-                return;
+            //if (!Message.YesNo("Settings will be reset to their initial state. Proceed?"))
+            //    return;
             general.Reset();
             set();
         }
