@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{3899FEEB-35A3-4011-8025-0C02FC141987}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Cliver.CisteraScreenCaptureService.UserSessionProbe</RootNamespace>
-    <AssemblyName>UserSessionProbe</AssemblyName>
+    <RootNamespace>Cliver.CisteraScreenCaptureService.UserSessionAgent</RootNamespace>
+    <AssemblyName>userSessionAgent</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

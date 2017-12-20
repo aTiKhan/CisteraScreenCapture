@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService {
+namespace Cliver.CisteraScreenCaptureService.UserSessionAgent.CisteraScreenCaptureService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -29,12 +29,12 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptu
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IUserSessionApiChannel : Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService.IUserSessionApi, System.ServiceModel.IClientChannel {
+    public interface IUserSessionApiChannel : Cliver.CisteraScreenCaptureService.UserSessionAgent.CisteraScreenCaptureService.IUserSessionApi, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UserSessionApiClient : System.ServiceModel.ClientBase<Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService.IUserSessionApi>, Cliver.CisteraScreenCaptureService.UserSessionProbe.CisteraScreenCaptureService.IUserSessionApi {
+    public partial class UserSessionApiClient : System.ServiceModel.ClientBase<Cliver.CisteraScreenCaptureService.UserSessionAgent.CisteraScreenCaptureService.IUserSessionApi>, Cliver.CisteraScreenCaptureService.UserSessionAgent.CisteraScreenCaptureService.IUserSessionApi {
         
         public UserSessionApiClient() {
         }

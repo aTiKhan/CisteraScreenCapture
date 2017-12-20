@@ -7,7 +7,7 @@ using System.ServiceModel;
 using System.ServiceProcess;
 using Cliver.CisteraScreenCaptureService;
 
-namespace Cliver.CisteraScreenCaptureService.UserSessionProbe
+namespace Cliver.CisteraScreenCaptureService.UserSessionAgent
 {
     class Program
     {

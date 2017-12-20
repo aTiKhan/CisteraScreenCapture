@@ -58,11 +58,11 @@ namespace Cliver.CisteraScreenCaptureService
             //}
             if (Settings.General.CapturedMonitorRectangle == null)
             {
-                Log.Main.Inform("CapturedMonitorRectangle is empty. Running " + userSessionProbe);
+                Log.Main.Inform("CapturedMonitorRectangle is empty. Running " + userSessionAgent);
                 UserSessionApi.OpenApi();
                 WinApi.Advapi32.CreationFlags cfs = 0;
                 cfs |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
-                string cl = "\"" + Log.AppDir + "\\" + userSessionProbe + "\"";
+                string cl = "\"" + Log.AppDir + "\\" + userSessionAgent + "\"";
                 uint pid = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, cl, cfs);
                 Process p = Process.GetProcessById((int)pid);
                 if (p != null && !p.HasExited)
@@ -123,7 +123,7 @@ namespace Cliver.CisteraScreenCaptureService
         static string commandLine = null;
         static FileStream fileStream = null;
         static ProcessRoutines.AntiZombieTracker antiZombieTracker = null;
-        static string userSessionProbe = "UserSessionProbe.exe";
+        static string userSessionAgent = "userSessionAgent.exe";
 
         public static void Stop()
         {

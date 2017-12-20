@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UserSessionProbe")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("User Session Agent")]
+[assembly: AssemblyDescription("Utility of Cistera Screen Capture Service. By Sergey Stoyan, CliverSoft.com")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("UserSessionProbe")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2017")]
+[assembly: AssemblyCompany("Cistera")]
+[assembly: AssemblyProduct("User Session Agent")]
+[assembly: AssemblyCopyright("Copyright © Cistera 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
