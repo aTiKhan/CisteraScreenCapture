@@ -174,6 +174,7 @@ namespace Cliver.CisteraScreenCaptureService
                         string responseContent = rm.Content.ReadAsStringAsync().Result;
                         if (responseContent.Trim().ToUpper() != "OK")
                             throw new Exception("Response body: " + responseContent);
+                        Log.Main.Inform("Response body: " + responseContent);
                     },
                     (Exception e) =>
                     {
