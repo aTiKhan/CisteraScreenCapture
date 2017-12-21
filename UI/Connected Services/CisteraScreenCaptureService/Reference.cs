@@ -49,9 +49,6 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IUiApiCallback {
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="urn:IUiApi/ServiceStatusChanged")]
-        void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status);
-        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="urn:IUiApi/Message")]
         void Message(Cliver.CisteraScreenCaptureService.MessageType messageType, [System.ServiceModel.MessageParameterAttribute(Name="message")] string message1);
     }

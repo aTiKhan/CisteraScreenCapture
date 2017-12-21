@@ -25,7 +25,6 @@ using System.ServiceProcess;
 /// <summary>
 /// TBD:
 /// - add display area;
-/// - run from installer
 /// </summary>
 /// 
 namespace Cliver.CisteraScreenCaptureUI
@@ -74,8 +73,19 @@ namespace Cliver.CisteraScreenCaptureUI
                 Log.Main.Inform(m);
                 
                 ProcessRoutines.RunSingleProcessOnly();
-                
+
+#if test
                 Application.Run(SysTray.This);
+#else
+
+                UiApiClient.testCreateInstanceContext();
+                UiApiClient.testSubscribe();
+                UiApiClient.testSubscribe();
+                Thread.Sleep(1000);
+                UiApiClient.testCreateInstanceContext();
+                UiApiClient.testSubscribe();
+                UiApiClient.testSubscribe();
+#endif
             }
             catch (Exception e)
             {

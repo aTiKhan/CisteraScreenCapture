@@ -49,9 +49,6 @@ namespace Cliver.CisteraScreenCaptureService
     public interface IUiApiCallback
     {
         [OperationContract(IsOneWay = true)]
-        void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status);
-
-        [OperationContract(IsOneWay = true)]
         void Message(MessageType messageType, string message);
     }
     public enum MessageType
@@ -77,8 +74,8 @@ namespace Cliver.CisteraScreenCaptureService
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
-                uiApiCallbacks.Add(uiApiCallback);
-                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
+                uiApiCallbacks.Add(uiApiCallback);                
+                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count + "\r\n" + Log.GetStackString(0, 3));
             }
         }
 
@@ -151,7 +148,7 @@ namespace Cliver.CisteraScreenCaptureService
             }
         }
 
-        internal static void StatusChanged(System.ServiceProcess.ServiceControllerStatus status)
+        static void doCallback(Action<IUiApiCallback> mi)
         {
             ThreadRoutines.StartTry(() =>
             {
@@ -162,11 +159,11 @@ namespace Cliver.CisteraScreenCaptureService
                     {
                         try
                         {
-                            uiApiCallback.ServiceStatusChanged(status);
+                            mi(uiApiCallback);
                         }
-                        catch (Exception e)
+                        catch (System.ServiceModel.CommunicationObjectAbortedException e)
                         {
-                            Log.Main.Warning2(e);
+                            //Log.Main.Warning2(e);
                             dead_uacs.Add(uiApiCallback);
                         }
                     }
@@ -178,26 +175,9 @@ namespace Cliver.CisteraScreenCaptureService
 
         internal static void Message(MessageType messageType, string message)
         {
-            ThreadRoutines.StartTry(() =>
+            doCallback((IUiApiCallback uiApiCallback) =>
             {
-                lock (uiApiCallbacks)
-                {
-                    List<IUiApiCallback> dead_uacs = new List<IUiApiCallback>();
-                    foreach (IUiApiCallback uiApiCallback in uiApiCallbacks)
-                    {
-                        try
-                        {
-                            uiApiCallback.Message(messageType, message);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Main.Warning2(e);
-                            dead_uacs.Add(uiApiCallback);
-                        }
-                    }
-                    foreach (IUiApiCallback dead_uac in dead_uacs)
-                        uiApiCallbacks.Remove(dead_uac);
-                }
+                uiApiCallback.Message(messageType, message);
             });
         }
     }

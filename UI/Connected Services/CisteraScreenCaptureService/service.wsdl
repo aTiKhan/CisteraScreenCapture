@@ -7,7 +7,6 @@
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/Cliver.CisteraScreenCaptureService" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/Cliver" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/Cliver.WinApi" />
-      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.ServiceProcess" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IUiApi_Subscribe_InputMessage">
@@ -34,9 +33,6 @@
   <wsdl:message name="IUiApi_GetLogDir_OutputMessage">
     <wsdl:part name="parameters" element="GetLogDirResponse" />
   </wsdl:message>
-  <wsdl:message name="IUiApi_ServiceStatusChanged_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="ServiceStatusChanged" />
-  </wsdl:message>
   <wsdl:message name="IUiApi_Message_OutputCallbackMessage">
     <wsdl:part name="parameters" element="Message" />
   </wsdl:message>
@@ -58,9 +54,6 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetLogDir">
       <wsdl:input wsaw:Action="urn:IUiApi/GetLogDir" message="IUiApi_GetLogDir_InputMessage" />
       <wsdl:output wsaw:Action="urn:IUiApi/GetLogDirResponse" message="IUiApi_GetLogDir_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ServiceStatusChanged">
-      <wsdl:output wsaw:Action="urn:IUiApi/ServiceStatusChanged" message="IUiApi_ServiceStatusChanged_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Message">
       <wsdl:output wsaw:Action="urn:IUiApi/Message" message="IUiApi_Message_OutputCallbackMessage" />

@@ -201,9 +201,6 @@
     <None Include="Connected Services\CisteraScreenCaptureService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\CisteraScreenCaptureService\System.ServiceProcess.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\DataSources\Cliver.CisteraScreenCaptureService.Settings.datasource" />
   </ItemGroup>
   <ItemGroup>

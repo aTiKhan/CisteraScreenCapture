@@ -45,7 +45,6 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 Log.Main.Inform("Starting...");
                 UiApi.OpenApi();
-                UiApi.StatusChanged(ServiceControllerStatus.StartPending);
 
                 //try
                 //{
@@ -62,7 +61,6 @@ namespace Cliver.CisteraScreenCaptureService
                     Log.Main.Inform("No console user active.");
                 else
                     sessionChanged(sessionId, true);
-                UiApi.StatusChanged(ServiceControllerStatus.Running);
             }
             catch(Exception e)
             {
@@ -76,9 +74,7 @@ namespace Cliver.CisteraScreenCaptureService
             try
             {
                 Log.Main.Inform("Stopping...");
-                UiApi.StatusChanged(ServiceControllerStatus.StopPending);
                 stopServingUser();
-                UiApi.StatusChanged(ServiceControllerStatus.Stopped);
                 UiApi.CloseApi();
             }
             catch (Exception e)
@@ -90,7 +86,7 @@ namespace Cliver.CisteraScreenCaptureService
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
-            Log.Main.Write("Session: " + changeDescription.SessionId + ":" + changeDescription.Reason);
+            Log.Main.Write("Session: " + changeDescription.SessionId + " :" + changeDescription.Reason);
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.ConsoleConnect:

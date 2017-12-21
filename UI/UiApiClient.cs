@@ -30,10 +30,6 @@ namespace Cliver.CisteraScreenCaptureUI
     [CallbackBehaviorAttribute(UseSynchronizationContext = true)]
     public class UiApiCallback : CisteraScreenCaptureService.IUiApiCallback
     {
-        public void ServiceStatusChanged(System.ServiceProcess.ServiceControllerStatus status)
-        {//not used - can be removed
-        }
-
         public void Message(MessageType messageType, string message)
         {
             try
@@ -64,6 +60,16 @@ namespace Cliver.CisteraScreenCaptureUI
 
     public partial class UiApiClient
     {
+        static internal void testCreateInstanceContext()
+        {
+            _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
+            _this.Subscribe();
+        }
+        static internal void testSubscribe()
+        {
+            _this.Subscribe();
+        }
+
         static UiApiClient()
         {
             try
