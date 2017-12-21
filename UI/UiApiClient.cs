@@ -60,15 +60,25 @@ namespace Cliver.CisteraScreenCaptureUI
 
     public partial class UiApiClient
     {
+#region testing
         static internal void testCreateInstanceContext()
         {
             _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
-            _this.Subscribe();
+        }
+        static internal void testCloseInstanceContext()
+        {
+            if (_this != null)
+            {
+                _this.Unsubscribe();
+                _this.Close();
+                _this = null;
+            }
         }
         static internal void testSubscribe()
         {
             _this.Subscribe();
         }
+#endregion
 
         static UiApiClient()
         {
@@ -162,6 +172,7 @@ namespace Cliver.CisteraScreenCaptureUI
                         {
                             if (_this != null)
                             {
+                                _this.Unsubscribe();
                                 _this.Close();
                                 _this = null;
                             }

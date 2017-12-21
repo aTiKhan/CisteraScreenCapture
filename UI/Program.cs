@@ -74,7 +74,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 
                 ProcessRoutines.RunSingleProcessOnly();
 
-#if test
+#if !test
                 Application.Run(SysTray.This);
 #else
 
@@ -82,6 +82,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 UiApiClient.testSubscribe();
                 UiApiClient.testSubscribe();
                 Thread.Sleep(1000);
+                UiApiClient.testCloseInstanceContext();
                 UiApiClient.testCreateInstanceContext();
                 UiApiClient.testSubscribe();
                 UiApiClient.testSubscribe();
