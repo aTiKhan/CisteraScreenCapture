@@ -52,26 +52,8 @@ namespace Cliver.CisteraScreenCaptureUI
                 //    + pagePadding.Left + pagePadding.Right
                 //    + borderThickness.Left + borderThickness.Right;
             };
-
-            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) =>
-            {
-                if (Visibility == Visibility.Visible)
-                {
-                    DoubleAnimation da = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
-                    this.BeginAnimation(UIElement.OpacityProperty, da);
-                }
-            };
-
-            Closing += (object sender, System.ComponentModel.CancelEventArgs e) =>
-            {
-                if (Opacity > 0)
-                {
-                    e.Cancel = true;
-                    DoubleAnimation da = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200));
-                    da.Completed += delegate { Close(); };
-                    this.BeginAnimation(UIElement.OpacityProperty, da);
-                }
-            };
+            
+            WpfRoutines.AddFadeEffect(this, 300);
 
             Title = "Cistera Screen Capture";
             try
