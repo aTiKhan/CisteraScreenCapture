@@ -45,9 +45,9 @@ namespace Cliver.CisteraScreenCaptureUI
 
             Message.TopMost = true;
 
-            LogMessage.DisableStumblingDialogs = false;
-            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir);
             Cliver.Config.Reload();
+            LogMessage.DisableStumblingDialogs = false;
+            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true, Settings.View.DeleteLogsOlderDays);
         }
 
         //public class CommandLineParameters : ProgramRoutines.CommandLineParameters
@@ -76,19 +76,20 @@ namespace Cliver.CisteraScreenCaptureUI
 #if !test
                 Application.Run(SysTray.This);
 #else
-
-                UiApiClient.testCreateInstanceContext();
-                UiApiClient.testSubscribe();
-                UiApiClient.testSubscribe();
-                Thread.Sleep(1000);
-                UiApiClient.testCloseInstanceContext();
-                UiApiClient.testCreateInstanceContext();
-                UiApiClient.testSubscribe();
-                UiApiClient.testSubscribe();
-                for (; ; )
-                {
-                    System.Threading.Thread.Sleep(10000);
-                }
+                SettingsWindow.Open();
+                Application.Run(SysTray.This);
+                //UiApiClient.testCreateInstanceContext();
+                //UiApiClient.testSubscribe();
+                //UiApiClient.testSubscribe();
+                //Thread.Sleep(1000);
+                //UiApiClient.testCloseInstanceContext();
+                //UiApiClient.testCreateInstanceContext();
+                //UiApiClient.testSubscribe();
+                //UiApiClient.testSubscribe();
+                //for (; ; )
+                //{
+                //    System.Threading.Thread.Sleep(10000);
+                //}
 #endif
             }
             catch (Exception e)
@@ -103,6 +104,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
         static internal void Exit()
         {
+            Log.Main.Inform("Exiting...\r\n" + Log.GetStackString(0, 10));
             UiApiClient.Unsubscribe();
             Environment.Exit(0);
         }

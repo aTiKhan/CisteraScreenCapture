@@ -34,6 +34,7 @@ namespace Cliver.CisteraScreenCaptureService
             public WinApi.User32.RECT? CapturedMonitorRectangle = null;
             public bool ShowMpegWindow = true;
             public bool WriteMpegOutput2Log = false;
+            public int DeleteLogsOlderDays = 10;
 
             public string GetServiceName()
             {

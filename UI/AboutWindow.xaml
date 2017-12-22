@@ -43,7 +43,7 @@
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="10,0,0,0"/>
             <Setter Property="Padding" Value="10,0,10,0"/>
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
+            <Setter Property="MinHeight" Value="25"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
@@ -57,22 +57,24 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="5" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <GroupBox Name="box" Header="About">
-                <RichTextBox Name="text" MinWidth="200" MaxWidth="300" Margin="10,10,10,10" IsReadOnly="True">
-                    <RichTextBox.Resources>
-                        <Style TargetType="{x:Type Paragraph}">
-                            <Setter Property="Margin" Value="0"/>
-                        </Style>
-                    </RichTextBox.Resources>
-                </RichTextBox>
-            </GroupBox>
-        </StackPanel>
-        <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Rows="1" Margin="0, 20, 0, 0">
+        <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
+                <GroupBox Name="box" Header="About">
+                    <RichTextBox Name="text" MinWidth="200" MaxWidth="300" Margin="10,10,10,10" IsReadOnly="True">
+                        <RichTextBox.Resources>
+                            <Style TargetType="{x:Type Paragraph}">
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </RichTextBox.Resources>
+                    </RichTextBox>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Rows="1" Margin="0, 20, 0, 0" DockPanel.Dock="Bottom">
             <Button x:Name="ok" Click="close" Content="Close"/>
         </UniformGrid>
     </Grid>

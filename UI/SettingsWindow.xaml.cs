@@ -41,9 +41,9 @@ namespace Cliver.CisteraScreenCaptureUI
 
             ContentRendered += delegate
             {
-                this.MinHeight = this.ActualHeight;
-                this.MaxHeight = this.ActualHeight;
-                this.MinWidth = this.ActualWidth;
+                //this.MinHeight = this.ActualHeight;
+                //this.MaxHeight = this.ActualHeight;
+                //this.MinWidth = this.ActualWidth;
             };
 
             IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) =>
@@ -136,6 +136,8 @@ namespace Cliver.CisteraScreenCaptureUI
 
             ShowMpegWindow.IsChecked = general.ShowMpegWindow;
             WriteMpegOutput2Log.IsChecked = general.WriteMpegOutput2Log;
+
+            DeleteLogsOlderDays.Text = general.DeleteLogsOlderDays.ToString();
         }
 
         static public void Open()
@@ -199,8 +201,16 @@ namespace Cliver.CisteraScreenCaptureUI
                 //if (general.CapturedMonitorRectangle == null)
                 //    throw new Exception("Could not get rectangle for monitor '" + general.CapturedMonitorDeviceName + "'");
                 general.CapturedMonitorRectangle = null;
+                
+                general.DeleteLogsOlderDays = int.Parse(DeleteLogsOlderDays.Text);
 
                 UiApiClient.SaveServiceSettings(general);
+
+                if (Settings.View.DeleteLogsOlderDays != general.DeleteLogsOlderDays)
+                {
+                    Settings.View.DeleteLogsOlderDays = general.DeleteLogsOlderDays;
+                    Settings.View.Save();
+                }
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped 

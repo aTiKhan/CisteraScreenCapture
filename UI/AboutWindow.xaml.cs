@@ -41,9 +41,9 @@ namespace Cliver.CisteraScreenCaptureUI
 
             ContentRendered += delegate
             {
-                this.MinHeight = this.ActualHeight;
-                this.MaxHeight = this.ActualHeight;
-                this.MinWidth = this.ActualWidth;
+                //this.MinHeight = this.ActualHeight;
+                //this.MaxHeight = this.ActualHeight;
+                //this.MinWidth = this.ActualWidth;
 
                 //FormattedText formattedText = new FormattedText(AssemblyProduct, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight);
                 //var pagePadding = text.Document.PagePadding;

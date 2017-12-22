@@ -237,5 +237,10 @@ namespace Cliver.CisteraScreenCaptureUI
                 LogMessage.Error(ex);
             }
         }
+
+        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

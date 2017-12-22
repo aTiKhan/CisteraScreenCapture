@@ -33,6 +33,7 @@ namespace Cliver.CisteraScreenCaptureUI
             public bool DisplayNotifications = false;
             public int ServiceStartPollTimeInMss = 5000;
             public int ServiceConnectionKeepAlivePulseTimeInMss = 100000;
+            public int DeleteLogsOlderDays = 10;
 
             //[Newtonsoft.Json.JsonIgnore]
             //public System.Text.Encoding Encoding = System.Text.Encoding.Unicode;

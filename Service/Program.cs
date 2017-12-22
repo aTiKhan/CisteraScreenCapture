@@ -30,13 +30,12 @@ namespace Cliver.CisteraScreenCaptureService
                 Log.Main.Error(e);
             };
 
-            LogMessage.DisableStumblingDialogs = true;
-            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir);
-
             //Config.Initialize(new string[] { "General" });
-            Cliver.Config.Reload();
             //Cliver.Config.Save();//to have a settings file
-        }
+            Cliver.Config.Reload();
+            LogMessage.DisableStumblingDialogs = true;
+            Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true, Settings.General.DeleteLogsOlderDays);
+    }
 
         static void Main()
         {
