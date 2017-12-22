@@ -51,7 +51,7 @@ namespace Cliver.CisteraScreenCaptureService
 #if !test
                 ServiceBase.Run(new Service());
 #else
-                //Service.sessionChanged(1, true);
+                Service.sessionChanged(1, true);
                 //System.Threading.Thread.Sleep(1000000);
                 //s.Stop
                 //MpegStream.Start(1, "");
@@ -71,27 +71,5 @@ namespace Cliver.CisteraScreenCaptureService
                 Log.Main.Error(e);
             }
         }
-
-        //[ServiceContract(Namespace = "http://Microsoft.ServiceModel.Samples", SessionMode = SessionMode.Required, CallbackContract = typeof(IClientApi))]
-        //public interface IServerApi
-        //{
-        //    [OperationContract(IsOneWay = true)]
-        //    void ReloadSetting();
-        //}
-        //public interface IClientApi
-        //{
-        //    [OperationContract(IsOneWay = true)]
-        //    void ServiceStarted();
-        //    [OperationContract(IsOneWay = true)]
-        //    void ServiceStopped();
-        //}
-
-        //[ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerCall)]
-        //public class CalculatorService : IServerApi
-        //{
-        //    public void ReloadSetting()
-        //    {
-        //    }
-        //}
     }
 }
