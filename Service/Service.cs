@@ -86,7 +86,7 @@ namespace Cliver.CisteraScreenCaptureService
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
         {
-            Log.Main.Write("Session: " + changeDescription.SessionId + " :" + changeDescription.Reason);
+            Log.Main.Write("Session: " + changeDescription.SessionId + " : " + changeDescription.Reason);
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.ConsoleConnect:
