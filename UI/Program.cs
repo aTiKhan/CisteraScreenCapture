@@ -86,6 +86,10 @@ namespace Cliver.CisteraScreenCaptureUI
                 UiApiClient.testCreateInstanceContext();
                 UiApiClient.testSubscribe();
                 UiApiClient.testSubscribe();
+                for (; ; )
+                {
+                    System.Threading.Thread.Sleep(10000);
+                }
 #endif
             }
             catch (Exception e)

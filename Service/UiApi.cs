@@ -166,6 +166,11 @@ namespace Cliver.CisteraScreenCaptureService
                             //Log.Main.Warning2(e);
                             dead_uacs.Add(uiApiCallback);
                         }
+                        catch (Exception e)
+                        {
+                            Log.Main.Warning(e);
+                            dead_uacs.Add(uiApiCallback);
+                        }
                     }
                     foreach (IUiApiCallback dead_uac in dead_uacs)
                         uiApiCallbacks.Remove(dead_uac);
