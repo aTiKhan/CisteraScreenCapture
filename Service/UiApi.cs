@@ -75,7 +75,7 @@ namespace Cliver.CisteraScreenCaptureService
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);                
-                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count + "\r\n" + Log.GetStackString(0, 3));
+                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
             }
         }
 

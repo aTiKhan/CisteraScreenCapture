@@ -35,13 +35,12 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)
             {
                 Exception e = (Exception)args.ExceptionObject;
                 Message.Error(e);
-                UiApiClient.Unsubscribe();
-                Application.Exit();
+                Exit();
             };
 
             Message.TopMost = true;
@@ -71,7 +70,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 if (ProcessRoutines.ProcessHasElevatedPrivileges())
                     m += " (as administrator)";
                 Log.Main.Inform(m);
-                
+
                 ProcessRoutines.RunSingleProcessOnly();
 
 #if !test
@@ -98,9 +97,14 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             finally
             {
-                UiApiClient.Unsubscribe();
-                Environment.Exit(0);
+                Exit();
             }
+        }
+
+        static internal void Exit()
+        {
+            UiApiClient.Unsubscribe();
+            Environment.Exit(0);
         }
     }
 }
