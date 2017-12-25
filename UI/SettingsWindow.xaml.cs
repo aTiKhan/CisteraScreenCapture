@@ -124,18 +124,22 @@ namespace Cliver.CisteraScreenCaptureUI
 
         static public void Open()
         {
-            if (w == null)
+            lock (lockObject)
             {
-                w = new SettingsWindow();
-                w.Closed += delegate 
+                if (w == null)
                 {
-                    w = null;
-                };
+                    w = new SettingsWindow();
+                    w.Closed += delegate
+                    {
+                        w = null;
+                    };
+                }
+                w.Show();
+                w.Activate();
             }
-            w.Show();
-            w.Activate();
         }
         static SettingsWindow w = null;
+        readonly static object lockObject = new object();
 
         void close(object sender, EventArgs e)
         {

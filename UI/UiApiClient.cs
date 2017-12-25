@@ -174,7 +174,7 @@ namespace Cliver.CisteraScreenCaptureUI
                             _this?.Close();
                             _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
                             _this.Subscribe();
-                            beginKeepAliveServiceConnection();//it seems to be redundant because of infinite timeout, but sometimes the channel gets closed due to errors
+                            //beginKeepAliveServiceConnection();//it seems to be redundant because of infinite timeout, but sometimes the channel gets closed due to errors
                         }
                         break;
                     default:
