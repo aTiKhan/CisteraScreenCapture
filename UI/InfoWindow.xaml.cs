@@ -61,6 +61,9 @@ namespace Cliver.CisteraScreenCaptureUI
                 });
                 if (string.IsNullOrWhiteSpace(sound_file))
                     sound_file = Settings.View.InfoSoundFile;
+                Log.Main.Trace(sound_file);
+                sound_file = PathRoutines.GetAbsolutePath(sound_file);
+                Log.Main.Trace(sound_file);
                 SoundPlayer sp = new SoundPlayer(sound_file);
                 sp.Play();
             };
