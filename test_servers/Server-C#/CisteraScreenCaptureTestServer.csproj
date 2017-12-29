@@ -134,16 +134,6 @@
     <Content Include="Resources\3RINGS~1.ICO" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CLIVER\CliverBot\CliverRoutines\CliverRoutines.csproj">
-      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
-      <Name>CliverRoutines</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CisteraScreenCapture.csproj">
-      <Project>{99bd0a06-0d5e-4ec0-bfe2-b88beebb9568}</Project>
-      <Name>CisteraScreenCapture</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,6 +143,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\CLIVER\CliverBot\CliverRoutines\CliverRoutines.csproj">
+      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
+      <Name>CliverRoutines</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Service\CisteraScreenCaptureService.csproj">
+      <Project>{ef4268d2-4794-4440-bc0c-43c6c9647974}</Project>
+      <Name>CisteraScreenCaptureService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
