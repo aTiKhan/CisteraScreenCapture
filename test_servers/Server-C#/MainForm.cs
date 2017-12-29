@@ -19,6 +19,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 using System.Security.Authentication;
+using Cliver.CisteraScreenCaptureService;
 
 
 namespace Cliver.CisteraScreenCaptureTestServer
@@ -160,6 +161,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
         void disconnect_socket()
         {
+            return;
             try
             {
                 socket.Shutdown(SocketShutdown.Both);
@@ -206,7 +208,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
             }
             finally
             {
-                //disconnect_socket();
+                disconnect_socket();
             }
         }
 
@@ -233,7 +235,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
             }
             finally
             {
-                //disconnect_socket();
+                disconnect_socket();
             }
         }
 
@@ -303,7 +305,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
             }
             finally
             {
-                //disconnect_socket();
+                disconnect_socket();
             }
         }
     }
