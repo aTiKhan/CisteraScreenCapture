@@ -175,6 +175,7 @@ namespace Cliver.CisteraScreenCaptureService
                     (Exception e) =>
                     {
                         Log.Main.Error(e);
+                        TcpServer.Stop();
                         UiApi.Message(MessageType.ERROR, Log.GetExceptionMessage(e));
                     },
                     () =>

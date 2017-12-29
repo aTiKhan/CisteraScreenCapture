@@ -123,7 +123,7 @@ namespace Cliver.CisteraScreenCaptureService
         static string commandLine = null;
         static FileStream fileStream = null;
         static ProcessRoutines.AntiZombieTracker antiZombieTracker = null;
-        static string userSessionAgent = "userSessionAgent.exe";
+        static string userSessionAgent = "UserSessionAgent.exe";
 
         public static void Stop()
         {

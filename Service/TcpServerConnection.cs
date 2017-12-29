@@ -67,9 +67,14 @@ namespace Cliver.CisteraScreenCaptureService
 
                 if (socket != null)
                 {
+                    Log.Main.Trace("Shutdown...");
                     socket.Shutdown(SocketShutdown.Both);
-                    socket.Disconnect(true);
+                    //Log.Main.Trace("Disconnect...");
+                    //socket.Disconnect(false);
+                    Log.Main.Trace("Close...");
                     socket.Close();
+                    Log.Main.Trace("Dispose...");
+                    socket.Dispose();
                     socket = null;
                 }
                 if (stream != null)
