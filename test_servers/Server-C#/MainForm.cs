@@ -174,7 +174,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
         void disconnect_socket()
         {
-            //return;
+            return;
             try
             {
                 socket.Shutdown(SocketShutdown.Both);
