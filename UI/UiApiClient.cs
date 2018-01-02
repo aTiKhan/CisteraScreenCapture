@@ -94,7 +94,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
         }
         readonly static InstanceContext instanceContext;
-        static CisteraScreenCaptureService.UiApiClient _this;
+        static CisteraScreenCaptureService.UiApiClient _this = null;
 
         static void beginMonitorServiceStartStop()
         {
@@ -159,6 +159,7 @@ namespace Cliver.CisteraScreenCaptureUI
             try
             {
                 WinApi.Advapi32.SERVICE_NOTIFY n = Marshal.PtrToStructure<WinApi.Advapi32.SERVICE_NOTIFY>(parameter);
+                //Log.Main.Trace("Service status: " + n.ServiceStatus.dwCurrentState);
                 if (serviceStatus == n.ServiceStatus.dwCurrentState)//on some Windows ServiceStatusChanged is invoked many times!
                     return;
                 serviceStatus = n.ServiceStatus.dwCurrentState;
@@ -255,13 +256,13 @@ namespace Cliver.CisteraScreenCaptureUI
             }
         }
 
-        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetServiceSettings()
+        static public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetServiceSettings(bool reset = false)
         {
             try
             {
                 lock (instanceContext)
                 {
-                    return _this?.GetSettings();
+                    return _this?.GetSettings(reset);
                 }
             }
             catch (Exception e)

@@ -71,7 +71,7 @@ namespace Cliver.CisteraScreenCaptureUI
                     ProcessRoutines.Restart(true);
             }
         }
-        readonly Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general; 
+        Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general; 
 
         void set()
         {
@@ -223,7 +223,9 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             //if (!Message.YesNo("Settings will be reset to their initial state. Proceed?"))
             //    return;
-            general.Reset();
+            //general.Reset();
+            //general = Cliver.CisteraScreenCaptureService.Settings.General.GetResetInstance<Cliver.CisteraScreenCaptureService.Settings.GeneralSettings>();
+            general = UiApiClient.GetServiceSettings(true);
             set();
         }
     }

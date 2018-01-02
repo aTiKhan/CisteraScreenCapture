@@ -34,7 +34,7 @@ namespace Cliver.CisteraScreenCaptureService
         void Unsubscribe();
 
         [OperationContract()]
-        Settings.GeneralSettings GetSettings();
+        Settings.GeneralSettings GetSettings(bool reset = false);
 
         [OperationContract()]
         void SaveSettings(Settings.GeneralSettings general);
@@ -89,9 +89,11 @@ namespace Cliver.CisteraScreenCaptureService
             }
         }
 
-        public Settings.GeneralSettings GetSettings()
+        public Settings.GeneralSettings GetSettings(bool reset = false)
         {
             subscribe();
+            if(reset)
+                return Settings.General.GetResetInstance<Settings.GeneralSettings>();
             return Settings.General.GetReloadedInstance<Settings.GeneralSettings>();
         }
 

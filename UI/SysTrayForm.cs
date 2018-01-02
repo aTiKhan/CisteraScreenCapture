@@ -64,7 +64,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
         public void ServiceStateChanged(ServiceControllerStatus? status)
         {
-            this.Invoke(() =>
+            this.Invoke2(() =>
             {
                 StartStop.Checked = status == ServiceControllerStatus.Running;
                 string title = "Cistera Screen Capture";

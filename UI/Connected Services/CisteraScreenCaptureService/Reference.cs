@@ -28,10 +28,10 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
         System.Threading.Tasks.Task UnsubscribeAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/GetSettings", ReplyAction="urn:IUiApi/GetSettingsResponse")]
-        Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings();
+        Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings(bool reset);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/GetSettings", ReplyAction="urn:IUiApi/GetSettingsResponse")]
-        System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureService.Settings.GeneralSettings> GetSettingsAsync();
+        System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureService.Settings.GeneralSettings> GetSettingsAsync(bool reset);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:IUiApi/SaveSettings", ReplyAction="urn:IUiApi/SaveSettingsResponse")]
         void SaveSettings(Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general);
@@ -97,12 +97,12 @@ namespace Cliver.CisteraScreenCaptureUI.CisteraScreenCaptureService {
             return base.Channel.UnsubscribeAsync();
         }
         
-        public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings() {
-            return base.Channel.GetSettings();
+        public Cliver.CisteraScreenCaptureService.Settings.GeneralSettings GetSettings(bool reset) {
+            return base.Channel.GetSettings(reset);
         }
         
-        public System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureService.Settings.GeneralSettings> GetSettingsAsync() {
-            return base.Channel.GetSettingsAsync();
+        public System.Threading.Tasks.Task<Cliver.CisteraScreenCaptureService.Settings.GeneralSettings> GetSettingsAsync(bool reset) {
+            return base.Channel.GetSettingsAsync(reset);
         }
         
         public void SaveSettings(Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general) {

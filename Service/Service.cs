@@ -102,7 +102,7 @@ namespace Cliver.CisteraScreenCaptureService
             base.OnSessionChange(changeDescription);
         }
 
-     internal   static void sessionChanged(uint sessionId, bool active)
+        internal static void sessionChanged(uint sessionId, bool active)
         {
             try
             {

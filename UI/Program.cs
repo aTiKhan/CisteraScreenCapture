@@ -39,7 +39,7 @@ namespace Cliver.CisteraScreenCaptureUI
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)
             {
                 Exception e = (Exception)args.ExceptionObject;
-                Message.Error(e);
+                LogMessage.Error(e);
                 Exit();
             };
 
@@ -76,9 +76,9 @@ namespace Cliver.CisteraScreenCaptureUI
 #if !test
                 Application.Run(SysTray.This);
 #else
+                UiApiClient.testCreateInstanceContext();
                 SettingsWindow.Open();
                 Application.Run(SysTray.This);
-                //UiApiClient.testCreateInstanceContext();
                 //UiApiClient.testSubscribe();
                 //UiApiClient.testSubscribe();
                 //Thread.Sleep(1000);
@@ -94,7 +94,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             catch (Exception e)
             {
-                Message.Error(e);
+                LogMessage.Error(e);
             }
             finally
             {
