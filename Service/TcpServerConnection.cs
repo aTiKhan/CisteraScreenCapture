@@ -27,7 +27,7 @@ namespace Cliver.CisteraScreenCaptureService
     {
         public TcpServerConnection(Socket socket)
         {
-            this.socket = socket;
+            this.socket = socket ?? throw new Exception("socket is null");
             stream = new NetworkStream(socket);
 
             Log.Main.Inform("Starting connection from " + RemoteIp + ":" + RemotePort);
@@ -36,10 +36,13 @@ namespace Cliver.CisteraScreenCaptureService
                 run,
                 (Exception e) =>
                 {
-                    if (socket != null && !socket.Connected)
-                        Log.Main.Inform("Socket from " + RemoteIp + ":" + RemotePort + " has been disconnected.");
-                    else
-                        Log.Main.Error(e);
+                    lock (this)
+                    {
+                        if (this.socket != null && !this.socket.Connected)
+                            Log.Main.Inform("Connection from " + RemoteIp + ":" + RemotePort + " has been terminated.");
+                        else
+                            Log.Main.Error(e);
+                    }
                 },
                 () =>
                 {
@@ -47,20 +50,22 @@ namespace Cliver.CisteraScreenCaptureService
                 }
                 );
         }
-        Socket socket = null;
-        Thread thread = null;
+        readonly Socket socket = null;
         Stream stream = null;
+        Thread thread = null;
 
         ~TcpServerConnection()
         {
             Dispose();
+            if (socket != null)
+                socket.Dispose();
         }
 
         public void Dispose()
         {
             lock (this)
             {
-                if (socket == null)
+                if (disposed)
                     return;
 
                 Log.Main.Inform("Closing connection from " + RemoteIp + ":" + RemotePort);
@@ -74,8 +79,8 @@ namespace Cliver.CisteraScreenCaptureService
                     Log.Main.Trace("Close...");
                     socket.Close();
                     //Log.Main.Trace("Dispose...");
-                    //socket.Dispose();
-                    socket = null;
+                    //socket.Dispose();//disposed socket does not allow to get RemoteIp etc in a error handler that might be invoked 
+                    //socket = null;
                 }
                 if (stream != null)
                 {
@@ -87,14 +92,19 @@ namespace Cliver.CisteraScreenCaptureService
                     thread.Abort();
                     thread = null;
                 }
+                disposed = true;
             }
         }
+        bool disposed = false;
 
         public bool IsAlive
         {
             get
             {
-                return socket != null;
+                lock (this)
+                {
+                    return socket != null && socket.Connected;
+                }
             }
         }
 
@@ -102,9 +112,18 @@ namespace Cliver.CisteraScreenCaptureService
         {
             get
             {
-                if (!IsAlive)
-                    return null;
-                return ((IPEndPoint)socket.LocalEndPoint).Address;
+                lock (this)
+                {
+                    try
+                    {
+                        return ((IPEndPoint)socket.LocalEndPoint).Address;
+                    }
+                    catch(Exception e)
+                    {
+                        Log.Main.Warning(e);
+                        return null;
+                    }
+                }
             }
         }
 
@@ -112,9 +131,18 @@ namespace Cliver.CisteraScreenCaptureService
         {
             get
             {
-                if (!IsAlive)
-                    return 0;
-                return (ushort)((IPEndPoint)socket.LocalEndPoint).Port;
+                lock (this)
+                {
+                    try
+                    {
+                        return (ushort)((IPEndPoint)socket.LocalEndPoint).Port;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Main.Warning(e);
+                        return 0;
+                    }
+                }
             }
         }
 
@@ -122,9 +150,18 @@ namespace Cliver.CisteraScreenCaptureService
         {
             get
             {
-                if (!IsAlive)
-                    return null;
-                return ((IPEndPoint)socket.RemoteEndPoint).Address;
+                lock (this)
+                {
+                    try
+                    {
+                        return ((IPEndPoint)socket.RemoteEndPoint).Address;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Main.Warning(e);
+                        return null;
+                    }
+                }
             }
         }
 
@@ -132,9 +169,18 @@ namespace Cliver.CisteraScreenCaptureService
         {
             get
             {
-                if (!IsAlive)
-                    return 0;
-                return (ushort)((IPEndPoint)socket.RemoteEndPoint).Port;
+                lock (this)
+                {
+                    try
+                    {
+                        return (ushort)((IPEndPoint)socket.RemoteEndPoint).Port;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Main.Warning(e);
+                        return 0;
+                    }
+                }
             }
         }
 
