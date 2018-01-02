@@ -110,11 +110,11 @@ namespace Cliver.CisteraScreenCaptureUI
                 {
                     for (; ; )
                     {
-                        notify = new WinApi.Advapi32.SERVICE_NOTIFY();
-                        notify.dwVersion = 2;
-                        notify.pfnNotifyCallback = Marshal.GetFunctionPointerForDelegate(changeDelegate);
-                        notify.pContext = IntPtr.Zero;
-                        notify.dwNotificationStatus = 0;
+                        serviceSatusChangedNotify = new WinApi.Advapi32.SERVICE_NOTIFY();
+                        serviceSatusChangedNotify.dwVersion = 2;
+                        serviceSatusChangedNotify.pfnNotifyCallback = Marshal.GetFunctionPointerForDelegate(serviceStatusChangedDelegate);
+                        serviceSatusChangedNotify.pContext = IntPtr.Zero;
+                        serviceSatusChangedNotify.dwNotificationStatus = 0;
                         WinApi.Advapi32.SERVICE_STATUS_PROCESS process;
                         process.dwServiceType = 0;
                         process.dwCurrentState = 0;
@@ -125,16 +125,16 @@ namespace Cliver.CisteraScreenCaptureUI
                         process.dwWaitHint = 0;
                         process.dwProcessId = 0;
                         process.dwServiceFlags = 0;
-                        notify.ServiceStatus = process;
-                        notify.dwNotificationTriggered = 0;
-                        notify.pszServiceNames = Marshal.StringToHGlobalUni(Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME);
-                        notifyHandle = GCHandle.Alloc(notify, GCHandleType.Pinned);
+                        serviceSatusChangedNotify.ServiceStatus = process;
+                        serviceSatusChangedNotify.dwNotificationTriggered = 0;
+                        serviceSatusChangedNotify.pszServiceNames = Marshal.StringToHGlobalUni(Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME);
+                        notifyHandle = GCHandle.Alloc(serviceSatusChangedNotify, GCHandleType.Pinned);
                         unmanagedNotifyStructure = notifyHandle.AddrOfPinnedObject();
                         if (0 != WinApi.Advapi32.NotifyServiceStatusChange(hService, WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_RUNNING | WinApi.Advapi32.NotifyMask.SERVICE_NOTIFY_STOPPED, unmanagedNotifyStructure))
                             LogMessage.Error("NotifyServiceStatusChange: " + ErrorRoutines.GetLastError());
 
-                        m.Reset();
-                        m.WaitOne();
+                        serviceStatusChangedManualResetEvent.Reset();
+                        serviceStatusChangedManualResetEvent.WaitOne();
                         notifyHandle.Free();
                     }
                 },
@@ -154,11 +154,14 @@ namespace Cliver.CisteraScreenCaptureUI
                 LogMessage.Error(e);
             }
         }
-        public static void ReceivedStatusChangedEvent(IntPtr parameter)
+        public static void ServiceStatusChanged(IntPtr parameter)
         {
             try
             {
                 WinApi.Advapi32.SERVICE_NOTIFY n = Marshal.PtrToStructure<WinApi.Advapi32.SERVICE_NOTIFY>(parameter);
+                if (serviceStatus == n.ServiceStatus.dwCurrentState)//on some Windows ServiceStatusChanged is invoked many times!
+                    return;
+                serviceStatus = n.ServiceStatus.dwCurrentState;
                 ServiceControllerStatus status;
                 switch (n.ServiceStatus.dwCurrentState)
                 {
@@ -189,14 +192,15 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             finally
             {
-                m.Set();
+                serviceStatusChangedManualResetEvent.Set();
             }
         }
-        static private readonly ManualResetEvent m = new ManualResetEvent(false);
+        static uint serviceStatus = 0;
+        static private readonly ManualResetEvent serviceStatusChangedManualResetEvent = new ManualResetEvent(false);
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void StatusChanged(IntPtr parameter);
-        readonly public static StatusChanged changeDelegate = ReceivedStatusChangedEvent;
-        public static WinApi.Advapi32.SERVICE_NOTIFY notify;
+        readonly public static StatusChanged serviceStatusChangedDelegate = ServiceStatusChanged;
+        public static WinApi.Advapi32.SERVICE_NOTIFY serviceSatusChangedNotify;
         public static GCHandle notifyHandle;
         public static IntPtr unmanagedNotifyStructure;
 
