@@ -145,20 +145,10 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
         void connect_socket()
         {
-            if (socket == null)
+            if (socket != null)
             {
-                IPAddress ipAddress = NetworkRoutines.GetLocalIpForDestination(IPAddress.Parse("127.0.0.1"));
-                //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text));
-                socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-//_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 500)
-//_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, Timeout)
-                //socket.Bind(localEndPoint);
-            }
-            if (!socket.IsConnectionAlive())
-            {
+                if (socket.IsConnectionAlive())
+                    return;
                 try
                 {
                     socket.Close();
@@ -167,10 +157,22 @@ namespace Cliver.CisteraScreenCaptureTestServer
                 {
                     socket = null;
                 }
-                socket.Connect(remoteHost, int.Parse(remotePort));
+                if (stream != null)
+                    stream.Close();
             }
-            if (stream == null)
-                stream = new NetworkStream(socket);
+
+            IPAddress ipAddress = NetworkRoutines.GetLocalIpForDestination(IPAddress.Parse("127.0.0.1"));
+            //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text));
+            socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            //_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 500)
+            //_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, Timeout)
+            //socket.Bind(localEndPoint);
+
+            socket.Connect(remoteHost, int.Parse(remotePort));
+            stream = new NetworkStream(socket);
         }
 
         void connect_socket2()
