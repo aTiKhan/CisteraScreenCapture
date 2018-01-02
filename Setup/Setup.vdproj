@@ -255,6 +255,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A388E492ACED459E96BE0EA7920A2689"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A6E611D6DC4956DF6C5017D79C0F42A0"
         "OwnerKey" = "8:_4F080796FE424CEF944A54495286E7AA"
         "MsmSig" = "8:_UNDEFINED"
@@ -1113,6 +1119,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A388E492ACED459E96BE0EA7920A2689"
+            {
+            "SourcePath" = "8:C:\\Windows\\System32\\msiexec.exe"
+            "TargetName" = "8:msiexec.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_43FF56BFCD3F4A32A1FDA55A9BB5F74F"
+            "Condition" = "8:"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:FALSE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:TRUE"
+            "Permanent" = "11:TRUE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A6E611D6DC4956DF6C5017D79C0F42A0"
             {
             "AssemblyRegister" = "3:1"
@@ -1315,6 +1341,28 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3940EA965DE044FB9350A33F1337681A"
+                    {
+                    "Name" = "8:Cistera Screen Capture"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_8699E4B1925F413E87AA5B0839EA2BDB"
+                        "Folders"
+                        {
+                        }
+                    }
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_43FF56BFCD3F4A32A1FDA55A9BB5F74F"
+            {
+            "Name" = "8:#1914"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:SystemFolder"
+                "Folders"
+                {
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_9180E33B1C8B4E94A5E382CFB1E20529"
@@ -1356,7 +1404,7 @@
         "Name" = "8:Cistera Screen Capture"
         "ProductName" = "8:CisteraScreenCapture"
         "ProductCode" = "8:{02FA1AF6-F4EC-438E-86FC-DB0F619DAF88}"
-        "PackageCode" = "8:{9D60241B-231A-4A2A-95AD-4A7C9CA60F84}"
+        "PackageCode" = "8:{1926E01B-5A50-499E-850A-2E2272D2F30B}"
         "UpgradeCode" = "8:{9BA72789-EC59-406C-862D-F24F8D0544FA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1478,14 +1526,14 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_441E3F23248B4E2A8AC2FF5E58FA279D"
             {
-            "Name" = "8:CisteraScreenCapture UI"
+            "Name" = "8:UI Manager"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_4F080796FE424CEF944A54495286E7AA"
-            "Folder" = "8:_3B0C59A68542451B86D288D703D93BCD"
+            "Folder" = "8:_3940EA965DE044FB9350A33F1337681A"
             "WorkingFolder" = "8:_357CEF0E32EA49488DD230ABF3203DBD"
             "Icon" = "8:"
             "Feature" = "8:"
@@ -1501,6 +1549,20 @@
             "Target" = "8:_4F080796FE424CEF944A54495286E7AA"
             "Folder" = "8:_A812EEB4AF234FBBA412E1A1E5DE278D"
             "WorkingFolder" = "8:_357CEF0E32EA49488DD230ABF3203DBD"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6EE5966E5E864DCCB746E3A7AF023745"
+            {
+            "Name" = "8:Uninstall"
+            "Arguments" = "8:/x {02FA1AF6-F4EC-438E-86FC-DB0F619DAF88} "
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_A388E492ACED459E96BE0EA7920A2689"
+            "Folder" = "8:_3940EA965DE044FB9350A33F1337681A"
+            "WorkingFolder" = "8:_43FF56BFCD3F4A32A1FDA55A9BB5F74F"
             "Icon" = "8:"
             "Feature" = "8:"
             }
