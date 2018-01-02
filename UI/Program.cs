@@ -47,6 +47,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
             Cliver.Config.Reload();
             LogMessage.DisableStumblingDialogs = false;
+            Log.ShowDeleteOldLogsDialog = false;
             Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true, Settings.View.DeleteLogsOlderDays);
         }
 
