@@ -38,7 +38,9 @@ namespace Cliver.CisteraScreenCaptureService
                 {
                     lock (this)
                     {
-                        if (this.socket != null && !this.socket.Connected)
+                        if (this.socket == null)//disposed
+                            return;
+                        if (!this.socket.Connected)
                             Log.Main.Inform("Connection from " + RemoteIp + ":" + RemotePort + " has been terminated.");
                         else
                             Log.Main.Error(e);
@@ -50,15 +52,13 @@ namespace Cliver.CisteraScreenCaptureService
                 }
                 );
         }
-        readonly Socket socket = null;
+        Socket socket = null;
         Stream stream = null;
         Thread thread = null;
 
         ~TcpServerConnection()
         {
             Dispose();
-            if (socket != null)
-                socket.Dispose();
         }
 
         public void Dispose()
@@ -75,12 +75,12 @@ namespace Cliver.CisteraScreenCaptureService
                     Log.Main.Trace("Shutdown...");
                     socket.Shutdown(SocketShutdown.Both);
                     //Log.Main.Trace("Disconnect...");
-                    //socket.Disconnect(false);
+                    //socket.Disconnect(false);//!!!blocks for timeout when the other side is disconnected improperly
                     Log.Main.Trace("Close...");
                     socket.Close();
-                    //Log.Main.Trace("Dispose...");
-                    //socket.Dispose();//disposed socket does not allow to get RemoteIp etc in a error handler that might be invoked 
-                    //socket = null;
+                    Log.Main.Trace("Dispose...");
+                    socket.Dispose();//!!!disposed socket does not allow to get RemoteIp etc in a error handler that might be invoked 
+                    socket = null;
                 }
                 if (stream != null)
                 {
