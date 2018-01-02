@@ -148,12 +148,27 @@ namespace Cliver.CisteraScreenCaptureTestServer
             if (socket == null)
             {
                 IPAddress ipAddress = NetworkRoutines.GetLocalIpForDestination(IPAddress.Parse("127.0.0.1"));
-                IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text));
+                //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text));
                 socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                socket.Bind(localEndPoint);
+
+                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+//_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 500)
+//_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, Timeout)
+                //socket.Bind(localEndPoint);
             }
             if (!socket.IsConnectionAlive())
+            {
+                try
+                {
+                    socket.Close();
+                }
+                finally
+                {
+                    socket = null;
+                }
                 socket.Connect(remoteHost, int.Parse(remotePort));
+            }
             if (stream == null)
                 stream = new NetworkStream(socket);
         }
@@ -185,19 +200,19 @@ namespace Cliver.CisteraScreenCaptureTestServer
                 socket.Disconnect(true);
             }
             catch { }
-            try
-            {
-                socket.Close();
-            }
-            finally
-            {
-                socket = null;
-            }
-            if (stream != null)
-            {
-                stream.Dispose();
-                stream = null;
-            }
+            //try
+            //{
+            //    socket.Close();
+            //}
+            //finally
+            //{
+            //    socket = null;
+            //}
+            //if (stream != null)
+            //{
+            //    stream.Dispose();
+            //    stream = null;
+            //}
         }
 
         private void start_Click(object sender, EventArgs e)
