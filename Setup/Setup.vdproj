@@ -1526,7 +1526,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_441E3F23248B4E2A8AC2FF5E58FA279D"
             {
-            "Name" = "8:UI Manager"
+            "Name" = "8:Cistera Screen Capture UI"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
