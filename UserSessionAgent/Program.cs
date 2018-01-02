@@ -32,7 +32,7 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionAgent
                 if (a == null)
                 {
                     string defaultMonitorName = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetDefaultMonitorName();
-                    LogMessage.Warning("Monitor '" + general.CapturedMonitorDeviceName + "' was not found. Using default one '" + defaultMonitorName + "'");
+                    Log.Main.Warning("Monitor '" + general.CapturedMonitorDeviceName + "' was not found. Using default one '" + defaultMonitorName + "'");
                     general.CapturedMonitorDeviceName = defaultMonitorName;
                     a = Cliver.CisteraScreenCaptureService.MonitorRoutines.GetMonitorAreaByMonitorName(general.CapturedMonitorDeviceName);
                     if (a == null)
@@ -59,7 +59,7 @@ namespace Cliver.CisteraScreenCaptureService.UserSessionAgent
             }
             catch (Exception e)
             {
-                LogMessage.Error(e);
+                Log.Main.Error(e);
             }
         }
         static CisteraScreenCaptureService.UserSessionApiClient _this;

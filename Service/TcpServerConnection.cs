@@ -40,7 +40,7 @@ namespace Cliver.CisteraScreenCaptureService
                     {
                         if (this.socket == null)//disposed
                             return;
-                        if (!this.socket.Connected)
+                        if (!IsAlive)
                             Log.Main.Inform("Connection from " + RemoteIp + ":" + RemotePort + " has been terminated.");
                         else
                             Log.Main.Error(e);
@@ -72,8 +72,20 @@ namespace Cliver.CisteraScreenCaptureService
 
                 if (socket != null)
                 {
-                    Log.Main.Trace("Shutdown...");
-                    socket.Shutdown(SocketShutdown.Both);
+                    try
+                    {
+                        Log.Main.Trace("Shutdown...");
+                        socket.Shutdown(SocketShutdown.Both);
+                    }
+                    catch (System.Net.Sockets.SocketException e)
+                    {
+                        if(e.SocketErrorCode != SocketError.ConnectionReset)
+                            Log.Main.Error(e);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Main.Error(e);
+                    }
                     //Log.Main.Trace("Disconnect...");
                     //socket.Disconnect(false);//!!!blocks for timeout when the other side is disconnected improperly
                     Log.Main.Trace("Close...");
@@ -103,7 +115,10 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 lock (this)
                 {
-                    return socket != null && socket.Connected;
+                    if (socket == null)
+                        return false;
+
+                    return socket.IsConnectionAlive();
                 }
             }
         }

@@ -143,7 +143,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
         string remoteHost;
         string remotePort;
 
-        void connect_socket1()
+        void connect_socket()
         {
             if (socket == null)
             {
@@ -152,13 +152,13 @@ namespace Cliver.CisteraScreenCaptureTestServer
                 socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 socket.Bind(localEndPoint);
             }
-            if (!socket.Connected || !socket.Poll(1000, SelectMode.SelectWrite))
+            if (!socket.IsConnectionAlive())
                 socket.Connect(remoteHost, int.Parse(remotePort));
             if (stream == null)
                 stream = new NetworkStream(socket);
         }
 
-        void connect_socket()
+        void connect_socket2()
         {
             IPAddress ipAddress = NetworkRoutines.GetLocalIpForDestination(IPAddress.Parse("127.0.0.1"));
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text) + port_i);
@@ -174,7 +174,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
         void disconnect_socket()
         {
-            return;
+            //return;
             try
             {
                 socket.Shutdown(SocketShutdown.Both);
