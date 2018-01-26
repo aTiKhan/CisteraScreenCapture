@@ -53,7 +53,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
         public class CommandLineParameters : ProgramRoutines.CommandLineParameters
         {
-            public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");
+            public static readonly CommandLineParameters INITIAL_CONFIGURATION = new CommandLineParameters("-initial_configuration");
             //public static readonly CommandLineParameters START = new CommandLineParameters("-start");
             //public static readonly CommandLineParameters STOP = new CommandLineParameters("-stop");
             //public static readonly CommandLineParameters EXIT = new CommandLineParameters("-exit");
@@ -75,7 +75,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 ProcessRoutines.RunSingleProcessOnly();
 
-                if(ProgramRoutines.IsParameterSet<CommandLineParameters>(CommandLineParameters.CONFIGURE))
+                if(ProgramRoutines.IsParameterSet<CommandLineParameters>(CommandLineParameters.INITIAL_CONFIGURATION))
                 {
                     Message.Inform("Please configure service in the next window.");
                     SettingsWindow.OpenDialog();
