@@ -28,7 +28,11 @@ namespace Cliver.CisteraScreenCaptureUI
             {
                 try
                 {
-                    //Process.Start(Assembly.GetExecutingAssembly().Location);
+                    //start for initial configuration
+                    //Message.Inform("as:" + ProcessRoutines.ProcessHasElevatedPrivileges());                    
+                    Process p = Process.Start(Assembly.GetExecutingAssembly().Location, "-configure");
+                    p.WaitForExit();
+
                     ProcessRoutines.CreateProcessAsUserOfCurrentSession(Assembly.GetExecutingAssembly().Location);//starts the process as the current user while the installer runs as SYSTEM
                 }
                 catch (Exception ex)

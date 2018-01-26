@@ -85,6 +85,10 @@ namespace Cliver.CisteraScreenCaptureUI
             try
             {
                 instanceContext = new InstanceContext(new UiApiCallback());
+                
+                System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
+                if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped)
+                    _this = new CisteraScreenCaptureService.UiApiClient(instanceContext);
 
                 beginMonitorServiceStartStop();
             }
@@ -310,7 +314,7 @@ namespace Cliver.CisteraScreenCaptureUI
                 try
                 {
                     //if(!WindowsUserRoutines.CurrentUserHasElevatedPrivileges())
-                    if (!ProcessRoutines.ProcessHasElevatedPrivileges())
+                    if (!ProcessRoutines.ProcessHasElevatedPrivileges() && !ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/)
                     {
                         if (Message.YesNo("This action requires elevated privileges. Would you like to restart this application 'As Administrator'?"))
                             ProcessRoutines.Restart(true);

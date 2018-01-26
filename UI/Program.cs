@@ -51,14 +51,15 @@ namespace Cliver.CisteraScreenCaptureUI
             Log.Initialize(Log.Mode.ONLY_LOG, Log.CompanyCommonDataDir, true, Settings.View.DeleteLogsOlderDays);
         }
 
-        //public class CommandLineParameters : ProgramRoutines.CommandLineParameters
-        //{
-        //    public static readonly CommandLineParameters START = new CommandLineParameters("-start");
-        //    public static readonly CommandLineParameters STOP = new CommandLineParameters("-stop");
-        //    public static readonly CommandLineParameters EXIT = new CommandLineParameters("-exit");
+        public class CommandLineParameters : ProgramRoutines.CommandLineParameters
+        {
+            public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");
+            //public static readonly CommandLineParameters START = new CommandLineParameters("-start");
+            //public static readonly CommandLineParameters STOP = new CommandLineParameters("-stop");
+            //public static readonly CommandLineParameters EXIT = new CommandLineParameters("-exit");
 
-        //    public CommandLineParameters(string value) : base(value) { }
-        //}
+            public CommandLineParameters(string value) : base(value) { }
+        }
 
         [STAThread]
         public static void Main(string[] args)
@@ -73,6 +74,13 @@ namespace Cliver.CisteraScreenCaptureUI
                 Log.Main.Inform(m);
 
                 ProcessRoutines.RunSingleProcessOnly();
+
+                if(ProgramRoutines.IsParameterSet<CommandLineParameters>(CommandLineParameters.CONFIGURE))
+                {
+                    Message.Inform("Please configure service in the next window.");
+                    SettingsWindow.OpenDialog();
+                    return;
+                }
 
 #if !test
                 Application.Run(SysTray.This);

@@ -52,7 +52,7 @@ namespace Cliver.CisteraScreenCaptureUI
 
             //WindowStartupLocation = WindowStartupLocation.CenterScreen;
             //DefaultServerIp.ValueDataType = typeof(IPAddress);
-            
+
             general = UiApiClient.GetServiceSettings();
             if (general == null)
             {
@@ -63,7 +63,7 @@ namespace Cliver.CisteraScreenCaptureUI
             }
             set();
 
-            if (!ProcessRoutines.ProcessHasElevatedPrivileges())
+            if (!ProcessRoutines.ProcessHasElevatedPrivileges() && !ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/)
             {
                 ok.IsEnabled = false;
                 reset.IsEnabled = false;
@@ -141,6 +141,23 @@ namespace Cliver.CisteraScreenCaptureUI
         static SettingsWindow w = null;
         readonly static object lockObject = new object();
 
+        static public void OpenDialog()
+        {
+            lock (lockObject)
+            {
+                if (w == null)
+                {
+                    w = new SettingsWindow();
+                    w.Closed += delegate
+                    {
+                        w = null;
+                    };
+                }
+                w.ShowDialog();
+            }
+        }
+
+        static bool RequireElevatedRightsToManage = true;
         void close(object sender, EventArgs e)
         {
             Close();
@@ -200,7 +217,10 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped 
-                    && Message.YesNo("The changes have been saved and will be engaged after service restart. Would you like to restart the service (all the present connections if any, will be terminated)?"))
+                    && (ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/
+                    || Message.YesNo("The changes have been saved and will be engaged after service restart. Would you like to restart the service (all the present connections if any, will be terminated)?")
+                    )
+                    )
                 {
                     UiApiClient.StartStopService(false);
                     UiApiClient.StartStopService(true);
