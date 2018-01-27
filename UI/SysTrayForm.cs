@@ -56,7 +56,7 @@ namespace Cliver.CisteraScreenCaptureUI
                   //        general.CapturedMonitorRectangle = a;
                   //    }
                   //    general.Save(__file);
-                  //}
+                  //}                 
               };
         }
 

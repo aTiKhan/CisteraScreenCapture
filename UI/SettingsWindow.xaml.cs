@@ -216,13 +216,25 @@ namespace Cliver.CisteraScreenCaptureUI
                 }
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
-                if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped 
-                    && !ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/
-                    && Message.YesNo("The changes have been saved and will be engaged after service restart. Would you like to restart the service (all the present connections if any, will be terminated)?")
-                    )                    
+                if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped
+                    && (ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/
+                    || Message.YesNo("The changes have been saved and will be engaged after service restart. Would you like to restart the service (all the present connections if any, will be terminated)?")
+                    )
+                    )
                 {
+                    MessageForm mf = null;
+                    ThreadRoutines.StartTry(() =>
+                    {
+                        mf = new MessageForm(System.Windows.Forms.Application.ProductName, System.Drawing.SystemIcons.Information, "Resetting the service...", null, 0, null);
+                        mf.ShowDialog();
+                    });
+
                     UiApiClient.StartStopService(false);
                     UiApiClient.StartStopService(true);
+
+                    if (null == SleepRoutines.WaitForObject(() => { return mf; }, 1000))
+                        throw new Exception("Could not get MessageForm");
+                    mf.Invoke(() => { mf.Close(); });
                 }
 
                 Close();
