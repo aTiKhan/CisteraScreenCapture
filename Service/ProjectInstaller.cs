@@ -24,21 +24,22 @@ namespace Cliver.CisteraScreenCaptureService
 
             this.Committed += delegate
             {
-                try
-                {
+                //try
+                //{
                     ServiceController sc = new ServiceController(Program.SERVICE_NAME);
                     sc.Start();
-                }
-                catch (Exception e)
-                {
-                    Message.Error(e);
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    //Message.Error(ex);//brings to an error: object is null
+                //    MessageBox.Show();
+                //}
             };
 
             this.BeforeUninstall += delegate
             {
-                try
-                {
+                //try
+                //{
                     ServiceController sc = new ServiceController(Program.SERVICE_NAME);
                     if (sc.Status != ServiceControllerStatus.Stopped)
                     {
@@ -48,12 +49,13 @@ namespace Cliver.CisteraScreenCaptureService
                         if (sc.Status != ServiceControllerStatus.Stopped)
                             throw new Exception("Could not stop service '" + Cliver.CisteraScreenCaptureService.Program.SERVICE_NAME + "'. To unistall it, stop it manually.");
                     }
-                }
-                catch (Exception e)
-                {
-                    Message.Error(e);
-                    throw e;//to stop uninstalling(?)
-                }
+                //}
+                //catch (Exception e)
+                //{
+                //    //Message.Error(ex);//brings to an error: object is null
+                //    MessageBox.Show();
+                //    throw e;//to stop uninstalling(?)
+                //}
             };
         }
     }

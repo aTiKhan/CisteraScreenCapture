@@ -217,10 +217,9 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 System.ServiceProcess.ServiceControllerStatus? status = UiApiClient.GetServiceStatus();
                 if (status != null && status != System.ServiceProcess.ServiceControllerStatus.Stopped 
-                    && (ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/
-                    || Message.YesNo("The changes have been saved and will be engaged after service restart. Would you like to restart the service (all the present connections if any, will be terminated)?")
-                    )
-                    )
+                    && !ProcessRoutines.ProcessIsSystem()/*used for configuration during installing*/
+                    && Message.YesNo("The changes have been saved and will be engaged after service restart. Would you like to restart the service (all the present connections if any, will be terminated)?")
+                    )                    
                 {
                     UiApiClient.StartStopService(false);
                     UiApiClient.StartStopService(true);

@@ -26,32 +26,34 @@ namespace Cliver.CisteraScreenCaptureUI
 
             this.Committed += delegate
             {
-                try
-                {
+                //try
+                //{
                     //starts for initial configuration under SYSTEM account            
                     Process p = Process.Start(Assembly.GetExecutingAssembly().Location, "-initial_configuration");
                     p.WaitForExit();
 
                     ProcessRoutines.CreateProcessAsUserOfCurrentSession(Assembly.GetExecutingAssembly().Location);//starts the process as the current user while the installer runs as SYSTEM
-                }
-                catch (Exception ex)
-                {
-                    Message.Error(ex);
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    //Message.Error(ex);//brings to an error: object is null
+                //    MessageBox.Show();
+                //}
             };
 
             this.BeforeUninstall += delegate
             {
-                try
-                {
+                //try
+                //{
                     foreach (Process p in Process.GetProcessesByName(PathRoutines.GetFileNameWithoutExtentionFromPath(Assembly.GetExecutingAssembly().Location)))
-                        ProcessRoutines.KillProcessTree(p.Id);
-                }
-                catch (Exception e)
-                {
-                    Message.Error(e);
-                    //throw e;//to stop uninstalling(?)
-                }
+                        ProcessRoutines.KillProcessTree(p.Id);                    
+                //}
+                //catch (Exception e)
+                //{
+                //    //Message.Error(ex);//brings to an error: object is null
+                //    MessageBox.Show();
+                //    //throw e;//to stop uninstalling(?)
+                //}
             };
         }
     }
