@@ -225,7 +225,7 @@ namespace Cliver.CisteraScreenCaptureUI
                     MessageForm mf = null;
                     ThreadRoutines.StartTry(() =>
                     {
-                        mf = new MessageForm(System.Windows.Forms.Application.ProductName, System.Drawing.SystemIcons.Information, "Resetting the service...", null, 0, null);
+                        mf = new MessageForm(System.Windows.Forms.Application.ProductName, System.Drawing.SystemIcons.Information, "Resetting the service. Please wait...", null, 0, null);
                         mf.ShowDialog();
                     });
 
