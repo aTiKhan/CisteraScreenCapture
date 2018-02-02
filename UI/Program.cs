@@ -66,6 +66,7 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             try
             {
+                Cliver.Wpf.Message.Inform("test");
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
                 string user = ProcessRoutines.GetProcessUserName();
                 string m = "User: " + user;

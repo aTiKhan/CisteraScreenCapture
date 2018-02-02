@@ -32,7 +32,7 @@ namespace Cliver.CisteraScreenCaptureService
 
             Log.Main.Inform("Starting connection from " + RemoteIp + ":" + RemotePort);
 
-            thread = ThreadRoutines.StartTry(
+            receiving_thread = ThreadRoutines.StartTry(
                 run,
                 (Exception e) =>
                 {
@@ -51,10 +51,31 @@ namespace Cliver.CisteraScreenCaptureService
                     ThreadRoutines.StartTry(Dispose);
                 }
                 );
+
+            //sending_thread = ThreadRoutines.StartTry(
+            //    run,
+            //    (Exception e) =>
+            //    {
+            //        lock (this)
+            //        {
+            //            if (this.socket == null)//disposed
+            //                return;
+            //            if (!IsAlive)
+            //                Log.Main.Inform("Connection from " + RemoteIp + ":" + RemotePort + " has been terminated.");
+            //            else
+            //                Log.Main.Error(e);
+            //        }
+            //    },
+            //    () =>
+            //    {
+            //        ThreadRoutines.StartTry(Dispose);
+            //    }
+            //    );
         }
         Socket socket = null;
         Stream stream = null;
-        Thread thread = null;
+        Thread receiving_thread = null;
+        //Thread sending_thread = null;
 
         ~TcpServerConnection()
         {
@@ -99,10 +120,10 @@ namespace Cliver.CisteraScreenCaptureService
                     stream.Dispose();
                     stream = null;
                 }
-                if (thread != null)
+                if (receiving_thread != null)
                 {
-                    thread.Abort();
-                    thread = null;
+                    receiving_thread.Abort();
+                    receiving_thread = null;
                 }
                 disposed = true;
             }
@@ -201,7 +222,7 @@ namespace Cliver.CisteraScreenCaptureService
 
         void run()
         {
-            while (thread != null)
+            while (receiving_thread != null)
             {
                 TcpMessage m = TcpMessage.Receive(stream);
 
