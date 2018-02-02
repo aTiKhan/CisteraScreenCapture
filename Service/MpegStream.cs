@@ -33,12 +33,21 @@ namespace Cliver.CisteraScreenCaptureService
     {
         public static void Start(uint sessionId, string arguments)
         {
-            if(sessionId < 1)
+            MpegStream.sessionId = sessionId;
+            MpegStream.arguments = arguments;
+        }
+        static uint sessionId;
+        static string arguments;
+
+        static void start()
+        {
+            if (sessionId < 1)
                 throw new Exception("sessionId == " + sessionId);
 
             if (mpeg_stream_process != null)
                 Log.Main.Warning("The previous MpegStream was not stopped!");
             Stop();
+            stopping = false;
 
             //if (string.IsNullOrWhiteSpace(Settings.General.CapturedMonitorDeviceName))
             //{
@@ -63,7 +72,7 @@ namespace Cliver.CisteraScreenCaptureService
                 WinApi.Advapi32.CreationFlags cfs = 0;
                 cfs |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
                 string cl = "\"" + Log.AppDir + "\\" + userSessionAgent + "\"";
-                uint pid = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, cl, cfs);
+                uint pid = ProcessRoutines.CreateProcessAsUserOfCurrentProcess(sessionId, cl, cfs);
                 Process p = Process.GetProcessById((int)pid);
                 if (p != null && !p.HasExited)
                     p.WaitForExit();
@@ -108,25 +117,36 @@ namespace Cliver.CisteraScreenCaptureService
                 commandLine = Environment.SystemDirectory + "\\cmd.exe /c \"" + commandLine + " 1>>\"" + file + "\",2>&1\"";
             }
 
-            uint processId = ProcessRoutines.CreateProcessAsUserOfParentProcess(sessionId, commandLine, dwCreationFlags);
+            uint processId = ProcessRoutines.CreateProcessAsUserOfCurrentProcess(sessionId, commandLine, dwCreationFlags);
             mpeg_stream_process = Process.GetProcessById((int)processId);
             if (mpeg_stream_process == null)
                 throw new Exception("Could not find process #" + processId);
             if (mpeg_stream_process.HasExited)
                 throw new Exception("Process #" + processId + " exited with code: " + mpeg_stream_process.ExitCode);
-            if (antiZombieTracker != null)
-                antiZombieTracker.KillTrackedProcesses();
-            antiZombieTracker = new ProcessRoutines.AntiZombieTracker();
-            antiZombieTracker.Track(mpeg_stream_process);
+            if (antiZombieGuard != null)
+                antiZombieGuard.KillTrackedProcesses();
+            antiZombieGuard = new ProcessRoutines.AntiZombieGuard();
+            antiZombieGuard.Track(mpeg_stream_process);
+
+            mpeg_stream_process.Exited += delegate
+            {
+                if (!stopping)
+                {
+                    Log.Main.Warning("MpegStream terminated from outside.");
+                    Log.Main.Inform("Restarting MpegStream...");
+                    start();
+                }
+            };
         }
         static Process mpeg_stream_process = null;
         static string commandLine = null;
         static FileStream fileStream = null;
-        static ProcessRoutines.AntiZombieTracker antiZombieTracker = null;
+        static ProcessRoutines.AntiZombieGuard antiZombieGuard = null;
         static string userSessionAgent = "UserSessionAgent.exe";
 
         public static void Stop()
         {
+            stopping = true;
             if (mpeg_stream_process != null)
             {
                 Log.Main.Inform("Terminating:\r\n" + commandLine);
@@ -139,13 +159,14 @@ namespace Cliver.CisteraScreenCaptureService
                 fileStream.Dispose();
                 fileStream = null;
             }
-            if (antiZombieTracker != null)
+            if (antiZombieGuard != null)
             {
-                antiZombieTracker.KillTrackedProcesses();
-                antiZombieTracker = null;
+                antiZombieGuard.KillTrackedProcesses();
+                antiZombieGuard = null;
             }
             commandLine = null;
         }
+        static bool stopping = false;
 
         public static bool Running
         {

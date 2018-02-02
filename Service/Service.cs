@@ -58,7 +58,7 @@ namespace Cliver.CisteraScreenCaptureService
 
                 uint sessionId = WinApi.Wts.WTSGetActiveConsoleSessionId();
                 if (sessionId == 0 || sessionId == 0xFFFFFFFF)
-                    Log.Main.Inform("No console user active.");
+                    Log.Main.Inform("No console user is active.");
                 else
                     sessionChanged(sessionId, true);
             }
