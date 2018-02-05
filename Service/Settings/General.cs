@@ -30,11 +30,13 @@ namespace Cliver.CisteraScreenCaptureService
             public bool Ssl = false;
             public string ServiceDomain = "cistera";
             public string ServiceType = "_cisterascreencapturecontroller._tcp";
-            public string CapturedMonitorDeviceName = "";
+            public string CapturedMonitorDeviceName = CapturedMonitorDeviceName_ALL_DISPLAYS;
             public WinApi.User32.RECT? CapturedMonitorRectangle = null;
             public bool ShowMpegWindow = true;
             public bool WriteMpegOutput2Log = false;
             public int DeleteLogsOlderDays = 10;
+
+            public const string CapturedMonitorDeviceName_ALL_DISPLAYS = "--ALL DISPLAYS--";
 
             public string GetServiceName()
             {

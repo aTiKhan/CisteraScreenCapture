@@ -71,7 +71,7 @@ namespace Cliver.CisteraScreenCaptureUI
                     ProcessRoutines.Restart(true);
             }
         }
-        Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general; 
+        Cliver.CisteraScreenCaptureService.Settings.GeneralSettings general;
 
         void set()
         {
@@ -99,6 +99,11 @@ namespace Cliver.CisteraScreenCaptureUI
             //}
             Monitors.DisplayMemberPath = "Text";
             Monitors.SelectedValuePath = "Value";
+            Monitors.Items.Add(new
+            {
+                Text = Cliver.CisteraScreenCaptureService.Settings.GeneralSettings.CapturedMonitorDeviceName_ALL_DISPLAYS,
+                Value = Cliver.CisteraScreenCaptureService.Settings.GeneralSettings.CapturedMonitorDeviceName_ALL_DISPLAYS,
+            });
             foreach (MonitorRoutines.MonitorInfo mi in MonitorRoutines.GetMonitorInfos())
             {
                 Monitors.Items.Add(new
@@ -107,14 +112,14 @@ namespace Cliver.CisteraScreenCaptureUI
                     Value = mi.DeviceName
                 });
             }
-            if (Monitors.Items.Count < 1)
-                throw new Exception("No monitor was found!");
-            if (!string.IsNullOrWhiteSpace(general.CapturedMonitorDeviceName))
+            //if (Monitors.Items.Count < 1)
+            //    throw new Exception("No monitor was found!");
+            if (general.CapturedMonitorDeviceName != null)
                 Monitors.SelectedValue = general.CapturedMonitorDeviceName;
             else
-                Monitors.SelectedValue = MonitorRoutines.GetDefaultMonitorName();
-            if (Monitors.SelectedIndex < 0)
-                Monitors.SelectedIndex = 0;
+                Monitors.SelectedValue = 0;
+            //if (Monitors.SelectedIndex < 0)
+            //    Monitors.SelectedIndex = 0;
 
             ShowMpegWindow.IsChecked = general.ShowMpegWindow;
             WriteMpegOutput2Log.IsChecked = general.WriteMpegOutput2Log;

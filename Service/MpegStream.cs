@@ -35,6 +35,7 @@ namespace Cliver.CisteraScreenCaptureService
         {
             MpegStream.sessionId = sessionId;
             MpegStream.arguments = arguments;
+            start();
         }
         static uint sessionId;
         static string arguments;
@@ -65,26 +66,34 @@ namespace Cliver.CisteraScreenCaptureService
             //    if (an == null)
             //        throw new Exception("Monitor '" + Settings.General.CapturedMonitorDeviceName + "' was not found.");
             //}
-            if (Settings.General.CapturedMonitorRectangle == null)
+            string source;
+            if (Settings.General.CapturedMonitorDeviceName == null || Settings.General.CapturedMonitorDeviceName == Settings.GeneralSettings.CapturedMonitorDeviceName_ALL_DISPLAYS)
             {
-                Log.Main.Inform("CapturedMonitorRectangle is empty. Running " + userSessionAgent);
-                UserSessionApi.OpenApi();
-                WinApi.Advapi32.CreationFlags cfs = 0;
-                cfs |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
-                string cl = "\"" + Log.AppDir + "\\" + userSessionAgent + "\"";
-                uint pid = ProcessRoutines.CreateProcessAsUserOfCurrentProcess(sessionId, cl, cfs);
-                Process p = Process.GetProcessById((int)pid);
-                if (p != null && !p.HasExited)
-                    p.WaitForExit();
-                UserSessionApi.CloseApi();
-                Settings.General.Reload();
-                if (Settings.General.CapturedMonitorRectangle == null)
-                    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'");
-                //if (Settings.General.CapturedMonitorRectangle == null)
-                //    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'. Properly edit and save monitor setting in the systray menu.");
+                source = " -i desktop ";
             }
-            WinApi.User32.RECT a = (WinApi.User32.RECT)Settings.General.CapturedMonitorRectangle;
-            string source = " -offset_x " + a.Left + " -offset_y " + a.Top + " -video_size " + (a.Right - a.Left) + "x" + (a.Bottom - a.Top) + " -show_region 1 -i desktop ";
+            else
+            {
+                if (Settings.General.CapturedMonitorRectangle == null)
+                {
+                    Log.Main.Inform("CapturedMonitorRectangle is empty. Running " + userSessionAgent);
+                    UserSessionApi.OpenApi();
+                    WinApi.Advapi32.CreationFlags cfs = 0;
+                    cfs |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
+                    string cl = "\"" + Log.AppDir + "\\" + userSessionAgent + "\"";
+                    uint pid = ProcessRoutines.CreateProcessAsUserOfCurrentProcess(sessionId, cl, cfs);
+                    Process p = Process.GetProcessById((int)pid);
+                    if (p != null && !p.HasExited)
+                        p.WaitForExit();
+                    UserSessionApi.CloseApi();
+                    Settings.General.Reload();
+                    if (Settings.General.CapturedMonitorRectangle == null)
+                        throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'");
+                    //if (Settings.General.CapturedMonitorRectangle == null)
+                    //    throw new Exception("Could not get rectangle for monitor '" + Settings.General.CapturedMonitorDeviceName + "'. Properly edit and save monitor setting in the systray menu.");
+                }
+                WinApi.User32.RECT a = (WinApi.User32.RECT)Settings.General.CapturedMonitorRectangle;
+                source = " -offset_x " + a.Left + " -offset_y " + a.Top + " -video_size " + (a.Right - a.Left) + "x" + (a.Bottom - a.Top) + " -show_region 1 -i desktop ";
+            }
 
             arguments = Regex.Replace(arguments, @"-framerate\s+\d+", "$0" + source);
             commandLine = "\"" + Log.AppDir + "\\ffmpeg.exe\" " + arguments;
