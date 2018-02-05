@@ -23,14 +23,9 @@ namespace Cliver.CisteraScreenCaptureService
     {
         //static Dictionary<ushort, TcpServer> servers = new Dictionary<ushort, TcpServer>(); 
 
-        static public void Error(string error)
+        static public void NotifyServerOnError(string error)
         {
-            errors.Add(error);
-        }
-        readonly static List<string> errors = new List<string>();
-        static public string PurgeErrors()
-        {
-            return string.Join("\r\n", errors);
+            connection?.PushError(error);
         }
 
         static public void Start(int local_port, IPAddress destination_ip)

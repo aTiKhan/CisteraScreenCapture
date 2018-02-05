@@ -282,7 +282,7 @@ namespace Cliver.CisteraScreenCaptureService
             return true;
         }
 
-        public void AddError(string error)
+        public void PushError(string error)
         {
             errors.Add(error);
         }

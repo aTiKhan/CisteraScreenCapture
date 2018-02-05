@@ -141,8 +141,8 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 if (!stopping)
                 {
-                    Log.Main.Warning("MpegStream terminated from outside.");
-                    Log.Main.Inform("Restarting MpegStream...");
+                    Log.Main.Warning("MpegStream terminated from outside. Restarting MpegStream...");
+                    TcpServer.NotifyServerOnError("MpegStream terminated from outside. Restarting MpegStream...");
                     start();
                 }
             };
