@@ -25,8 +25,9 @@ namespace Cliver.CisteraScreenCaptureService
         public const string FfmpegStop = "FfmpegStop";
         public const string SslStart = "SslStart";
         public const string Success = "OK";
+        public const string Poll = "Poll";
 
-        public readonly ushort Size;
+        public readonly UInt16 Size;
         public string Name
         {
             get
@@ -74,7 +75,9 @@ namespace Cliver.CisteraScreenCaptureService
 
         public TcpMessage(byte[] name_body_as_bytes)
         {
-            Size = (ushort)name_body_as_bytes.Length;
+            if (name_body_as_bytes.Length > UInt16.MaxValue)
+                throw new Exception("NameBodyAsBytes.Length > UInt16.MaxValue :\r\n\r\n" + Encoding.ASCII.GetString(name_body_as_bytes));
+            Size = (UInt16)name_body_as_bytes.Length;
             NameBodyAsBytes = name_body_as_bytes;
         }
 
@@ -83,7 +86,9 @@ namespace Cliver.CisteraScreenCaptureService
             if (body == null)
                 body = ""; 
             NameBodyAsBytes = new byte[name.Length + 1 + body.Length + 1];
-            Size = (ushort)(NameBodyAsBytes.Length);
+            if (NameBodyAsBytes.Length > UInt16.MaxValue)
+                throw new Exception("NameBodyAsBytes.Length > UInt16.MaxValue :\r\n\r\n" + name + "\r\n\r\n" + body);
+            Size = (UInt16)(NameBodyAsBytes.Length);
             int i = 0;
             Encoding.ASCII.GetBytes(name).CopyTo(NameBodyAsBytes, i);
             i += name.Length + 1;
@@ -95,7 +100,7 @@ namespace Cliver.CisteraScreenCaptureService
             byte[] message_size_buffer = new byte[2];
             if (stream.Read(message_size_buffer, 0, message_size_buffer.Length) < message_size_buffer.Length)
                 throw new Exception("Could not read from stream the required count of bytes: " + message_size_buffer.Length);
-            ushort message_size = BitConverter.ToUInt16(message_size_buffer, 0);
+            UInt16 message_size = BitConverter.ToUInt16(message_size_buffer, 0);
             byte[] message_buffer = new byte[message_size];
             if (stream.Read(message_buffer, 0, message_buffer.Length) < message_buffer.Length)
                 throw new Exception("Could not read from stream the required count of bytes: " + message_buffer.Length);

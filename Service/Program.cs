@@ -51,7 +51,9 @@ namespace Cliver.CisteraScreenCaptureService
 #if !test
                 ServiceBase.Run(new Service());
 #else
-                Service.sessionChanged(1, true);
+                ProjectInstaller.test();
+
+                //Service.sessionChanged(1, true);
                 //System.Threading.Thread.Sleep(1000000);
                 //s.Stop
                 //MpegStream.Start(1, "");

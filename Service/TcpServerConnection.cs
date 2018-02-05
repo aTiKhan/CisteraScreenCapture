@@ -48,6 +48,7 @@ namespace Cliver.CisteraScreenCaptureService
                 },
                 () =>
                 {
+                    MpegStream.Stop();
                     ThreadRoutines.StartTry(Dispose);
                 }
                 );
@@ -244,6 +245,13 @@ namespace Cliver.CisteraScreenCaptureService
                             if (stream is SslStream)
                                 throw new Exception("SSL is already started.");
                             break;
+                        case TcpMessage.Poll:
+                            if (errors.Count > 0)
+                            {
+                                reply = string.Join("\r\n", errors);
+                                errors.Clear();
+                            }                            
+                            break;
                         default:
                             throw new Exception("Unknown message: " + m.Name);
                     }
@@ -273,5 +281,11 @@ namespace Cliver.CisteraScreenCaptureService
         {
             return true;
         }
+
+        public void AddError(string error)
+        {
+            errors.Add(error);
+        }
+        readonly List<string> errors = new List<string>();
     }
 }
