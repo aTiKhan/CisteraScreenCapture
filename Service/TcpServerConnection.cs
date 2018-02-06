@@ -96,10 +96,10 @@ namespace Cliver.CisteraScreenCaptureService
                 {
                     try
                     {
-                        Log.Main.Trace("Shutdown...");
+                        //Log.Main.Trace("Shutdown...");
                         socket.Shutdown(SocketShutdown.Both);
                     }
-                    catch (System.Net.Sockets.SocketException e)
+                    catch (SocketException e)
                     {
                         if(e.SocketErrorCode != SocketError.ConnectionReset)
                             Log.Main.Error(e);
@@ -110,9 +110,9 @@ namespace Cliver.CisteraScreenCaptureService
                     }
                     //Log.Main.Trace("Disconnect...");
                     //socket.Disconnect(false);//!!!blocks for timeout when the other side is disconnected improperly
-                    Log.Main.Trace("Close...");
+                    //Log.Main.Trace("Close...");
                     socket.Close();
-                    Log.Main.Trace("Dispose...");
+                    //Log.Main.Trace("Dispose...");
                     socket.Dispose();//!!!disposed socket does not allow to get RemoteIp etc in a error handler that might be invoked 
                     socket = null;
                 }

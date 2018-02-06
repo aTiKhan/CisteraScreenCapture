@@ -51,7 +51,7 @@ namespace Cliver.CisteraScreenCaptureService
 #if !test
                 ServiceBase.Run(new Service());
 #else
-                ProjectInstaller.test();
+                MpegStream.Start(1, "-f gdigrab -framerate 10 -f rtp_mpegts -srtp_out_suite AES_CM_128_HMAC_SHA1_80 -srtp_out_params aMg7BqN047lFN72szkezmPyN1qSMilYCXbqP/sCt srtp://127.0.0.1:5920");
 
                 //Service.sessionChanged(1, true);
                 //System.Threading.Thread.Sleep(1000000);

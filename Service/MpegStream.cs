@@ -12,16 +12,6 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.Text.RegularExpressions;
-using System.Web;
-//using System.Web.Script.Serialization;
-using System.Collections.Generic;
-using Cliver;
-using System.Configuration;
-using System.Windows.Forms;
-using Microsoft.Win32;
-using System.Windows.Input;
-using System.Net.Http;
-using Zeroconf;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
@@ -34,21 +24,9 @@ namespace Cliver.CisteraScreenCaptureService
         public static void Start(uint sessionId, string arguments)
         {
             MpegStream.sessionId = sessionId;
-            MpegStream.arguments = arguments;
-            start();
-        }
-        static uint sessionId;
-        static string arguments;
 
-        static void start()
-        {
             if (sessionId < 1)
                 throw new Exception("sessionId == " + sessionId);
-
-            if (mpeg_stream_process != null)
-                Log.Main.Warning("The previous MpegStream was not stopped!");
-            Stop();
-            stopping = false;
 
             //if (string.IsNullOrWhiteSpace(Settings.General.CapturedMonitorDeviceName))
             //{
@@ -97,15 +75,15 @@ namespace Cliver.CisteraScreenCaptureService
 
             arguments = Regex.Replace(arguments, @"-framerate\s+\d+", "$0" + source);
             commandLine = "\"" + Log.AppDir + "\\ffmpeg.exe\" " + arguments;
-            
-            WinApi.Advapi32.CreationFlags dwCreationFlags = 0;
+
+            dwCreationFlags = 0;
             if (!Settings.General.ShowMpegWindow)
             {
                 dwCreationFlags |= WinApi.Advapi32.CreationFlags.CREATE_NO_WINDOW;
                 //startupInfo.dwFlags |= Win32Process.STARTF_USESTDHANDLES;
                 //startupInfo.wShowWindow = Win32Process.SW_HIDE;
             }
-            
+
             if (Settings.General.WriteMpegOutput2Log)
             {
                 string file0 = Log.WorkDir + "\\ffmpeg_" + DateTime.Now.ToString("yyMMddHHmmss");
@@ -122,9 +100,20 @@ namespace Cliver.CisteraScreenCaptureService
                 FileSystemAccessRule fileSystemAccessRule = new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.AppendData, AccessControlType.Allow);
                 fileSecurity.AddAccessRule(fileSystemAccessRule);
                 File.SetAccessControl(file, fileSecurity);
-                
+
                 commandLine = Environment.SystemDirectory + "\\cmd.exe /c \"" + commandLine + " 1>>\"" + file + "\",2>&1\"";
             }
+
+            start();
+        }
+        static uint sessionId;
+        static WinApi.Advapi32.CreationFlags dwCreationFlags;
+
+        static void start()
+        {
+            if (mpeg_stream_process != null && !mpeg_stream_process.HasExited)
+                Log.Main.Warning("The previous MpegStream was not stopped!");
+            Stop();
 
             uint processId = ProcessRoutines.CreateProcessAsUserOfCurrentProcess(sessionId, commandLine, dwCreationFlags);
             mpeg_stream_process = Process.GetProcessById((int)processId);
@@ -132,25 +121,24 @@ namespace Cliver.CisteraScreenCaptureService
                 throw new Exception("Could not find process #" + processId);
             if (mpeg_stream_process.HasExited)
                 throw new Exception("Process #" + processId + " exited with code: " + mpeg_stream_process.ExitCode);
-            if (antiZombieGuard != null)
-                antiZombieGuard.KillTrackedProcesses();
-            antiZombieGuard = new ProcessRoutines.AntiZombieGuard();
+            antiZombieGuard.KillTrackedProcesses();
             antiZombieGuard.Track(mpeg_stream_process);
 
+            stopping = false;
+            mpeg_stream_process.EnableRaisingEvents = true;
             mpeg_stream_process.Exited += delegate
             {
                 if (!stopping)
                 {
-                    Log.Main.Warning("MpegStream terminated from outside. Restarting MpegStream...");
-                    TcpServer.NotifyServerOnError("MpegStream terminated from outside. Restarting MpegStream...");
+                    Log.Main.Warning("Terminated:\r\n" + commandLine + "\r\nfrom outside. Restarting...");
+                    TcpServer.NotifyServerOnError("MpegStream terminated from outside. Restarting...");
                     start();
                 }
             };
         }
         static Process mpeg_stream_process = null;
         static string commandLine = null;
-        static FileStream fileStream = null;
-        static ProcessRoutines.AntiZombieGuard antiZombieGuard = null;
+        static readonly ProcessRoutines.AntiZombieGuard antiZombieGuard = new ProcessRoutines.AntiZombieGuard();
         static string userSessionAgent = "UserSessionAgent.exe";
 
         public static void Stop()
@@ -158,21 +146,14 @@ namespace Cliver.CisteraScreenCaptureService
             stopping = true;
             if (mpeg_stream_process != null)
             {
-                Log.Main.Inform("Terminating:\r\n" + commandLine);
-                ProcessRoutines.KillProcessTree(mpeg_stream_process.Id);
+                if (!mpeg_stream_process.HasExited)
+                {
+                    Log.Main.Inform("Terminating:\r\n" + commandLine);
+                    ProcessRoutines.KillProcessTree(mpeg_stream_process.Id);
+                }
                 mpeg_stream_process = null;
             }
-            if (fileStream != null)
-            {
-                fileStream.Flush();
-                fileStream.Dispose();
-                fileStream = null;
-            }
-            if (antiZombieGuard != null)
-            {
-                antiZombieGuard.KillTrackedProcesses();
-                antiZombieGuard = null;
-            }
+            antiZombieGuard.KillTrackedProcesses();
             commandLine = null;
         }
         static bool stopping = false;
