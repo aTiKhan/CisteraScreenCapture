@@ -165,57 +165,108 @@ namespace Cliver.CisteraScreenCaptureTestServer
             //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text));
             socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            //socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            //socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
             //_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 500)
             //_Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.SendTimeout, Timeout)
             //socket.Bind(localEndPoint);
 
             socket.Connect(remoteHost, int.Parse(remotePort));
             stream = new NetworkStream(socket);
+
+            ThreadRoutines.StartTry(() => {
+                while(socket!=null)
+                {
+                    Thread.Sleep(5000);
+                    poll();
+                }
+            });
         }
 
-        void connect_socket2()
+        TcpMessage sendAndReceiveReply(Stream stream, TcpMessage message)
         {
-            IPAddress ipAddress = NetworkRoutines.GetLocalIpForDestination(IPAddress.Parse("127.0.0.1"));
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text) + port_i);
-            port_i++;
-            socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            socket.Bind(localEndPoint);
-            socket.Connect(remoteHost, int.Parse(remotePort));
-            if (stream != null)
-                stream.Close();
-            stream = new NetworkStream(socket);
-        }
-        int port_i = 0;
+            lock (stream)
+            {
+                byte[] sizeAsBytes = BitConverter.GetBytes(message.Size);
+                stream.Write(sizeAsBytes, 0, sizeAsBytes.Length);
+                //throw new Exception("Could not send to stream the required count of bytes: " + sizeAsBytes.Length);
+                stream.Write(message.NameBodyAsBytes, 0, message.NameBodyAsBytes.Length);
+                //throw new Exception("Could not send to stream the required count of bytes: " + NameBodyAsBytes.Length);
 
-        void disconnect_socket()
-        {
-            return;
-            try
-            {
-                socket.Shutdown(SocketShutdown.Both);
+                byte[] message_size_buffer = new byte[2];
+                if (stream.Read(message_size_buffer, 0, message_size_buffer.Length) < message_size_buffer.Length)
+                    throw new Exception("Could not read from stream the required count of bytes: " + message_size_buffer.Length);
+                UInt16 message_size = BitConverter.ToUInt16(message_size_buffer, 0);
+                byte[] message_buffer = new byte[message_size];
+                if (stream.Read(message_buffer, 0, message_buffer.Length) < message_buffer.Length)
+                    throw new Exception("Could not read from stream the required count of bytes: " + message_buffer.Length);
+                return new TcpMessage(message_buffer);
             }
-            catch { }
-            try
-            {
-                socket.Disconnect(true);
-            }
-            catch { }
-            //try
-            //{
-            //    socket.Close();
-            //}
-            //finally
-            //{
-            //    socket = null;
-            //}
-            //if (stream != null)
-            //{
-            //    stream.Dispose();
-            //    stream = null;
-            //}
         }
+
+        private void poll()
+        {
+            try
+            {
+                stateText = "sending poll...";
+
+                TcpMessage m = new TcpMessage(TcpMessage.Poll, null);
+                TcpMessage m2 = sendAndReceiveReply(stream, m);
+
+                //Message.Inform("Response: " + m2.BodyAsText);
+                stateText = "polled: " + m2.BodyAsText;
+            }
+            catch (Exception ex)
+            {
+                Message.Error(ex);
+            }
+            finally
+            {
+            }
+        }
+
+        //void connect_socket2()
+        //{
+        //    IPAddress ipAddress = NetworkRoutines.GetLocalIpForDestination(IPAddress.Parse("127.0.0.1"));
+        //    IPEndPoint localEndPoint = new IPEndPoint(ipAddress, int.Parse(localTcpPort.Text) + port_i);
+        //    port_i++;
+        //    socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        //    socket.Bind(localEndPoint);
+        //    socket.Connect(remoteHost, int.Parse(remotePort));
+        //    if (stream != null)
+        //        stream.Close();
+        //    stream = new NetworkStream(socket);
+        //}
+        //int port_i = 0;
+
+        //void disconnect_socket()
+        //{
+        //    return;
+        //    try
+        //    {
+        //        socket.Shutdown(SocketShutdown.Both);
+        //    }
+        //    catch { }
+        //    try
+        //    {
+        //        socket.Disconnect(true);
+        //    }
+        //    catch { }
+        //    //try
+        //    //{
+        //    //    socket.Close();
+        //    //}
+        //    //finally
+        //    //{
+        //    //    socket = null;
+        //    //}
+        //    //if (stream != null)
+        //    //{
+        //    //    stream.Dispose();
+        //    //    stream = null;
+        //    //}
+        //}
 
         private void start_Click(object sender, EventArgs e)
         {
@@ -225,7 +276,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
                 connect_socket();
                 TcpMessage m = new TcpMessage(TcpMessage.FfmpegStart, mpegCommandLine.Text);
-                TcpMessage m2 = m.SendAndReceiveReply(stream);
+                TcpMessage m2 = sendAndReceiveReply(stream, m);
 
                 //Message.Inform("Response: " + m2.BodyAsText);
                 stateText = "MPEG started";
@@ -238,7 +289,6 @@ namespace Cliver.CisteraScreenCaptureTestServer
             }
             finally
             {
-                disconnect_socket();
             }
         }
 
@@ -252,7 +302,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
                 connect_socket();
                 TcpMessage m = new TcpMessage(TcpMessage.FfmpegStop, null);
-                TcpMessage m2 = m.SendAndReceiveReply(stream);
+                TcpMessage m2 = sendAndReceiveReply(stream, m);
 
                 //Message.Inform("Response: " + m2.BodyAsText);
                 stateText = "MPEG stopped";
@@ -265,7 +315,6 @@ namespace Cliver.CisteraScreenCaptureTestServer
             }
             finally
             {
-                disconnect_socket();
             }
         }
 
@@ -310,7 +359,7 @@ namespace Cliver.CisteraScreenCaptureTestServer
 
                 connect_socket();
                 TcpMessage m = new TcpMessage(TcpMessage.SslStart, null);
-                TcpMessage m2 = m.SendAndReceiveReply(stream);
+                TcpMessage m2 = sendAndReceiveReply(stream, m);
                 if (m2.BodyAsText.Trim() != TcpMessage.Success)
                     throw new Exception(m2.BodyAsText);
 
@@ -335,7 +384,6 @@ namespace Cliver.CisteraScreenCaptureTestServer
             }
             finally
             {
-                disconnect_socket();
             }
         }
     }

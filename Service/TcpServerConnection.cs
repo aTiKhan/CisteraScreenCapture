@@ -225,7 +225,7 @@ namespace Cliver.CisteraScreenCaptureService
         {
             while (receiving_thread != null)
             {
-                TcpMessage m = TcpMessage.Receive(stream);
+                TcpMessage m = receive_message();
 
                 Log.Main.Inform("Tcp message received: " + m.Name + "\r\n" + m.BodyAsText);
                 UiApi.Message(MessageType.INFORM, "Tcp message received: " + m.Name + "\r\n" + m.BodyAsText);
@@ -262,7 +262,10 @@ namespace Cliver.CisteraScreenCaptureService
                     Log.Main.Error("Tcp message processing: ", e);
                 }
                 Log.Main.Inform("Tcp message sending: " + m.Name + "\r\n" + reply);
-                m.Reply(stream, reply);
+
+                TcpMessage m2 = new TcpMessage(m.Name, reply);
+                send_message(m2);
+
                 if (m.Name == TcpMessage.SslStart && reply == TcpMessage.Success)
                     startSsl();
             }
@@ -287,5 +290,35 @@ namespace Cliver.CisteraScreenCaptureService
             errors.Add(error);
         }
         readonly List<string> errors = new List<string>();
+
+        TcpMessage receive_message()
+        {
+            byte[] message_size_buffer = new byte[2];
+            if (stream.Read(message_size_buffer, 0, message_size_buffer.Length) < message_size_buffer.Length)
+                throw new Exception("Could not read from stream the required count of bytes: " + message_size_buffer.Length);
+            UInt16 message_size = BitConverter.ToUInt16(message_size_buffer, 0);
+            byte[] message_buffer = new byte[message_size];
+            if (stream.Read(message_buffer, 0, message_buffer.Length) < message_buffer.Length)
+                throw new Exception("Could not read from stream the required count of bytes: " + message_buffer.Length);
+            return new TcpMessage(message_buffer);
+        }
+
+        void send_message(TcpMessage message)
+        {
+            byte[] sizeAsBytes = BitConverter.GetBytes(message.Size);
+            stream.Write(sizeAsBytes, 0, sizeAsBytes.Length);
+            //throw new Exception("Could not send to stream the required count of bytes: " + sizeAsBytes.Length);
+            stream.Write(message.NameBodyAsBytes, 0, message.NameBodyAsBytes.Length);
+            //throw new Exception("Could not send to stream the required count of bytes: " + NameBodyAsBytes.Length);
+        }
+
+        //public TcpMessage SendAndReceiveReply(TcpMessage message)
+        //{
+        //    lock (stream)
+        //    {
+        //        send_message(message);
+        //        return ReceiveMessage();
+        //    }
+        //}
     }
 }
