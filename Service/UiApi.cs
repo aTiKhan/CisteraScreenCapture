@@ -75,7 +75,7 @@ namespace Cliver.CisteraScreenCaptureService
                 if (uiApiCallbacks.Contains(uiApiCallback))
                     return;
                 uiApiCallbacks.Add(uiApiCallback);                
-                Log.Main.Write("Subscribed: " + uiApiCallbacks.Count);
+                Log.Main.Write("UiApi subscribed: " + uiApiCallbacks.Count);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 IUiApiCallback uiApiCallback = OperationContext.Current.GetCallbackChannel<IUiApiCallback>();
                 uiApiCallbacks.Remove(uiApiCallback);
-                Log.Main.Write("Subscribed2: " + uiApiCallbacks.Count);
+                Log.Main.Write("UiApi subscribed2: " + uiApiCallbacks.Count);
             }
         }
 

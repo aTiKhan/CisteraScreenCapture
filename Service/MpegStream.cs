@@ -129,8 +129,8 @@ namespace Cliver.CisteraScreenCaptureService
             {
                 if (commandLine != null && (Process)sender == mpeg_stream_process)
                 {
-                    Log.Main.Warning("Terminated:\r\n" + commandLine + "\r\nfrom outside. Restarting...");
-                    TcpServer.NotifyServerOnError("MpegStream terminated from outside. Restarting...");
+                    Log.Main.Warning("!!!Terminated by unknown reason:\r\n" + commandLine + "\r\n. Restarting...");
+                    TcpServer.NotifyServerOnError("ffmpeg terminated by unknown reason. Restarting...");
                     start();
                 }
             };
