@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.ServiceProcess;
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Cliver.CisteraScreenCaptureService
 {
@@ -34,7 +35,7 @@ namespace Cliver.CisteraScreenCaptureService
                 //catch (Exception e)
                 //{
                 //    //Message.Error(ex);//brings to an error: object is null
-                //    MessageBox.Show();
+                //    System.Windows.Forms.MessageBox.Show(e.Message);
                 //}
             };
 
@@ -62,32 +63,20 @@ namespace Cliver.CisteraScreenCaptureService
 
             this.AfterInstall += delegate
             {
-                AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo();
-                openFirewallForProgram(Process.GetCurrentProcess().MainModule.FileName, ai.AssemblyProduct);
+                //try
+                //{
+                string servicePath = this.Context.Parameters["assemblypath"];
+                AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
+                WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.IN);
+
+                WindowsFirewall.AllowProgram("Ffmpeg", PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe", WindowsFirewall.Direction.OUT);
+                //}
+                //catch(Exception e)
+                //{
+                //    MessageBox.Show(Log.GetExceptionMessage(e));
+                //    throw e;
+                //}
             };
-        }
-
-        static public void test()
-        {
-            AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo();
-            openFirewallForProgram(Process.GetCurrentProcess().MainModule.FileName, ai.AssemblyProduct);
-        }
-
-        private static void openFirewallForProgram(string exeFileName, string displayName)
-        {
-            Process p = Process.Start(
-                new ProcessStartInfo
-                {
-                    FileName = "netsh",
-                    Arguments = "firewall add allowedprogram program=\"" + exeFileName + "\" name=\"" + displayName + "\" profile=\"ALL\"",
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                });
-            string error = p.StandardError.ReadToEnd();
-            p.WaitForExit();
-            if (!string.IsNullOrEmpty(error))
-                throw new Exception(error);            
-        }
+        }    
     }    
 }
