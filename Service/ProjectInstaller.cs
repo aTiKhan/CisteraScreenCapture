@@ -83,7 +83,7 @@ namespace Cliver.CisteraScreenCaptureService
                     AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
                     WindowsFirewall.DeleteRule(ai.AssemblyProduct);
                     WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.IN);
-                    //WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.OUT);
+                    WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.OUT);
 
                     WindowsFirewall.DeleteRule(ffmpegFirewallRuleName);
                     WindowsFirewall.AllowProgram(ffmpegFirewallRuleName, PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe", WindowsFirewall.Direction.OUT);
