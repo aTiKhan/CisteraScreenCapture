@@ -66,7 +66,7 @@ namespace Cliver.CisteraScreenCaptureService
                     AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
                     WindowsFirewall.DeleteRule(ai.AssemblyProduct, servicePath);
 
-                    WindowsFirewall.DeleteRule("Ffmpeg", PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe");
+                    WindowsFirewall.DeleteRule(ffmpegFirewallRuleName, PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe");
                 }
                 catch (Exception e)
                 {
@@ -81,9 +81,12 @@ namespace Cliver.CisteraScreenCaptureService
                 {
                     string servicePath = this.Context.Parameters["assemblypath"];
                     AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
+                    WindowsFirewall.DeleteRule(ai.AssemblyProduct);
                     WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.IN);
+                    //WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.OUT);
 
-                    WindowsFirewall.AllowProgram("Ffmpeg", PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe", WindowsFirewall.Direction.OUT);
+                    WindowsFirewall.DeleteRule(ffmpegFirewallRuleName);
+                    WindowsFirewall.AllowProgram(ffmpegFirewallRuleName, PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe", WindowsFirewall.Direction.OUT);
                 }
                 catch (Exception e)
                 {
@@ -92,5 +95,7 @@ namespace Cliver.CisteraScreenCaptureService
                 }
             };
         }
+
+        const string ffmpegFirewallRuleName = "Ffmpeg";
     }
 }
