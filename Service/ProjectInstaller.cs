@@ -59,24 +59,38 @@ namespace Cliver.CisteraScreenCaptureService
                 //    MessageBox.Show();
                 //    throw e;//to stop uninstalling(?)
                 //}
+
+                try
+                {
+                    string servicePath = this.Context.Parameters["assemblypath"];
+                    AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
+                    WindowsFirewall.DeleteRule(ai.AssemblyProduct, servicePath);
+
+                    WindowsFirewall.DeleteRule("Ffmpeg", PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe");
+                }
+                catch (Exception e)
+                {
+                    //MessageBox.Show("You'll may need to set firewall manually because of the following error that happened while setting firewall:\r\n" + e.Message, "Cistera Screen Capture", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    //    throw e;
+                }
             };
 
             this.AfterInstall += delegate
             {
                 try
                 {
-                string servicePath = this.Context.Parameters["assemblypath"];
-                AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
-                WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.IN);
+                    string servicePath = this.Context.Parameters["assemblypath"];
+                    AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo(servicePath);
+                    WindowsFirewall.AllowProgram(ai.AssemblyProduct, servicePath, WindowsFirewall.Direction.IN);
 
-                WindowsFirewall.AllowProgram("Ffmpeg", PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe", WindowsFirewall.Direction.OUT);
+                    WindowsFirewall.AllowProgram("Ffmpeg", PathRoutines.GetDirFromPath(servicePath) + "\\ffmpeg.exe", WindowsFirewall.Direction.OUT);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     MessageBox.Show("You'll may need to set firewall manually because of the following error that happened while setting firewall:\r\n" + e.Message, "Cistera Screen Capture", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                //    throw e;
+                    //    throw e;
                 }
             };
-        }    
-    }    
+        }
+    }
 }
