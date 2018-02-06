@@ -113,7 +113,7 @@ namespace Cliver.CisteraScreenCaptureService
         {
             if (mpeg_stream_process != null && !mpeg_stream_process.HasExited)
                 Log.Main.Warning("The previous MpegStream was not stopped!");
-            Stop();
+            stop();
 
             uint processId = ProcessRoutines.CreateProcessAsUserOfCurrentProcess(sessionId, commandLine, dwCreationFlags);
             mpeg_stream_process = Process.GetProcessById((int)processId);
@@ -124,11 +124,10 @@ namespace Cliver.CisteraScreenCaptureService
             antiZombieGuard.KillTrackedProcesses();
             antiZombieGuard.Track(mpeg_stream_process);
 
-            stopping = false;
             mpeg_stream_process.EnableRaisingEvents = true;
-            mpeg_stream_process.Exited += delegate
+            mpeg_stream_process.Exited += delegate (object sender, EventArgs e)
             {
-                if (!stopping)
+                if (commandLine != null && (Process)sender == mpeg_stream_process)
                 {
                     Log.Main.Warning("Terminated:\r\n" + commandLine + "\r\nfrom outside. Restarting...");
                     TcpServer.NotifyServerOnError("MpegStream terminated from outside. Restarting...");
@@ -136,6 +135,7 @@ namespace Cliver.CisteraScreenCaptureService
                 }
             };
         }
+
         static Process mpeg_stream_process = null;
         static string commandLine = null;
         static readonly ProcessRoutines.AntiZombieGuard antiZombieGuard = new ProcessRoutines.AntiZombieGuard();
@@ -143,7 +143,14 @@ namespace Cliver.CisteraScreenCaptureService
 
         public static void Stop()
         {
-            stopping = true;
+            commandLine = null;
+            sessionId = 0;
+            dwCreationFlags = 0;
+            stop();
+        }
+
+        static void stop()
+        {
             if (mpeg_stream_process != null)
             {
                 if (!mpeg_stream_process.HasExited)
@@ -154,9 +161,7 @@ namespace Cliver.CisteraScreenCaptureService
                 mpeg_stream_process = null;
             }
             antiZombieGuard.KillTrackedProcesses();
-            commandLine = null;
         }
-        static bool stopping = false;
 
         public static bool Running
         {
