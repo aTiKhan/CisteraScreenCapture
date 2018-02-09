@@ -66,6 +66,16 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             try
             {
+                ////Wpf.Message.ResourceDictionaryPath = "assembly=" + System.Reflection.Assembly.GetEntryAssembly().EscapedCodeBase + ";resources/style.xaml";
+
+                //Uri u = new System.Uri(PathRoutines.GetFileNameFromPath( System.Reflection.Assembly.GetEntryAssembly().EscapedCodeBase) + ";component/resources/style.xaml", System.UriKind.Relative);
+                //System.Windows.ResourceDictionary rd = new System.Windows.ResourceDictionary();
+                //System.Windows.Application.LoadComponent(rd, u);
+                //Wpf.Message.ResourceDictionary = rd;
+                ////System.Windows.Resources.StreamResourceInfo info = System.Windows.Application.GetContentStream(u);
+                ////System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
+                ////Wpf.Message.ResourceDictionary = (System.Windows.ResourceDictionary)reader.LoadAsync(info.Stream);
+
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
                 string user = ProcessRoutines.GetProcessUserName();
                 string m = "User: " + user;

@@ -14,68 +14,11 @@
         FontSize="10pt" 
             >
     <Window.Resources>
-        <Style TargetType="{x:Type GroupBox}">
-            <Setter Property="Margin" Value="0,10,0,10"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="BorderBrush" Value="#268"/>
-            <!--Setter Property="HeaderTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" FontWeight="Bold" FontStyle="Italic"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </-->
-        </Style>
-        <Style TargetType="{x:Type ComboBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="MinWidth" Value="30"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-        <Style TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin"  Value="0,10,10,0"/>
-        </Style>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="{Binding VerticalAlignment, ElementName=Monitors}"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="MinWidth" Value="{Binding MinWidth, ElementName=Monitors}"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-        </Style>
-        <Style TargetType="{x:Type CheckBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="0,10,0,-10"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
-        </Style>
-        <Style TargetType="{x:Type xctk:MaskedTextBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="{Binding VerticalAlignment, ElementName=Monitors}"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="MinWidth" Value="{Binding MinWidth, ElementName=Monitors}"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
-        </Style>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="10,0,0,0"/>
-            <Setter Property="Padding" Value="10,0,10,0"/>
-            <Setter Property="BorderBrush" Value="#268"/>
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="resources/style.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <!--Window.Triggers>

@@ -137,7 +137,7 @@ namespace Cliver.CisteraScreenCaptureService
                         if (commandLine != null && (Process)sender == mpeg_stream_process)
                         {                          
                             restart_count++;
-                            if (restart_count < 3)
+                            if (restart_count <= 3)
                             {
                                 Log.Main.Warning("!!!Terminated by unknown reason:\r\n" + commandLine + "\r\n. Restarting...");
                                 start();
