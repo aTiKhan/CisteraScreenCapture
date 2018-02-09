@@ -54,6 +54,7 @@ namespace Cliver.CisteraScreenCaptureUI
         public class CommandLineParameters : ProgramRoutines.CommandLineParameters
         {
             public static readonly CommandLineParameters INITIAL_CONFIGURATION = new CommandLineParameters("-initial_configuration");
+            //public static readonly CommandLineParameters RESTART = new CommandLineParameters("-restart");
             //public static readonly CommandLineParameters START = new CommandLineParameters("-start");
             //public static readonly CommandLineParameters STOP = new CommandLineParameters("-stop");
             //public static readonly CommandLineParameters EXIT = new CommandLineParameters("-exit");
@@ -66,15 +67,15 @@ namespace Cliver.CisteraScreenCaptureUI
         {
             try
             {
-                ////Wpf.Message.ResourceDictionaryPath = "assembly=" + System.Reflection.Assembly.GetEntryAssembly().EscapedCodeBase + ";resources/style.xaml";
+                //Wpf.Message.ResourceDictionaryPath = "assembly=" + System.Reflection.Assembly.GetEntryAssembly().EscapedCodeBase + ";resources/style.xaml";
 
-                //Uri u = new System.Uri(PathRoutines.GetFileNameFromPath( System.Reflection.Assembly.GetEntryAssembly().EscapedCodeBase) + ";component/resources/style.xaml", System.UriKind.Relative);
+                //Uri u = new System.Uri("/" + PathRoutines.GetFileNameFromPath(System.Reflection.Assembly.GetEntryAssembly().EscapedCodeBase) + ";component/resources/style.xaml", System.UriKind.Relative);
                 //System.Windows.ResourceDictionary rd = new System.Windows.ResourceDictionary();
                 //System.Windows.Application.LoadComponent(rd, u);
                 //Wpf.Message.ResourceDictionary = rd;
-                ////System.Windows.Resources.StreamResourceInfo info = System.Windows.Application.GetContentStream(u);
-                ////System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
-                ////Wpf.Message.ResourceDictionary = (System.Windows.ResourceDictionary)reader.LoadAsync(info.Stream);
+                //System.Windows.Resources.StreamResourceInfo info = System.Windows.Application.GetContentStream(u);
+                //System.Windows.Markup.XamlReader reader = new System.Windows.Markup.XamlReader();
+                //Wpf.Message.ResourceDictionary = (System.Windows.ResourceDictionary)reader.LoadAsync(info.Stream);
 
                 Log.Main.Inform("Version: " + AssemblyRoutines.GetAppVersion());
                 string user = ProcessRoutines.GetProcessUserName();
@@ -85,12 +86,12 @@ namespace Cliver.CisteraScreenCaptureUI
 
                 ProcessRoutines.RunSingleProcessOnly();
 
-                if(ProgramRoutines.IsParameterSet<CommandLineParameters>(CommandLineParameters.INITIAL_CONFIGURATION))
+                if (ProgramRoutines.IsParameterSet<CommandLineParameters>(CommandLineParameters.INITIAL_CONFIGURATION))
                 {
                     Message.Inform("Please configure service in the next window.");
                     SettingsWindow.OpenDialog();
                     return;
-                }
+                }                
 
 #if !test
                 Application.Run(SysTray.This);
