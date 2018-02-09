@@ -25,8 +25,8 @@ namespace Cliver.CisteraScreenCaptureService
         {
             lock (lockObject)
             {
+                restart_count = 0;
                 MpegStream.sessionId = sessionId;
-
                 if (sessionId < 1)
                     throw new Exception("sessionId == " + sessionId);
 
@@ -135,15 +135,24 @@ namespace Cliver.CisteraScreenCaptureService
                     lock (lockObject)
                     {
                         if (commandLine != null && (Process)sender == mpeg_stream_process)
-                        {
-                            Log.Main.Warning("!!!Terminated by unknown reason:\r\n" + commandLine + "\r\n. Restarting...");
-                            TcpServer.NotifyServerOnError("ffmpeg terminated by unknown reason. Restarting...");
-                            start();
+                        {                          
+                            restart_count++;
+                            if (restart_count < 3)
+                            {
+                                Log.Main.Warning("!!!Terminated by unknown reason:\r\n" + commandLine + "\r\n. Restarting...");
+                                start();
+                            }
+                            else
+                            {
+                                Log.Main.Error("!!!Terminated by unknown reason and could not be restarted:\r\n" + commandLine);
+                                TcpServer.NotifyServerOnError("ffmpeg terminated by unknown reason and could not be restarted.");
+                            }
                         }
                     }
                 };
             }
         }
+        static int restart_count = 0;
         static readonly object lockObject = new object();
         static Process mpeg_stream_process = null;
         static string commandLine = null;

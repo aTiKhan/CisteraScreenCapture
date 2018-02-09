@@ -246,11 +246,14 @@ namespace Cliver.CisteraScreenCaptureService
                                 throw new Exception("SSL is already started.");
                             break;
                         case TcpMessage.Poll:
-                            if (errors.Count > 0)
+                            lock (errors)
                             {
-                                reply = string.Join("\r\n", errors);
-                                errors.Clear();
-                            }                            
+                                if (errors.Count > 0)
+                                {
+                                    reply = string.Join("\r\n", errors);
+                                    errors.Clear();
+                                }
+                            }
                             break;
                         default:
                             throw new Exception("Unknown message: " + m.Name);
@@ -287,7 +290,10 @@ namespace Cliver.CisteraScreenCaptureService
 
         public void PushError(string error)
         {
-            errors.Add(error);
+            lock (errors)
+            {
+                errors.Add(error);
+            }
         }
         readonly List<string> errors = new List<string>();
 
